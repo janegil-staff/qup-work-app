@@ -14,20 +14,22 @@ import { SignInPrompt } from '@/components/SignInPrompt';
 import { colors, radius, spacing } from '@/constants/theme';
 import { useAuth } from '@/context/AuthContext';
 import { api, errorMessage } from '@/lib/api';
+import { useI18n } from '@/i18n';
 import { timeAgo } from '@/lib/format';
 
 export default function MessagesScreen() {
   const { user } = useAuth();
+  const { t } = useI18n();
 
   if (!user) {
     return (
       <View style={styles.screen}>
         <FocusStatusBar style="dark" />
-        <ScreenHeader title="Meldinger" />
+        <ScreenHeader title={t('TAB_MESSAGES')} />
         <SignInPrompt
           icon="chatbubbles-outline"
-          title="Snakk med fagfolk og kunder"
-          text="Logg inn for å sende meldinger om jobber og avtale detaljer."
+          title={t('MESSAGES_GUEST_TITLE')}
+          text={t('MESSAGES_GUEST_TEXT')}
         />
       </View>
     );
@@ -36,6 +38,7 @@ export default function MessagesScreen() {
 }
 
 function Inbox({ userId }) {
+  const { t } = useI18n();
   const [conversations, setConversations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -66,7 +69,7 @@ function Inbox({ userId }) {
   return (
     <View style={styles.screen}>
       <FocusStatusBar style="dark" />
-      <ScreenHeader title="Meldinger" />
+      <ScreenHeader title={t('TAB_MESSAGES')} />
       {loading ? (
         <Loading />
       ) : (
@@ -80,7 +83,7 @@ function Inbox({ userId }) {
           ListHeaderComponent={error ? <ErrorBanner message={error} onRetry={load} style={{ marginBottom: spacing.md }} /> : null}
           ListEmptyComponent={
             error ? null : (
-              <EmptyState icon="chatbubbles-outline" title="Ingen meldinger ennå" text="Samtaler om jobber dukker opp her." />
+              <EmptyState icon="chatbubbles-outline" title={t('NO_MESSAGES')} text={t('NO_MESSAGES_TEXT')} />
             )
           }
           renderItem={({ item }) => <ConversationRow conversation={item} userId={userId} />}
@@ -91,6 +94,7 @@ function Inbox({ userId }) {
 }
 
 function ConversationRow({ conversation, userId }) {
+  const { t } = useI18n();
   const other = conversation.participants.find((p) => p._id !== userId);
   const unread = conversation.unread > 0;
 
@@ -100,7 +104,7 @@ function ConversationRow({ conversation, userId }) {
       <View style={styles.body}>
         <View style={styles.rowTop}>
           <AppText variant={unread ? 'title' : 'bodyStrong'} numberOfLines={1} style={{ flex: 1 }}>
-            {other?.name ?? 'Ukjent'}
+            {other?.name ?? t('UNKNOWN')}
           </AppText>
           <AppText variant="caption" muted>
             {timeAgo(conversation.lastMessage?.sentAt ?? conversation.updatedAt)}

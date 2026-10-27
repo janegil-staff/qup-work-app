@@ -1,8 +1,11 @@
 // /qup-work-app/src/lib/format.js
+// Formatting helpers. Text comes from the translation files via translate(),
+// so they follow the chosen language.
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { colors } from '@/constants/theme';
+import { currentLocale, hasTranslation, translate as t } from '@/i18n';
 
-// 125000 øre → "1 250 kr"   (shows øre only when there are any: "1 250,50 kr")
+// 125000 øre → "1 250 kr"   (the marketplace is in NOK; shows øre only when there are any)
 export function formatNok(ore) {
   if (ore == null) return '';
   const negative = ore < 0;
@@ -14,58 +17,78 @@ export function formatNok(ore) {
   return `${negative ? '−' : ''}${withSpaces}${decimals} kr`;
 }
 
-// Budget on a job: "5 000–10 000 kr", "Opptil 8 000 kr", "Fra 2 000 kr" or "Pris etter avtale"
+// Budget on a job: "5 000–10 000 kr", "Up to 8 000 kr", "From 2 000 kr" or "Price by agreement"
 export function budgetText(budget) {
   const min = budget?.min;
   const max = budget?.max;
-  if (min != null && max != null) return `${formatNok(min).replace(' kr', '')}–${formatNok(max)}`;
-  if (max != null) return `Opptil ${formatNok(max)}`;
-  if (min != null) return `Fra ${formatNok(min)}`;
-  return 'Pris etter avtale';
+  if (min != null && max != null) {
+    return t('BUDGET_RANGE', { min: formatNok(min).replace(' kr', ''), max: formatNok(max) });
+  }
+  if (max != null) return t('BUDGET_UP_TO', { max: formatNok(max) });
+  if (min != null) return t('BUDGET_FROM', { min: formatNok(min) });
+  return t('BUDGET_NEGOTIABLE');
 }
 
 export function placeText(job) {
-  if (job.workType === 'remote') return 'Fjernarbeid';
-  return job.address?.city ?? job.address?.municipality ?? 'Sted ikke oppgitt';
+  if (job.workType === 'remote') return t('REMOTE_WORK');
+  return job.address?.city ?? job.address?.municipality ?? t('PLACE_NOT_GIVEN');
 }
 
-const MONTHS = ['jan', 'feb', 'mar', 'apr', 'mai', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'des'];
-
-// "27. okt" (this year) or "27. okt 2025"
+// "27 Oct" / "27. okt." in the chosen language; adds the year when it isn't this year
 export function formatDate(iso) {
   if (!iso) return '';
   const d = new Date(iso);
   const sameYear = d.getFullYear() === new Date().getFullYear();
-  return `${d.getDate()}. ${MONTHS[d.getMonth()]}${sameYear ? '' : ` ${d.getFullYear()}`}`;
+  try {
+    return new Intl.DateTimeFormat(currentLocale(), {
+      day: 'numeric',
+      month: 'short',
+      ...(sameYear ? {} : { year: 'numeric' }),
+    }).format(d);
+  } catch {
+    return d.toISOString().slice(0, 10);
+  }
 }
 
-// "nå", "5 min siden", "3 t siden", "i går", then a date
+// "now", "5 min ago", "3 h ago", "yesterday", then a date
 export function timeAgo(iso) {
   if (!iso) return '';
   const diffMin = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);
-  if (diffMin < 1) return 'nå';
-  if (diffMin < 60) return `${diffMin} min siden`;
+  if (diffMin < 1) return t('TIME_NOW');
+  if (diffMin < 60) return t('TIME_MINUTES_AGO', { n: diffMin });
   const hours = Math.floor(diffMin / 60);
-  if (hours < 24) return `${hours} t siden`;
-  if (hours < 48) return 'i går';
+  if (hours < 24) return t('TIME_HOURS_AGO', { n: hours });
+  if (hours < 48) return t('TIME_YESTERDAY');
   return formatDate(iso);
 }
 
+// Translation keys; look them up with t() when rendering
 export const URGENCY = {
-  asap: 'Så fort som mulig',
-  within_week: 'Innen en uke',
-  within_month: 'Innen en måned',
-  flexible: 'Fleksibelt',
+  asap: 'URGENCY_ASAP',
+  within_week: 'URGENCY_WITHIN_WEEK',
+  within_month: 'URGENCY_WITHIN_MONTH',
+  flexible: 'URGENCY_FLEXIBLE',
 };
 
 export const JOB_STATUS = {
-  draft: { label: 'Utkast', color: colors.textMuted, bg: colors.line },
-  open: { label: 'Åpen', color: colors.pine, bg: colors.pineSoft },
-  assigned: { label: 'Tildelt', color: colors.info, bg: colors.infoSoft },
-  in_progress: { label: 'Pågår', color: colors.amber, bg: colors.amberSoft },
-  completed: { label: 'Fullført', color: colors.pine, bg: colors.pineSoft },
-  cancelled: { label: 'Avbrutt', color: colors.danger, bg: colors.dangerSoft },
+  draft: { label: 'STATUS_DRAFT', color: colors.textMuted, bg: colors.line },
+  open: { label: 'STATUS_OPEN', color: colors.pine, bg: colors.pineSoft },
+  assigned: { label: 'STATUS_ASSIGNED', color: colors.info, bg: colors.infoSoft },
+  in_progress: { label: 'STATUS_IN_PROGRESS', color: colors.amber, bg: colors.amberSoft },
+  completed: { label: 'STATUS_COMPLETED', color: colors.pine, bg: colors.pineSoft },
+  cancelled: { label: 'STATUS_CANCELLED', color: colors.danger, bg: colors.dangerSoft },
 };
+
+// Categories come from the API in Norwegian. The app translates the ones it knows by slug
+// (CAT_ELEKTRIKER, CAT_RORLEGGER_BAD, ...) and shows the API name for anything new.
+export function categoryName(category) {
+  if (!category) return '';
+  if (category.slug) {
+    const key = `CAT_${category.slug.toUpperCase().replace(/-/g, '_')}`;
+    if (hasTranslation(key)) return t(key);
+  }
+  return category.name;
+}
 
 // Category icons from the API → valid Ionicons names (with a safe fallback)
 const ICON_ALIASES = {

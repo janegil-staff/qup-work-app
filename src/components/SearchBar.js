@@ -2,10 +2,13 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { colors, fonts, radius, spacing } from '@/constants/theme';
+import { useI18n } from '@/i18n';
 
-export function SearchBar({ value, onChangeText, onSubmit, placeholder, onDark, autoFocus }) {
+// filled: grey field without border, for use inside a white card
+export function SearchBar({ value, onChangeText, onSubmit, placeholder, onDark, filled, autoFocus }) {
+  const { t } = useI18n();
   return (
-    <View style={[styles.bar, onDark && styles.onDark]}>
+    <View style={[styles.bar, onDark && styles.onDark, filled && styles.filled]}>
       <Ionicons name="search" size={20} color={colors.textMuted} />
       <TextInput
         value={value}
@@ -26,7 +29,7 @@ export function SearchBar({ value, onChangeText, onSubmit, placeholder, onDark, 
             onSubmit?.('');
           }}
           hitSlop={12}
-          accessibilityLabel="Tøm søket"
+          accessibilityLabel={t('CLEAR_SEARCH')}
         >
           <Ionicons name="close-circle" size={20} color={colors.textMuted} />
         </Pressable>
@@ -48,5 +51,6 @@ const styles = StyleSheet.create({
     borderColor: colors.line,
   },
   onDark: { borderColor: colors.paper },
+  filled: { backgroundColor: colors.concrete, borderColor: colors.concrete },
   input: { flex: 1, fontFamily: fonts.regular, fontSize: 16, color: colors.text, height: '100%' },
 });

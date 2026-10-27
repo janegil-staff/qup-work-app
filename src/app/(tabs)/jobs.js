@@ -12,10 +12,12 @@ import { Loading } from '@/components/Loading';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { SearchBar } from '@/components/SearchBar';
 import { colors, spacing } from '@/constants/theme';
+import { useI18n } from '@/i18n';
 import { useCategories } from '@/lib/categories';
 import { useDebounced, usePaged, withQuery } from '@/lib/usePaged';
 
 export default function JobsScreen() {
+  const { t } = useI18n();
   const params = useLocalSearchParams();
   const { roots: categories } = useCategories();
   const [query, setQuery] = useState(params.q ?? '');
@@ -30,14 +32,14 @@ export default function JobsScreen() {
   const q = useDebounced(query.trim());
   const list = usePaged(withQuery('/jobs/feed', { q, category }));
 
-  const count = list.status === 'ready' ? `${list.total} åpne oppdrag` : ' ';
+  const count = list.status === 'ready' ? t('OPEN_JOBS_COUNT', { n: list.total }) : ' ';
 
   return (
     <View style={styles.screen}>
       <FocusStatusBar style="dark" />
-      <ScreenHeader title="Oppdrag" subtitle={count}>
+      <ScreenHeader title={t('TAB_JOBS')} subtitle={count}>
         <View style={{ paddingHorizontal: spacing.xl }}>
-          <SearchBar value={query} onChangeText={setQuery} placeholder="Søk i oppdrag" />
+          <SearchBar value={query} onChangeText={setQuery} placeholder={t('SEARCH_JOBS')} />
         </View>
         <CategoryChips categories={categories} selected={category} onSelect={setCategory} />
       </ScreenHeader>
@@ -64,8 +66,8 @@ export default function JobsScreen() {
             list.error ? null : (
               <EmptyState
                 icon="clipboard-outline"
-                title={q || category ? 'Ingen treff' : 'Ingen åpne oppdrag'}
-                text={q || category ? 'Prøv et annet søk eller en annen kategori.' : 'Nye jobber dukker opp her så snart de legges ut.'}
+                title={q || category ? t('NO_RESULTS') : t('NO_OPEN_JOBS')}
+                text={q || category ? t('NO_RESULTS_TEXT') : t('NO_OPEN_JOBS_TEXT')}
               />
             )
           }

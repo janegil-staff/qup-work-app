@@ -10,10 +10,12 @@ import { ErrorBanner } from '@/components/ErrorBanner';
 import { TextField } from '@/components/TextField';
 import { colors, spacing } from '@/constants/theme';
 import { useAuth } from '@/context/AuthContext';
+import { useI18n } from '@/i18n';
 import { errorMessage } from '@/lib/api';
 
 export default function RegisterScreen() {
   const { register } = useAuth();
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -25,11 +27,11 @@ export default function RegisterScreen() {
 
   async function onSubmit() {
     if (!name || !email || !password) {
-      setError('Fyll inn navn, e-post og passord.');
+      setError(t('REGISTER_FILL_FIELDS'));
       return;
     }
     if (password.length < 8) {
-      setError('Passordet må ha minst 8 tegn.');
+      setError(t('PASSWORD_TOO_SHORT'));
       return;
     }
     setError(null);
@@ -45,27 +47,27 @@ export default function RegisterScreen() {
   return (
     <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView
-        contentContainerStyle={[styles.content, { paddingTop: Platform.OS === 'ios' ? spacing.lg : insets.top + spacing.md }]}
+        contentContainerStyle={[styles.content, { paddingTop: insets.top + spacing.lg }]}
         keyboardShouldPersistTaps="handled"
       >
-        <BackButton icon="close" label="Lukk" onPress={() => goBackOr('/')} />
+        <BackButton icon="close" onPress={() => goBackOr('/')} />
 
         <View style={styles.header}>
           <AppText variant="display" accessibilityRole="header">
-            Opprett konto
+            {t('CREATE_ACCOUNT')}
           </AppText>
           <AppText variant="body" muted>
-            Legg ut jobber og få tilbud fra fagfolk. Tar du oppdrag selv, slår du på proff-modus etterpå.
+            {t('REGISTER_INTRO')}
           </AppText>
         </View>
 
         <View style={styles.form}>
           <ErrorBanner message={error} />
           <TextField
-            label="Navn"
+            label={t('NAME')}
             value={name}
             onChangeText={setName}
-            placeholder="Ola Nordmann"
+            placeholder={t('NAME_PLACEHOLDER')}
             autoComplete="name"
             textContentType="name"
             returnKeyType="next"
@@ -73,10 +75,10 @@ export default function RegisterScreen() {
           />
           <TextField
             ref={emailRef}
-            label="E-post"
+            label={t('EMAIL')}
             value={email}
             onChangeText={setEmail}
-            placeholder="navn@eksempel.no"
+            placeholder={t('EMAIL_PLACEHOLDER')}
             autoCapitalize="none"
             autoComplete="email"
             keyboardType="email-address"
@@ -86,7 +88,7 @@ export default function RegisterScreen() {
           />
           <TextField
             ref={passwordRef}
-            label="Passord"
+            label={t('PASSWORD')}
             value={password}
             onChangeText={setPassword}
             secureTextEntry
@@ -94,18 +96,18 @@ export default function RegisterScreen() {
             textContentType="newPassword"
             returnKeyType="go"
             onSubmitEditing={onSubmit}
-            hint="Minst 8 tegn"
-            error={password.length > 0 && password.length < 8 ? 'Minst 8 tegn' : undefined}
+            hint={t('PASSWORD_HINT')}
+            error={password.length > 0 && password.length < 8 ? t('PASSWORD_HINT') : undefined}
           />
-          <Button title="Opprett konto" variant="dark" onPress={onSubmit} loading={loading} />
+          <Button title={t('CREATE_ACCOUNT')} variant="dark" onPress={onSubmit} loading={loading} />
         </View>
 
         <Pressable onPress={() => router.replace('/login')} style={styles.switch} accessibilityRole="link">
           <AppText variant="body" muted>
-            Har du konto?
+            {t('HAVE_ACCOUNT')}
           </AppText>
           <AppText variant="bodyStrong" style={styles.switchLink}>
-            Logg inn
+            {t('LOG_IN')}
           </AppText>
         </Pressable>
       </ScrollView>

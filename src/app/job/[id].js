@@ -18,12 +18,14 @@ import { StatusBadge } from '@/components/StatusBadge';
 import { colors, radius, spacing } from '@/constants/theme';
 import { useAuth } from '@/context/AuthContext';
 import { api, errorMessage } from '@/lib/api';
-import { budgetText, categoryIcon, formatDate, placeText, timeAgo, URGENCY } from '@/lib/format';
+import { useI18n } from '@/i18n';
+import { budgetText, categoryIcon, categoryName, formatDate, placeText, timeAgo, URGENCY } from '@/lib/format';
 
 export default function JobScreen() {
   const { id } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const { user, isPro } = useAuth();
+  const { t } = useI18n();
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
@@ -44,7 +46,7 @@ export default function JobScreen() {
     return (
       <View style={[styles.screen, { paddingTop: insets.top + spacing.md, paddingHorizontal: spacing.xl }]}>
         <BackButton />
-        <EmptyState icon="clipboard-outline" title="Fant ikke oppdraget" text={error} />
+        <EmptyState icon="clipboard-outline" title={t('JOB_NOT_FOUND')} text={error} />
       </View>
     );
   }
@@ -52,15 +54,15 @@ export default function JobScreen() {
 
   const { job, side, myOfferStatus } = data;
   const facts = [
-    job.timing?.urgency && { icon: 'calendar-outline', label: 'Når', value: URGENCY[job.timing.urgency] },
-    job.timing?.preferredStart && { icon: 'play-outline', label: 'Ønsket oppstart', value: formatDate(job.timing.preferredStart) },
+    job.timing?.urgency && { icon: 'calendar-outline', label: t('FACT_WHEN'), value: t(URGENCY[job.timing.urgency]) },
+    job.timing?.preferredStart && { icon: 'play-outline', label: t('FACT_PREFERRED_START'), value: formatDate(job.timing.preferredStart) },
     {
       icon: job.workType === 'remote' ? 'globe-outline' : 'location-outline',
-      label: job.workType === 'remote' ? 'Arbeidssted' : 'Sted',
-      value: job.workType === 'remote' ? 'Fjernarbeid' : [job.address?.postalCode, placeText(job)].filter(Boolean).join(' '),
+      label: job.workType === 'remote' ? t('FACT_WORKPLACE') : t('FACT_PLACE'),
+      value: job.workType === 'remote' ? t('REMOTE_WORK') : [job.address?.postalCode, placeText(job)].filter(Boolean).join(' '),
     },
-    job.address?.line1 && { icon: 'home-outline', label: 'Adresse', value: job.address.line1 },
-    { icon: 'document-text-outline', label: 'Tilbud', value: job.offerCount ? `${job.offerCount} mottatt` : 'Ingen ennå' },
+    job.address?.line1 && { icon: 'home-outline', label: t('FACT_ADDRESS'), value: job.address.line1 },
+    { icon: 'document-text-outline', label: t('FACT_OFFERS'), value: job.offerCount ? t('OFFERS_RECEIVED', { n: job.offerCount }) : t('NONE_YET') },
   ].filter(Boolean);
 
   return (
@@ -75,7 +77,7 @@ export default function JobScreen() {
                 <Ionicons name={categoryIcon(job.category.icon)} size={15} color={colors.slate} />
               </View>
               <AppText variant="smallStrong" onDark muted>
-                {job.category.name}
+                {categoryName(job.category)}
               </AppText>
             </View>
           ) : null}
@@ -83,7 +85,7 @@ export default function JobScreen() {
             {job.title}
           </AppText>
           <AppText variant="small" onDark muted>
-            Lagt ut {timeAgo(job.publishedAt ?? job.createdAt)}
+            {t('POSTED_AGO', { time: timeAgo(job.publishedAt ?? job.createdAt) })}
           </AppText>
         </View>
 
@@ -92,7 +94,7 @@ export default function JobScreen() {
           <View style={styles.ticketTop}>
             <View style={{ flex: 1, gap: 2 }}>
               <AppText variant="caption" muted>
-                Budsjett
+                {t('BUDGET')}
               </AppText>
               <AppText variant="h2">{budgetText(job.budget)}</AppText>
             </View>
@@ -118,7 +120,7 @@ export default function JobScreen() {
 
         {job.description ? (
           <View style={styles.section}>
-            <AppText variant="title">Beskrivelse</AppText>
+            <AppText variant="title">{t('DESCRIPTION')}</AppText>
             <AppText variant="body">{job.description}</AppText>
           </View>
         ) : null}
@@ -128,7 +130,7 @@ export default function JobScreen() {
             <Avatar name={job.customer.name} url={job.customer.avatarUrl} size={44} dark />
             <View>
               <AppText variant="caption" muted>
-                Lagt ut av
+                {t('POSTED_BY')}
               </AppText>
               <AppText variant="bodyStrong">{job.customer.name}</AppText>
             </View>
@@ -137,7 +139,7 @@ export default function JobScreen() {
 
         {side === 'guest' || side === 'viewer' ? (
           <AppText variant="small" muted style={styles.privacy}>
-            Nøyaktig adresse vises for fagpersonen som får oppdraget.
+            {t('ADDRESS_PRIVACY_NOTE')}
           </AppText>
         ) : null}
       </ScrollView>
@@ -149,10 +151,11 @@ export default function JobScreen() {
 
 // What the button at the bottom does depends on who's looking
 function JobActions({ job, side, myOfferStatus, isPro }) {
+  const { t } = useI18n();
   if (side === 'guest') {
     return (
       <BottomBar>
-        <Button title="Logg inn for å gi tilbud" variant="dark" onPress={() => router.push('/login')} />
+        <Button title={t('LOG_IN_TO_OFFER')} variant="dark" onPress={() => router.push('/login')} />
       </BottomBar>
     );
   }
@@ -164,7 +167,7 @@ function JobActions({ job, side, myOfferStatus, isPro }) {
           <View style={styles.note}>
             <Ionicons name="checkmark-circle" size={20} color={colors.pine} />
             <AppText variant="bodyStrong" color={colors.pine}>
-              Du har sendt tilbud på denne jobben
+              {t('OFFER_ALREADY_SENT')}
             </AppText>
           </View>
         </BottomBar>
@@ -174,7 +177,7 @@ function JobActions({ job, side, myOfferStatus, isPro }) {
       return (
         <BottomBar>
           <AppText variant="small" muted center>
-            Bare registrerte fagfolk kan gi tilbud.
+            {t('ONLY_PROS_CAN_OFFER')}
           </AppText>
         </BottomBar>
       );
@@ -182,7 +185,7 @@ function JobActions({ job, side, myOfferStatus, isPro }) {
     return (
       <BottomBar>
         <Button
-          title="Gi tilbud"
+          title={t('MAKE_OFFER')}
           icon="document-text-outline"
           onPress={() => router.push({ pathname: '/offer/[jobId]', params: { jobId: job._id, title: job.title } })}
         />
@@ -194,9 +197,7 @@ function JobActions({ job, side, myOfferStatus, isPro }) {
     return (
       <BottomBar>
         <AppText variant="small" muted center>
-          {job.offerCount
-            ? `Du har fått ${job.offerCount} tilbud. Sammenligning av tilbud kommer i neste versjon.`
-            : 'Fagfolk kan nå se jobben og sende deg tilbud.'}
+          {job.offerCount ? t('CUSTOMER_OFFERS_RECEIVED', { n: job.offerCount }) : t('CUSTOMER_WAITING_FOR_OFFERS')}
         </AppText>
       </BottomBar>
     );

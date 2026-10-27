@@ -16,12 +16,13 @@ import { colors, spacing } from '@/constants/theme';
 import { useAuth } from '@/context/AuthContext';
 import { api, errorMessage } from '@/lib/api';
 import { useCategories } from '@/lib/categories';
-import { URGENCY } from '@/lib/format';
+import { useI18n } from '@/i18n';
+import { categoryName, URGENCY } from '@/lib/format';
 
 const URGENCY_OPTIONS = Object.entries(URGENCY).map(([value, label]) => ({ value, label }));
 const WORK_TYPES = [
-  { value: 'onsite', label: 'På stedet' },
-  { value: 'remote', label: 'Kan gjøres digitalt' },
+  { value: 'onsite', label: 'WORK_ONSITE' },
+  { value: 'remote', label: 'WORK_REMOTE' },
 ];
 
 const toOre = (text) => {
@@ -32,6 +33,7 @@ const toOre = (text) => {
 export default function NewJobScreen() {
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
+  const { t } = useI18n();
   const { roots, childrenOf } = useCategories();
 
   const [title, setTitle] = useState('');
@@ -52,7 +54,7 @@ export default function NewJobScreen() {
     return (
       <View style={[styles.flex, { paddingTop: insets.top + spacing.md, paddingHorizontal: spacing.xl }]}>
         <BackButton />
-        <SignInPrompt icon="add-circle-outline" title="Legg ut en jobb" text="Logg inn for å legge ut jobben og få tilbud." />
+        <SignInPrompt icon="add-circle-outline" title={t('POST_JOB')} text={t('POST_JOB_GUEST_TEXT')} />
       </View>
     );
   }
@@ -60,11 +62,11 @@ export default function NewJobScreen() {
   const subs = category ? childrenOf(category) : [];
 
   async function submit() {
-    if (title.trim().length < 5) return setError('Gi jobben en tittel på minst 5 tegn.');
-    if (workType === 'onsite' && !city.trim()) return setError('Skriv hvor jobben skal gjøres.');
+    if (title.trim().length < 5) return setError(t('JOB_TITLE_TOO_SHORT'));
+    if (workType === 'onsite' && !city.trim()) return setError(t('JOB_CITY_REQUIRED'));
     const min = toOre(budgetMin);
     const max = toOre(budgetMax);
-    if (min && max && min > max) return setError('Budsjett «fra» må være lavere enn «til».');
+    if (min && max && min > max) return setError(t('BUDGET_MIN_OVER_MAX'));
 
     setError(null);
     setSaving(true);
@@ -102,25 +104,25 @@ export default function NewJobScreen() {
         <BackButton />
         <View style={{ gap: spacing.xs }}>
           <AppText variant="h1" accessibilityRole="header">
-            Legg ut en jobb
+            {t('POST_JOB')}
           </AppText>
           <AppText variant="body" muted>
-            Jo mer konkret du er, jo bedre tilbud får du.
+            {t('POST_JOB_INTRO')}
           </AppText>
         </View>
 
-        <TextField label="Hva skal gjøres?" value={title} onChangeText={setTitle} placeholder="Bytte sikringsskap i enebolig" />
+        <TextField label={t('JOB_TITLE_LABEL')} value={title} onChangeText={setTitle} placeholder={t('JOB_TITLE_PLACEHOLDER')} />
         <TextField
-          label="Beskrivelse"
+          label={t('DESCRIPTION')}
           value={description}
           onChangeText={setDescription}
           multiline
-          placeholder="Størrelse, materialer, tilgang, når det passer…"
+          placeholder={t('JOB_DESCRIPTION_PLACEHOLDER')}
         />
 
         <ChoiceChips
-          label="Kategori"
-          options={roots.map((c) => ({ value: c._id, label: c.name, deselectable: true }))}
+          label={t('CATEGORY')}
+          options={roots.map((c) => ({ value: c._id, label: categoryName(c), deselectable: true }))}
           value={category}
           onChange={(v) => {
             setCategory(v);
@@ -129,47 +131,47 @@ export default function NewJobScreen() {
         />
         {subs.length ? (
           <ChoiceChips
-            label="Hva slags jobb?"
-            options={subs.map((c) => ({ value: c._id, label: c.name, deselectable: true }))}
+            label={t('JOB_TYPE')}
+            options={subs.map((c) => ({ value: c._id, label: categoryName(c), deselectable: true }))}
             value={subcategory}
             onChange={setSubcategory}
           />
         ) : null}
 
-        <ChoiceChips label="Hvor" options={WORK_TYPES} value={workType} onChange={setWorkType} />
+        <ChoiceChips label={t('WHERE')} options={WORK_TYPES.map((o) => ({ ...o, label: t(o.label) }))} value={workType} onChange={setWorkType} />
         {workType === 'onsite' ? (
           <View style={{ gap: spacing.lg }}>
             <View style={styles.row}>
               <View style={{ width: 120 }}>
-                <TextField label="Postnr." value={postalCode} onChangeText={setPostalCode} keyboardType="number-pad" maxLength={4} placeholder="5003" />
+                <TextField label={t('POSTAL_CODE')} value={postalCode} onChangeText={setPostalCode} keyboardType="number-pad" maxLength={4} placeholder="5003" />
               </View>
               <View style={{ flex: 1 }}>
-                <TextField label="Sted" value={city} onChangeText={setCity} placeholder="Bergen" autoComplete="postal-address-locality" />
+                <TextField label={t('CITY')} value={city} onChangeText={setCity} placeholder={t('CITY_PLACEHOLDER')} autoComplete="postal-address-locality" />
               </View>
             </View>
             <TextField
-              label="Gateadresse"
+              label={t('STREET_ADDRESS')}
               value={line1}
               onChangeText={setLine1}
-              placeholder="Storgata 1"
-              hint="Vises bare for fagpersonen du velger."
+              placeholder={t('STREET_ADDRESS_PLACEHOLDER')}
+              hint={t('STREET_ADDRESS_HINT')}
             />
           </View>
         ) : null}
 
         <View style={styles.row}>
           <View style={{ flex: 1 }}>
-            <TextField label="Budsjett fra (kr)" value={budgetMin} onChangeText={setBudgetMin} keyboardType="number-pad" placeholder="5 000" />
+            <TextField label={t('BUDGET_FROM_LABEL')} value={budgetMin} onChangeText={setBudgetMin} keyboardType="number-pad" placeholder="5 000" />
           </View>
           <View style={{ flex: 1 }}>
-            <TextField label="til (kr)" value={budgetMax} onChangeText={setBudgetMax} keyboardType="number-pad" placeholder="15 000" />
+            <TextField label={t('BUDGET_TO_LABEL')} value={budgetMax} onChangeText={setBudgetMax} keyboardType="number-pad" placeholder="15 000" />
           </View>
         </View>
 
-        <ChoiceChips label="Når" options={URGENCY_OPTIONS} value={urgency} onChange={setUrgency} />
+        <ChoiceChips label={t('FACT_WHEN')} options={URGENCY_OPTIONS.map((o) => ({ ...o, label: t(o.label) }))} value={urgency} onChange={setUrgency} />
 
         <ErrorBanner message={error} />
-        <Button title="Legg ut jobben" onPress={submit} loading={saving} />
+        <Button title={t('PUBLISH_JOB')} onPress={submit} loading={saving} />
       </ScrollView>
     </KeyboardAvoidingView>
   );

@@ -14,11 +14,13 @@ import { Loading } from '@/components/Loading';
 import { SignInPrompt } from '@/components/SignInPrompt';
 import { colors, spacing } from '@/constants/theme';
 import { useAuth } from '@/context/AuthContext';
+import { useI18n } from '@/i18n';
 import { usePaged } from '@/lib/usePaged';
 
 export default function MyJobsScreen() {
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
+  const { t } = useI18n();
   const isProMode = user?.activeRole === 'pro';
   const list = usePaged(`/jobs?role=${isProMode ? 'pro' : 'customer'}`, { enabled: Boolean(user) });
 
@@ -34,7 +36,7 @@ export default function MyJobsScreen() {
     <View style={[styles.header, { paddingTop: insets.top + spacing.md }]}>
       <BackButton />
       <AppText variant="h1" accessibilityRole="header">
-        {isProMode ? 'Mine oppdrag' : 'Mine jobber'}
+        {isProMode ? t('MY_ASSIGNMENTS') : t('MY_JOBS')}
       </AppText>
     </View>
   );
@@ -43,7 +45,7 @@ export default function MyJobsScreen() {
     return (
       <View style={styles.screen}>
         {header}
-        <SignInPrompt icon="briefcase-outline" title="Dine jobber" text="Logg inn for å se jobbene dine." />
+        <SignInPrompt icon="briefcase-outline" title={t('MY_JOBS_GUEST_TITLE')} text={t('MY_JOBS_GUEST_TEXT')} />
       </View>
     );
   }
@@ -69,17 +71,17 @@ export default function MyJobsScreen() {
             list.error ? null : isProMode ? (
               <EmptyState
                 icon="construct-outline"
-                title="Ingen oppdrag ennå"
-                text="Finn åpne jobber og send tilbud."
-                actionTitle="Se oppdrag"
+                title={t('NO_ASSIGNMENTS')}
+                text={t('NO_ASSIGNMENTS_TEXT')}
+                actionTitle={t('SEE_JOBS')}
                 onAction={() => router.push('/jobs')}
               />
             ) : (
               <EmptyState
                 icon="briefcase-outline"
-                title="Ingen jobber ennå"
-                text="Beskriv hva som skal gjøres, så sender fagfolk deg tilbud."
-                actionTitle="Legg ut en jobb"
+                title={t('NO_JOBS')}
+                text={t('NO_JOBS_TEXT')}
+                actionTitle={t('POST_JOB')}
                 onAction={() => router.push('/new-job')}
               />
             )

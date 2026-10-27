@@ -6,6 +6,7 @@
 // - Adds the access token automatically
 // - If it has expired (401), refreshes it once and retries the request
 // - Throws ApiError with the API's own message, ready to show to the user
+import { translate as t } from '@/i18n';
 import { tokenStore } from './tokenStore';
 
 export const API_URL = (process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:4000/api/v1').replace(/\/$/, '');
@@ -77,16 +78,16 @@ export async function api(path, options = {}) {
       if (!newToken) {
         // Refresh token still saved → the refresh failed because we're offline
         if (await tokenStore.getRefresh()) {
-          throw new ApiError('Får ikke kontakt med serveren. Sjekk internettforbindelsen.', 0);
+          throw new ApiError(t('ERROR_OFFLINE'), 0);
         }
         onSessionExpired?.();
-        throw new ApiError('Økten har utløpt. Logg inn igjen.', 401);
+        throw new ApiError(t('ERROR_SESSION_EXPIRED'), 401);
       }
       res = await send(newToken);
     }
   } catch (err) {
     if (err instanceof ApiError) throw err;
-    throw new ApiError('Får ikke kontakt med serveren. Sjekk internettforbindelsen.', 0);
+    throw new ApiError(t('ERROR_OFFLINE'), 0);
   }
 
   if (res.status === 204) return null;
@@ -94,7 +95,7 @@ export async function api(path, options = {}) {
   const data = await res.json().catch(() => null);
   if (!res.ok) {
     throw new ApiError(
-      data?.error?.message ?? `Noe gikk galt (${res.status})`,
+      data?.error?.message ?? t('ERROR_STATUS', { status: res.status }),
       res.status,
       data?.error?.details
     );
@@ -108,5 +109,5 @@ export function errorMessage(err) {
     if (err.details) return `${err.message}: ${Object.values(err.details).join(', ')}`;
     return err.message;
   }
-  return 'Noe gikk galt. Prøv igjen.';
+  return t('ERROR_GENERIC');
 }

@@ -4,10 +4,12 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Pressable, ScrollView, StyleSheet } from 'react-native';
 import { AppText } from '@/components/AppText';
 import { colors, radius, spacing } from '@/constants/theme';
-import { categoryIcon } from '@/lib/format';
+import { useI18n } from '@/i18n';
+import { categoryIcon, categoryName } from '@/lib/format';
 
 export function CategoryChips({ categories, selected, onSelect, onDark, style }) {
-  const items = [{ _id: null, name: 'Alle', icon: 'apps' }, ...categories];
+  const { t } = useI18n();
+  const items = [{ _id: null, name: t('ALL'), icon: 'apps' }, ...categories];
 
   return (
     <ScrollView
@@ -39,7 +41,7 @@ export function CategoryChips({ categories, selected, onSelect, onDark, style })
               variant="smallStrong"
               color={active ? (onDark ? colors.slate : colors.textOnDark) : onDark ? colors.textOnDark : colors.text}
             >
-              {c.name}
+              {c._id ? categoryName(c) : c.name}
             </AppText>
           </Pressable>
         );

@@ -3,8 +3,10 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/AppText';
 import { colors, radius, spacing } from '@/constants/theme';
+import { useI18n } from '@/i18n';
 
 export function ErrorBanner({ message, onRetry, style }) {
+  const { t } = useI18n();
   if (!message) return null;
   return (
     <View style={[styles.box, style]} accessibilityRole="alert">
@@ -15,7 +17,7 @@ export function ErrorBanner({ message, onRetry, style }) {
       {onRetry ? (
         <Pressable onPress={onRetry} hitSlop={10} accessibilityRole="button">
           <AppText variant="smallStrong" color={colors.danger}>
-            Prøv igjen
+            {t('TRY_AGAIN')}
           </AppText>
         </Pressable>
       ) : null}

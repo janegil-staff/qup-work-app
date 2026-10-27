@@ -15,23 +15,26 @@ import { SignInPrompt } from '@/components/SignInPrompt';
 import { colors, radius, spacing } from '@/constants/theme';
 import { useAuth } from '@/context/AuthContext';
 import { errorMessage } from '@/lib/api';
+import { useI18n } from '@/i18n';
 import { formatNok } from '@/lib/format';
 
-const COMPANY_ROLE = { owner: 'Eier', admin: 'Administrator', worker: 'Ansatt' };
+const COMPANY_ROLE = { owner: 'ROLE_OWNER', admin: 'ROLE_ADMIN', worker: 'ROLE_WORKER' };
 
 export default function ProfileScreen() {
   const { session } = useAuth();
+  const { t } = useI18n();
 
   if (!session) {
     return (
       <View style={styles.screen}>
         <FocusStatusBar style="dark" />
-        <ScreenHeader title="Profil" />
-        <SignInPrompt
-          icon="person-outline"
-          title="Din side på Qup Work"
-          text="Logg inn for å legge ut jobber, gi tilbud og følge oppdragene dine."
-        />
+        <ScreenHeader title={t('TAB_PROFILE')} />
+        <SignInPrompt icon="person-outline" title={t('PROFILE_GUEST_TITLE')} text={t('PROFILE_GUEST_TEXT')} />
+        <View style={{ padding: spacing.xl }}>
+          <View style={styles.group}>
+            <LanguageRow />
+          </View>
+        </View>
       </View>
     );
   }
@@ -41,6 +44,7 @@ export default function ProfileScreen() {
 function MyProfile() {
   const insets = useSafeAreaInsets();
   const { session, isPro, logout, setActiveRole } = useAuth();
+  const { t } = useI18n();
   const [switching, setSwitching] = useState(false);
   const [error, setError] = useState(null);
   const { user, companies, proProfile } = session;
@@ -60,12 +64,12 @@ function MyProfile() {
 
   function confirmLogout() {
     if (Platform.OS === 'web') {
-      if (globalThis.confirm?.('Logg ut? Du blir logget ut på alle enheter.')) logout();
+      if (globalThis.confirm?.(`${t('LOG_OUT')}? ${t('LOG_OUT_ALL_DEVICES')}`)) logout();
       return;
     }
-    Alert.alert('Logg ut', 'Du blir logget ut på alle enheter.', [
-      { text: 'Avbryt', style: 'cancel' },
-      { text: 'Logg ut', style: 'destructive', onPress: logout },
+    Alert.alert(t('LOG_OUT'), t('LOG_OUT_ALL_DEVICES'), [
+      { text: t('CANCEL'), style: 'cancel' },
+      { text: t('LOG_OUT'), style: 'destructive', onPress: logout },
     ]);
   }
 
@@ -92,17 +96,17 @@ function MyProfile() {
         <View style={styles.group}>
           <MenuRow
             icon="briefcase-outline"
-            title={isProMode ? 'Mine oppdrag' : 'Mine jobber'}
+            title={isProMode ? t('MY_ASSIGNMENTS') : t('MY_JOBS')}
             onPress={() => router.push('/my-jobs')}
           />
-          {!isProMode ? <MenuRow icon="add-circle-outline" title="Legg ut en jobb" onPress={() => router.push('/new-job')} /> : null}
+          {!isProMode ? <MenuRow icon="add-circle-outline" title={t('POST_JOB')} onPress={() => router.push('/new-job')} /> : null}
           {isPro ? (
             <View style={styles.menuRow}>
               <Ionicons name="construct-outline" size={22} color={colors.slate} />
               <View style={{ flex: 1 }}>
-                <AppText variant="bodyStrong">Proff-modus</AppText>
+                <AppText variant="bodyStrong">{t('PRO_MODE')}</AppText>
                 <AppText variant="small" muted>
-                  {isProMode ? 'Du ser appen som fagperson' : 'Du ser appen som kunde'}
+                  {isProMode ? t('PRO_MODE_ON') : t('PRO_MODE_OFF')}
                 </AppText>
               </View>
               <Switch
@@ -125,8 +129,8 @@ function MyProfile() {
                 <View style={{ flex: 1 }}>
                   <AppText variant="bodyStrong">{c.name}</AppText>
                   <AppText variant="small" muted>
-                    {COMPANY_ROLE[c.role]}
-                    {c.orgNumber ? `, org.nr. ${c.orgNumber}` : ''}
+                    {t(COMPANY_ROLE[c.role])}
+                    {c.orgNumber ? `, ${t('ORG_NUMBER_SHORT', { n: c.orgNumber })}` : ''}
                   </AppText>
                 </View>
               </View>
@@ -136,24 +140,48 @@ function MyProfile() {
 
         {proProfile ? (
           <View style={[styles.group, styles.stats]}>
-            <Stat value={String(proProfile.stats.completedJobs)} label="fullførte oppdrag" />
-            <Stat value={proProfile.hourlyRate ? formatNok(proProfile.hourlyRate) : '–'} label="timepris" />
-            <Stat value={proProfile.availableForMarketplace ? 'Ja' : 'Nei'} label="synlig for kunder" />
+            <Stat value={String(proProfile.stats.completedJobs)} label={t('STAT_COMPLETED_JOBS')} />
+            <Stat value={proProfile.hourlyRate ? formatNok(proProfile.hourlyRate) : '–'} label={t('STAT_HOURLY_RATE')} />
+            <Stat value={proProfile.availableForMarketplace ? t('YES') : t('NO')} label={t('STAT_VISIBLE')} />
           </View>
         ) : null}
 
         {!isPro ? (
           <View style={[styles.group, styles.proInvite]}>
-            <AppText variant="title">Tar du oppdrag selv?</AppText>
+            <AppText variant="title">{t('PRO_INVITE_TITLE')}</AppText>
             <AppText variant="small" muted>
-              Registrer firmaet ditt for å gi tilbud, føre timer og sende faktura. Kommer i appen snart.
+              {t('PRO_INVITE_PROFILE_TEXT')}
             </AppText>
           </View>
         ) : null}
 
-        <Button title="Logg ut" variant="danger" onPress={confirmLogout} />
+        <View style={styles.group}>
+          <LanguageRow />
+        </View>
+
+        <Button title={t('LOG_OUT')} variant="danger" onPress={confirmLogout} />
       </View>
     </ScrollView>
+  );
+}
+
+function LanguageRow() {
+  const { t, language } = useI18n();
+  return (
+    <Pressable
+      onPress={() => router.push('/language')}
+      accessibilityRole="button"
+      style={({ pressed }) => [styles.menuRow, styles.lastRow, pressed && { opacity: 0.7 }]}
+    >
+      <Ionicons name="globe-outline" size={22} color={colors.slate} />
+      <AppText variant="bodyStrong" style={{ flex: 1 }}>
+        {t('LANGUAGE')}
+      </AppText>
+      <AppText variant="small" muted>
+        {language.flag} {language.name}
+      </AppText>
+      <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
+    </Pressable>
   );
 }
 
@@ -198,6 +226,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.line,
   },
+  lastRow: { borderBottomWidth: 0 },
   stats: { flexDirection: 'row', paddingVertical: spacing.lg },
   stat: { flex: 1, gap: 2 },
   proInvite: { paddingVertical: spacing.lg, gap: spacing.xs, borderLeftWidth: 4, borderLeftColor: colors.hivis },

@@ -7,10 +7,12 @@ import { AppText } from '@/components/AppText';
 import { Avatar } from '@/components/Avatar';
 import { Rating } from '@/components/Rating';
 import { colors, radius, spacing } from '@/constants/theme';
+import { useI18n } from '@/i18n';
 import { formatNok } from '@/lib/format';
 
 export function ProCard({ pro, onPress, compact }) {
-  const name = pro.company?.name ?? pro.user?.name ?? 'Ukjent';
+  const { t } = useI18n();
+  const name = pro.company?.name ?? pro.user?.name ?? t('UNKNOWN');
   const person = pro.company ? pro.user?.name : null;
   const verified = pro.verification?.orgNumberVerified;
   const area = pro.serviceArea?.municipalities?.[0];
@@ -29,7 +31,7 @@ export function ProCard({ pro, onPress, compact }) {
             {name}
           </AppText>
           {verified ? (
-            <Ionicons name="shield-checkmark" size={16} color={colors.pine} accessibilityLabel="Verifisert firma" />
+            <Ionicons name="shield-checkmark" size={16} color={colors.pine} accessibilityLabel={t('VERIFIED_COMPANY')} />
           ) : null}
         </View>
 
@@ -56,7 +58,7 @@ export function ProCard({ pro, onPress, compact }) {
         </View>
 
         {pro.hourlyRate ? (
-          <AppText variant="smallStrong">Fra {formatNok(pro.hourlyRate)}/t</AppText>
+          <AppText variant="smallStrong">{t('PRICE_FROM_PER_HOUR', { price: formatNok(pro.hourlyRate) })}</AppText>
         ) : null}
       </View>
     </Pressable>

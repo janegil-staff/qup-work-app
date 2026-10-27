@@ -11,9 +11,11 @@ import { AppText } from '@/components/AppText';
 import { Perforation } from '@/components/Perforation';
 import { StatusBadge } from '@/components/StatusBadge';
 import { colors, radius, spacing } from '@/constants/theme';
-import { budgetText, categoryIcon, placeText, timeAgo } from '@/lib/format';
+import { useI18n } from '@/i18n';
+import { budgetText, categoryIcon, categoryName, placeText, timeAgo } from '@/lib/format';
 
 export function JobTicket({ job, onPress, showStatus, notchColor = colors.concrete, style }) {
+  const { t } = useI18n();
   const budget = budgetText(job.budget);
   const offers = job.offerCount ?? 0;
 
@@ -31,7 +33,7 @@ export function JobTicket({ job, onPress, showStatus, notchColor = colors.concre
               <Ionicons name={categoryIcon(job.category.icon)} size={13} color={colors.slate} />
             </View>
             <AppText variant="caption" muted>
-              {job.category.name}
+              {categoryName(job.category)}
             </AppText>
           </View>
         ) : null}
@@ -72,13 +74,13 @@ export function JobTicket({ job, onPress, showStatus, notchColor = colors.concre
           <View style={styles.offers}>
             <Ionicons name="checkmark-circle" size={15} color={colors.pine} />
             <AppText variant="smallStrong" color={colors.pine}>
-              Tilbud sendt
+              {t('OFFER_SENT')}
             </AppText>
           </View>
         ) : (
           <View style={styles.offers}>
             <Ionicons name="document-text-outline" size={14} color={colors.slate} />
-            <AppText variant="smallStrong">{offers === 0 ? 'Ingen tilbud ennå' : `${offers} tilbud`}</AppText>
+            <AppText variant="smallStrong">{offers === 0 ? t('NO_OFFERS_YET') : t('OFFERS_COUNT', { n: offers })}</AppText>
           </View>
         )}
       </View>

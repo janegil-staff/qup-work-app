@@ -6,8 +6,10 @@ import { StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { colors, radius, spacing } from '@/constants/theme';
+import { useI18n } from '@/i18n';
 
 export function SignInPrompt({ icon = 'person-outline', title, text }) {
+  const { t } = useI18n();
   return (
     <View style={styles.wrapper}>
       <View style={styles.icon}>
@@ -22,8 +24,8 @@ export function SignInPrompt({ icon = 'person-outline', title, text }) {
         </AppText>
       </View>
       <View style={styles.buttons}>
-        <Button title="Logg inn" variant="dark" onPress={() => router.push('/login')} />
-        <Button title="Opprett konto" variant="outline" onPress={() => router.push('/register')} />
+        <Button title={t('LOG_IN')} variant="dark" onPress={() => router.push('/login')} />
+        <Button title={t('CREATE_ACCOUNT')} variant="outline" onPress={() => router.push('/register')} />
       </View>
     </View>
   );

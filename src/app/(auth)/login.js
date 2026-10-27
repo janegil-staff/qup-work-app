@@ -10,10 +10,12 @@ import { ErrorBanner } from '@/components/ErrorBanner';
 import { TextField } from '@/components/TextField';
 import { colors, spacing } from '@/constants/theme';
 import { useAuth } from '@/context/AuthContext';
+import { useI18n } from '@/i18n';
 import { errorMessage } from '@/lib/api';
 
 export default function LoginScreen() {
   const { login } = useAuth();
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,7 +25,7 @@ export default function LoginScreen() {
 
   async function onSubmit() {
     if (!email || !password) {
-      setError('Fyll inn e-post og passord.');
+      setError(t('LOGIN_FILL_FIELDS'));
       return;
     }
     setError(null);
@@ -40,27 +42,27 @@ export default function LoginScreen() {
   return (
     <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView
-        contentContainerStyle={[styles.content, { paddingTop: Platform.OS === 'ios' ? spacing.lg : insets.top + spacing.md }]}
+        contentContainerStyle={[styles.content, { paddingTop: insets.top + spacing.lg }]}
         keyboardShouldPersistTaps="handled"
       >
-        <BackButton icon="close" label="Lukk" onPress={() => goBackOr('/')} />
+        <BackButton icon="close" onPress={() => goBackOr('/')} />
 
         <View style={styles.header}>
           <AppText variant="display" accessibilityRole="header">
-            Logg inn
+            {t('LOG_IN')}
           </AppText>
           <AppText variant="body" muted>
-            Gi tilbud, send meldinger og følg jobbene dine.
+            {t('LOGIN_INTRO')}
           </AppText>
         </View>
 
         <View style={styles.form}>
           <ErrorBanner message={error} />
           <TextField
-            label="E-post"
+            label={t('EMAIL')}
             value={email}
             onChangeText={setEmail}
-            placeholder="navn@eksempel.no"
+            placeholder={t('EMAIL_PLACEHOLDER')}
             autoCapitalize="none"
             autoComplete="email"
             keyboardType="email-address"
@@ -70,7 +72,7 @@ export default function LoginScreen() {
           />
           <TextField
             ref={passwordRef}
-            label="Passord"
+            label={t('PASSWORD')}
             value={password}
             onChangeText={setPassword}
             secureTextEntry
@@ -79,15 +81,15 @@ export default function LoginScreen() {
             returnKeyType="go"
             onSubmitEditing={onSubmit}
           />
-          <Button title="Logg inn" variant="dark" onPress={onSubmit} loading={loading} />
+          <Button title={t('LOG_IN')} variant="dark" onPress={onSubmit} loading={loading} />
         </View>
 
         <Pressable onPress={() => router.replace('/register')} style={styles.switch} accessibilityRole="link">
           <AppText variant="body" muted>
-            Ny her?
+            {t('NEW_HERE')}
           </AppText>
           <AppText variant="bodyStrong" style={styles.switchLink}>
-            Opprett konto
+            {t('CREATE_ACCOUNT')}
           </AppText>
         </Pressable>
       </ScrollView>

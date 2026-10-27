@@ -18,13 +18,15 @@ import { Rating } from '@/components/Rating';
 import { colors, radius, spacing } from '@/constants/theme';
 import { useAuth } from '@/context/AuthContext';
 import { api, errorMessage } from '@/lib/api';
-import { categoryIcon, formatDate, formatNok } from '@/lib/format';
+import { useI18n } from '@/i18n';
+import { categoryIcon, categoryName, formatDate, formatNok } from '@/lib/format';
 import { useRequireLogin } from '@/lib/useRequireLogin';
 
 export default function ProScreen() {
   const { id } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
+  const { t } = useI18n();
   const requireLogin = useRequireLogin();
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
@@ -41,7 +43,7 @@ export default function ProScreen() {
     return (
       <View style={[styles.screen, { paddingTop: insets.top + spacing.md, paddingHorizontal: spacing.xl }]}>
         <BackButton />
-        <EmptyState icon="person-outline" title="Fant ikke profilen" text={error} />
+        <EmptyState icon="person-outline" title={t('PROFILE_NOT_FOUND')} text={error} />
       </View>
     );
   }
@@ -90,15 +92,15 @@ export default function ProScreen() {
             <View style={styles.verified}>
               <Ionicons name="shield-checkmark" size={16} color={colors.hivis} />
               <AppText variant="smallStrong" onDark>
-                Verifisert i Brønnøysundregistrene
+                {t('VERIFIED_BRREG')}
               </AppText>
             </View>
           ) : null}
 
           <View style={styles.stats}>
-            <Stat value={String(profile.stats?.completedJobs ?? 0)} label="fullførte oppdrag" />
-            <Stat value={profile.hourlyRate ? formatNok(profile.hourlyRate) : '–'} label="timepris fra" />
-            <Stat value={area?.radiusKm ? `${area.radiusKm} km` : '–'} label="dekker" />
+            <Stat value={String(profile.stats?.completedJobs ?? 0)} label={t('STAT_COMPLETED_JOBS')} />
+            <Stat value={profile.hourlyRate ? formatNok(profile.hourlyRate) : '–'} label={t('STAT_HOURLY_RATE_FROM')} />
+            <Stat value={area?.radiusKm ? `${area.radiusKm} km` : '–'} label={t('STAT_COVERS')} />
           </View>
         </View>
 
@@ -112,12 +114,12 @@ export default function ProScreen() {
 
           {profile.categories?.length ? (
             <View style={styles.section}>
-              <AppText variant="title">Fagområder</AppText>
+              <AppText variant="title">{t('SPECIALTIES')}</AppText>
               <View style={styles.tags}>
                 {profile.categories.map((c) => (
                   <View key={c._id} style={styles.tag}>
                     <Ionicons name={categoryIcon(c.icon)} size={15} color={colors.slate} />
-                    <AppText variant="smallStrong">{c.name}</AppText>
+                    <AppText variant="smallStrong">{categoryName(c)}</AppText>
                   </View>
                 ))}
               </View>
@@ -126,18 +128,18 @@ export default function ProScreen() {
 
           {area?.municipalities?.length ? (
             <View style={styles.section}>
-              <AppText variant="title">Område</AppText>
+              <AppText variant="title">{t('SERVICE_AREA')}</AppText>
               <AppText variant="body">{area.municipalities.join(', ')}</AppText>
             </View>
           ) : null}
 
           <View style={styles.section}>
-            <AppText variant="title">Vurderinger</AppText>
+            <AppText variant="title">{t('REVIEWS')}</AppText>
             {reviews?.length ? (
               reviews.map((r) => <Review key={r._id} review={r} />)
             ) : (
               <AppText variant="small" muted>
-                Ingen vurderinger ennå.
+                {t('NO_REVIEWS')}
               </AppText>
             )}
           </View>
@@ -148,7 +150,7 @@ export default function ProScreen() {
         <BottomBar>
           <ErrorBanner message={actionError} />
           <Button
-            title={user ? 'Send melding' : 'Logg inn for å sende melding'}
+            title={user ? t('SEND_MESSAGE') : t('LOG_IN_TO_MESSAGE')}
             icon="chatbubble-outline"
             variant={user ? 'primary' : 'dark'}
             loading={sending}
@@ -174,17 +176,18 @@ function Stat({ value, label }) {
 }
 
 function Review({ review }) {
+  const { t } = useI18n();
   return (
     <View style={styles.review}>
       <View style={styles.reviewTop}>
         <Avatar name={review.reviewer?.name} url={review.reviewer?.avatarUrl} size={36} dark />
         <View style={{ flex: 1 }}>
-          <AppText variant="smallStrong">{review.reviewer?.name ?? 'Kunde'}</AppText>
+          <AppText variant="smallStrong">{review.reviewer?.name ?? t('CUSTOMER')}</AppText>
           <AppText variant="caption" muted>
             {formatDate(review.createdAt)}
           </AppText>
         </View>
-        <View style={styles.stars} accessibilityLabel={`${review.rating} av 5`}>
+        <View style={styles.stars} accessibilityLabel={t('RATING_OUT_OF_5', { n: review.rating })}>
           {[1, 2, 3, 4, 5].map((n) => (
             <Ionicons key={n} name={n <= review.rating ? 'star' : 'star-outline'} size={14} color={colors.hivisDeep} />
           ))}
@@ -194,7 +197,7 @@ function Review({ review }) {
       {review.reply?.text ? (
         <View style={styles.reply}>
           <AppText variant="caption" muted>
-            Svar fra fagpersonen
+            {t('REPLY_FROM_PRO')}
           </AppText>
           <AppText variant="small">{review.reply.text}</AppText>
         </View>

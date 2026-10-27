@@ -12,10 +12,12 @@ import { ProCard } from '@/components/ProCard';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { SearchBar } from '@/components/SearchBar';
 import { colors, spacing } from '@/constants/theme';
+import { useI18n } from '@/i18n';
 import { useCategories } from '@/lib/categories';
 import { useDebounced, usePaged, withQuery } from '@/lib/usePaged';
 
 export default function ProsScreen() {
+  const { t } = useI18n();
   const params = useLocalSearchParams();
   const { roots: categories } = useCategories();
   const [query, setQuery] = useState(params.q ?? '');
@@ -32,9 +34,9 @@ export default function ProsScreen() {
   return (
     <View style={styles.screen}>
       <FocusStatusBar style="dark" />
-      <ScreenHeader title="Fagfolk" subtitle={list.status === 'ready' ? `${list.total} tilgjengelige` : ' '}>
+      <ScreenHeader title={t('TAB_PROS')} subtitle={list.status === 'ready' ? t('PROS_AVAILABLE_COUNT', { n: list.total }) : ' '}>
         <View style={{ paddingHorizontal: spacing.xl }}>
-          <SearchBar value={query} onChangeText={setQuery} placeholder="Fag, sted eller ferdighet" />
+          <SearchBar value={query} onChangeText={setQuery} placeholder={t('SEARCH_PROS_PLACEHOLDER')} />
         </View>
         <CategoryChips categories={categories} selected={category} onSelect={setCategory} />
       </ScreenHeader>
@@ -61,8 +63,8 @@ export default function ProsScreen() {
             list.error ? null : (
               <EmptyState
                 icon="people-outline"
-                title={q || category ? 'Ingen treff' : 'Ingen fagfolk ennå'}
-                text={q || category ? 'Prøv et annet søk eller en annen kategori.' : 'Fagfolk som tar oppdrag vises her.'}
+                title={q || category ? t('NO_RESULTS') : t('NO_PROS_YET')}
+                text={q || category ? t('NO_RESULTS_TEXT') : t('NO_PROS_YET_TEXT')}
               />
             )
           }

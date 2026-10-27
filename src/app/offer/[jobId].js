@@ -12,12 +12,13 @@ import { ErrorBanner } from '@/components/ErrorBanner';
 import { TextField } from '@/components/TextField';
 import { colors, spacing } from '@/constants/theme';
 import { api, ApiError, errorMessage } from '@/lib/api';
+import { useI18n } from '@/i18n';
 import { formatNok } from '@/lib/format';
 
 const PRICE_TYPES = [
-  { value: 'fixed', label: 'Fastpris' },
-  { value: 'hourly', label: 'Timepris' },
-  { value: 'estimate', label: 'Overslag' },
+  { value: 'fixed', label: 'PRICE_FIXED' },
+  { value: 'hourly', label: 'PRICE_HOURLY' },
+  { value: 'estimate', label: 'PRICE_ESTIMATE' },
 ];
 
 // "12 500" / "12500,50" → øre
@@ -26,6 +27,7 @@ const toOre = (text) => Math.round(Number(String(text).replace(/\s/g, '').replac
 export default function OfferScreen() {
   const { jobId, title } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
+  const { t } = useI18n();
   const [priceType, setPriceType] = useState('fixed');
   const [amount, setAmount] = useState('');
   const [hours, setHours] = useState('');
@@ -40,7 +42,7 @@ export default function OfferScreen() {
 
   async function submit() {
     if (!validAmount) {
-      setError('Skriv inn et beløp i kroner.');
+      setError(t('OFFER_AMOUNT_REQUIRED'));
       return;
     }
     setError(null);
@@ -58,7 +60,7 @@ export default function OfferScreen() {
       goBackOr(`/job/${jobId}`);
     } catch (err) {
       setError(
-        err instanceof ApiError && err.status === 409 ? 'Du har allerede sendt tilbud på denne jobben.' : errorMessage(err)
+        err instanceof ApiError && err.status === 409 ? t('OFFER_ALREADY_SENT') : errorMessage(err)
       );
       setSending(false);
     }
@@ -67,14 +69,14 @@ export default function OfferScreen() {
   return (
     <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView
-        contentContainerStyle={[styles.content, { paddingTop: Platform.OS === 'ios' ? spacing.lg : insets.top + spacing.md }]}
+        contentContainerStyle={[styles.content, { paddingTop: insets.top + spacing.lg }]}
         keyboardShouldPersistTaps="handled"
       >
-        <BackButton icon="close" label="Lukk" />
+        <BackButton icon="close" />
 
         <View style={{ gap: spacing.xs }}>
           <AppText variant="h1" accessibilityRole="header">
-            Gi tilbud
+            {t('MAKE_OFFER')}
           </AppText>
           {title ? (
             <AppText variant="body" muted numberOfLines={2}>
@@ -85,10 +87,10 @@ export default function OfferScreen() {
 
         <ErrorBanner message={error} />
 
-        <ChoiceChips label="Pristype" options={PRICE_TYPES} value={priceType} onChange={setPriceType} />
+        <ChoiceChips label={t('PRICE_TYPE')} options={PRICE_TYPES.map((o) => ({ ...o, label: t(o.label) }))} value={priceType} onChange={setPriceType} />
 
         <TextField
-          label={priceType === 'hourly' ? 'Pris per time (kr, inkl. mva)' : 'Pris (kr, inkl. mva)'}
+          label={priceType === 'hourly' ? t('PRICE_PER_HOUR_LABEL') : t('PRICE_LABEL')}
           value={amount}
           onChangeText={setAmount}
           keyboardType="decimal-pad"
@@ -97,24 +99,24 @@ export default function OfferScreen() {
 
         {priceType === 'hourly' ? (
           <TextField
-            label="Anslått antall timer"
+            label={t('ESTIMATED_HOURS')}
             value={hours}
             onChangeText={setHours}
             keyboardType="decimal-pad"
             placeholder="8"
-            hint={estimate ? `Omtrent ${formatNok(estimate)} totalt` : 'Valgfritt, hjelper kunden å sammenligne'}
+            hint={estimate ? t('ESTIMATE_TOTAL', { total: formatNok(estimate) }) : t('ESTIMATED_HOURS_HINT')}
           />
         ) : null}
 
         <TextField
-          label="Melding til kunden"
+          label={t('MESSAGE_TO_CUSTOMER')}
           value={message}
           onChangeText={setMessage}
           multiline
-          placeholder="Hva er inkludert, når kan du starte, har du gjort lignende jobber?"
+          placeholder={t('MESSAGE_TO_CUSTOMER_PLACEHOLDER')}
         />
 
-        <Button title="Send tilbud" onPress={submit} loading={sending} disabled={!validAmount} />
+        <Button title={t('SEND_OFFER')} onPress={submit} loading={sending} disabled={!validAmount} />
       </ScrollView>
     </KeyboardAvoidingView>
   );
