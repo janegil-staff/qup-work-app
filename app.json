@@ -19,6 +19,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "scheme": "qupwork",
+    "plugins": ["expo-router", "expo-secure-store"]
   }
 }
