@@ -14,6 +14,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Loading } from '@/components/Loading';
 import { colors } from '@/constants/theme';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
+import { UnreadProvider } from '@/context/UnreadContext';
 import { I18nProvider, useI18n } from '@/i18n';
 
 // The tabs are always the bottom of the stack. Even if the app opens on /login
@@ -35,6 +36,7 @@ function RootNavigator({ fontsReady }) {
       <Stack.Screen name="my-jobs" />
       <Stack.Screen name="new-job" />
       <Stack.Screen name="language" />
+      <Stack.Screen name="conversation/[id]" />
       <Stack.Screen name="offer/[jobId]" options={{ presentation: 'modal' }} />
       <Stack.Screen name="(auth)" options={{ presentation: 'modal' }} />
     </Stack>
@@ -53,9 +55,11 @@ export default function RootLayout() {
   return (
     <I18nProvider>
       <AuthProvider>
-        <StatusBar style="dark" />
-        {/* If the fonts fail to load, carry on with the system font rather than hang */}
-        <RootNavigator fontsReady={fontsLoaded || Boolean(fontError)} />
+        <UnreadProvider>
+          <StatusBar style="dark" />
+          {/* If the fonts fail to load, carry on with the system font rather than hang */}
+          <RootNavigator fontsReady={fontsLoaded || Boolean(fontError)} />
+        </UnreadProvider>
       </AuthProvider>
     </I18nProvider>
   );

@@ -1,6 +1,6 @@
 // /qup-work-app/src/app/(tabs)/messages.js
-// Inbox. Needs an account. Opening a conversation comes in the next step.
-import { useFocusEffect } from 'expo-router';
+// Inbox. Needs an account. Tap a conversation to open it.
+import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/AppText';
@@ -13,6 +13,7 @@ import { ScreenHeader } from '@/components/ScreenHeader';
 import { SignInPrompt } from '@/components/SignInPrompt';
 import { colors, radius, spacing } from '@/constants/theme';
 import { useAuth } from '@/context/AuthContext';
+import { useUnread } from '@/context/UnreadContext';
 import { api, errorMessage } from '@/lib/api';
 import { useI18n } from '@/i18n';
 import { timeAgo } from '@/lib/format';
@@ -39,6 +40,7 @@ export default function MessagesScreen() {
 
 function Inbox({ userId }) {
   const { t } = useI18n();
+  const { refreshUnread } = useUnread();
   const [conversations, setConversations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -49,10 +51,11 @@ function Inbox({ userId }) {
       const res = await api('/conversations?limit=50');
       setConversations(res.data);
       setError(null);
+      refreshUnread();
     } catch (err) {
       setError(errorMessage(err));
     }
-  }, []);
+  }, [refreshUnread]);
 
   useFocusEffect(
     useCallback(() => {
@@ -99,7 +102,11 @@ function ConversationRow({ conversation, userId }) {
   const unread = conversation.unread > 0;
 
   return (
-    <Pressable style={({ pressed }) => [styles.row, pressed && { opacity: 0.8 }]} accessibilityRole="button">
+    <Pressable
+      onPress={() => router.push({ pathname: '/conversation/[id]', params: { id: conversation._id } })}
+      style={({ pressed }) => [styles.row, pressed && { opacity: 0.8 }]}
+      accessibilityRole="button"
+    >
       <Avatar name={other?.name} url={other?.avatarUrl} size={48} dark={!unread} />
       <View style={styles.body}>
         <View style={styles.rowTop}>

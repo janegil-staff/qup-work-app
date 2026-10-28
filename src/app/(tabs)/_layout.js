@@ -3,6 +3,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Tabs } from 'expo-router';
 import { colors, fonts } from '@/constants/theme';
+import { useUnread } from '@/context/UnreadContext';
 import { useI18n } from '@/i18n';
 
 const icon =
@@ -11,6 +12,7 @@ const icon =
 
 export default function TabsLayout() {
   const { t } = useI18n();
+  const { unread } = useUnread();
   return (
     <Tabs
       screenOptions={{
@@ -25,7 +27,15 @@ export default function TabsLayout() {
       <Tabs.Screen name="index" options={{ title: t('TAB_EXPLORE'), tabBarIcon: icon('compass') }} />
       <Tabs.Screen name="jobs" options={{ title: t('TAB_JOBS'), tabBarIcon: icon('clipboard') }} />
       <Tabs.Screen name="pros" options={{ title: t('TAB_PROS'), tabBarIcon: icon('people') }} />
-      <Tabs.Screen name="messages" options={{ title: t('TAB_MESSAGES'), tabBarIcon: icon('chatbubbles') }} />
+      <Tabs.Screen
+        name="messages"
+        options={{
+          title: t('TAB_MESSAGES'),
+          tabBarIcon: icon('chatbubbles'),
+          tabBarBadge: unread > 0 ? (unread > 99 ? '99+' : unread) : undefined,
+          tabBarBadgeStyle: { backgroundColor: colors.hivis, color: colors.slate, fontFamily: fonts.bold, fontSize: 11 },
+        }}
+      />
       <Tabs.Screen name="profile" options={{ title: t('TAB_PROFILE'), tabBarIcon: icon('person-circle') }} />
     </Tabs>
   );

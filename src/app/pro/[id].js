@@ -58,8 +58,8 @@ export default function ProScreen() {
     setSending(true);
     setActionError(null);
     try {
-      await api('/conversations', { method: 'POST', body: { participant: profile.user._id } });
-      router.push('/messages');
+      const res = await api('/conversations', { method: 'POST', body: { participant: profile.user._id } });
+      router.push({ pathname: '/conversation/[id]', params: { id: res.conversation._id } });
     } catch (err) {
       setActionError(errorMessage(err));
     } finally {

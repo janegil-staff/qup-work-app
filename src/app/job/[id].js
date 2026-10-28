@@ -11,6 +11,7 @@ import { BackButton } from '@/components/BackButton';
 import { BottomBar } from '@/components/BottomBar';
 import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
+import { ErrorBanner } from '@/components/ErrorBanner';
 import { FocusStatusBar } from '@/components/FocusStatusBar';
 import { Loading } from '@/components/Loading';
 import { Perforation } from '@/components/Perforation';
@@ -149,6 +150,43 @@ export default function JobScreen() {
   );
 }
 
+// Opens (or creates) the conversation with the customer about this job
+function MessageCustomerButton({ job, variant = 'outline' }) {
+  const { t } = useI18n();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(null);
+  if (!job.customer?._id) return null;
+
+  async function open() {
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await api('/conversations', {
+        method: 'POST',
+        body: { participant: job.customer._id, job: job._id },
+      });
+      router.push({ pathname: '/conversation/[id]', params: { id: res.conversation._id } });
+    } catch (err) {
+      setError(errorMessage(err));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <>
+      <ErrorBanner message={error} />
+      <Button
+        title={t('MESSAGE_CUSTOMER', { name: job.customer.name })}
+        icon="chatbubble-outline"
+        variant={variant}
+        loading={busy}
+        onPress={open}
+      />
+    </>
+  );
+}
+
 // What the button at the bottom does depends on who's looking
 function JobActions({ job, side, myOfferStatus, isPro }) {
   const { t } = useI18n();
@@ -170,6 +208,7 @@ function JobActions({ job, side, myOfferStatus, isPro }) {
               {t('OFFER_ALREADY_SENT')}
             </AppText>
           </View>
+          <MessageCustomerButton job={job} />
         </BottomBar>
       );
     }
@@ -189,6 +228,15 @@ function JobActions({ job, side, myOfferStatus, isPro }) {
           icon="document-text-outline"
           onPress={() => router.push({ pathname: '/offer/[jobId]', params: { jobId: job._id, title: job.title } })}
         />
+      </BottomBar>
+    );
+  }
+
+  // The pro doing the job
+  if (side === 'pro') {
+    return (
+      <BottomBar>
+        <MessageCustomerButton job={job} variant="dark" />
       </BottomBar>
     );
   }

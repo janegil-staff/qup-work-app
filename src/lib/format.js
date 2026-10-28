@@ -62,6 +62,39 @@ export function timeAgo(iso) {
   return formatDate(iso);
 }
 
+// "14:05" (or "2:05 PM") in the chosen language
+export function formatTime(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  try {
+    return new Intl.DateTimeFormat(currentLocale(), { hour: 'numeric', minute: '2-digit' }).format(d);
+  } catch {
+    return d.toTimeString().slice(0, 5);
+  }
+}
+
+export const isSameDay = (a, b) => new Date(a).toDateString() === new Date(b).toDateString();
+
+// Divider between days in a chat: "Today", "Yesterday", "Monday" (this week), then a date
+export function dayLabel(iso) {
+  const d = new Date(iso);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const day = new Date(d);
+  day.setHours(0, 0, 0, 0);
+  const daysAgo = Math.round((today - day) / 86400000);
+  if (daysAgo === 0) return t('TODAY');
+  if (daysAgo === 1) return t('YESTERDAY');
+  if (daysAgo > 1 && daysAgo < 7) {
+    try {
+      return new Intl.DateTimeFormat(currentLocale(), { weekday: 'long' }).format(d);
+    } catch {
+      return formatDate(iso);
+    }
+  }
+  return formatDate(iso);
+}
+
 // Translation keys; look them up with t() when rendering
 export const URGENCY = {
   asap: 'URGENCY_ASAP',
