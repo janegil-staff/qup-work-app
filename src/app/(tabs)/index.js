@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Pressable, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from '@/components/AppText';
+import { NotificationBell } from '@/components/NotificationBell';
 import { TimerBanner } from '@/components/TimerBanner';
 import { Avatar } from '@/components/Avatar';
 import { Blueprint } from '@/components/Blueprint';
@@ -115,6 +116,7 @@ export default function ExploreScreen() {
                 {language.code.slice(0, 2).toUpperCase()}
               </AppText>
             </Pressable>
+            <NotificationBell onDark />
             {user ? (
               <Pressable onPress={() => router.push('/profile')} accessibilityLabel={t('TAB_PROFILE')} hitSlop={8}>
                 <Avatar name={user.name} url={user.avatarUrl} size={36} />

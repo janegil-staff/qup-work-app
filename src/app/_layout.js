@@ -36,6 +36,7 @@ function RootNavigator({ fontsReady }) {
       <Stack.Screen name="pro/[id]" />
       <Stack.Screen name="my-jobs" />
       <Stack.Screen name="my-offers" />
+      <Stack.Screen name="notifications" />
       <Stack.Screen name="new-job" />
       <Stack.Screen name="language" />
       <Stack.Screen name="conversation/[id]" />
