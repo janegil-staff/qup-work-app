@@ -112,6 +112,29 @@ export const JOB_STATUS = {
   cancelled: { label: 'STATUS_CANCELLED', color: colors.danger, bg: colors.dangerSoft },
 };
 
+export const OFFER_STATUS = {
+  pending: { label: 'OFFER_STATUS_PENDING', color: colors.amber, bg: colors.amberSoft },
+  accepted: { label: 'OFFER_STATUS_ACCEPTED', color: colors.pine, bg: colors.pineSoft },
+  rejected: { label: 'OFFER_STATUS_REJECTED', color: colors.danger, bg: colors.dangerSoft },
+  withdrawn: { label: 'OFFER_STATUS_WITHDRAWN', color: colors.textMuted, bg: colors.line },
+  expired: { label: 'OFFER_STATUS_EXPIRED', color: colors.textMuted, bg: colors.line },
+};
+
+// Price on an offer, as a big line and a small one underneath:
+//   fixed    → "8 000 kr"      / "Fixed price"
+//   hourly   → "950 kr/h"      / "About 7 600 kr in total" (or "Hourly rate")
+//   estimate → "12 000 kr"     / "Estimate"
+export function offerPrice(offer) {
+  if (offer.priceType === 'hourly') {
+    const total = offer.estimatedTotal ?? (offer.estimatedHours ? offer.amount * offer.estimatedHours : null);
+    return {
+      main: t('PRICE_PER_HOUR', { price: formatNok(offer.amount) }),
+      sub: total ? t('ESTIMATE_TOTAL', { total: formatNok(total) }) : t('PRICE_HOURLY'),
+    };
+  }
+  return { main: formatNok(offer.amount), sub: t(offer.priceType === 'estimate' ? 'PRICE_ESTIMATE' : 'PRICE_FIXED') };
+}
+
 // Categories come from the API in Norwegian. The app translates the ones it knows by slug
 // (CAT_ELEKTRIKER, CAT_RORLEGGER_BAD, ...) and shows the API name for anything new.
 export function categoryName(category) {

@@ -99,6 +99,9 @@ function MyProfile() {
             title={isProMode ? t('MY_ASSIGNMENTS') : t('MY_JOBS')}
             onPress={() => router.push('/my-jobs')}
           />
+          {isPro ? (
+            <MenuRow icon="document-text-outline" title={t('MY_OFFERS')} onPress={() => router.push('/my-offers')} />
+          ) : null}
           {!isProMode ? <MenuRow icon="add-circle-outline" title={t('POST_JOB')} onPress={() => router.push('/new-job')} /> : null}
           {isPro ? (
             <View style={styles.menuRow}>

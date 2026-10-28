@@ -70,7 +70,7 @@ export function JobTicket({ job, onPress, showStatus, notchColor = colors.concre
         </AppText>
         {showStatus ? (
           <StatusBadge status={job.status} />
-        ) : job.myOfferStatus ? (
+        ) : job.myOfferStatus === 'pending' || job.myOfferStatus === 'accepted' ? (
           <View style={styles.offers}>
             <Ionicons name="checkmark-circle" size={15} color={colors.pine} />
             <AppText variant="smallStrong" color={colors.pine}>

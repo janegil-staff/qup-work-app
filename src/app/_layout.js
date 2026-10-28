@@ -20,7 +20,7 @@ import { I18nProvider, useI18n } from '@/i18n';
 // The tabs are always the bottom of the stack. Even if the app opens on /login
 // (Expo restores the last screen while developing), Utforsk is underneath and
 // login is just a sheet you can close.
-export const unstable_settings = { initialRouteName: '(tabs)' };
+export const unstable_settings = { anchor: '(tabs)' };
 
 function RootNavigator({ fontsReady }) {
   const { isLoading } = useAuth();
@@ -34,6 +34,7 @@ function RootNavigator({ fontsReady }) {
       <Stack.Screen name="job/[id]" />
       <Stack.Screen name="pro/[id]" />
       <Stack.Screen name="my-jobs" />
+      <Stack.Screen name="my-offers" />
       <Stack.Screen name="new-job" />
       <Stack.Screen name="language" />
       <Stack.Screen name="conversation/[id]" />
