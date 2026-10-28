@@ -120,6 +120,32 @@ export const OFFER_STATUS = {
   expired: { label: 'OFFER_STATUS_EXPIRED', color: colors.textMuted, bg: colors.line },
 };
 
+export const CONTRACT_STATUS = {
+  active: { label: 'CONTRACT_STATUS_ACTIVE', color: colors.info, bg: colors.infoSoft },
+  completed: { label: 'STATUS_COMPLETED', color: colors.pine, bg: colors.pineSoft },
+  cancelled: { label: 'STATUS_CANCELLED', color: colors.danger, bg: colors.dangerSoft },
+  disputed: { label: 'CONTRACT_STATUS_DISPUTED', color: colors.danger, bg: colors.dangerSoft },
+};
+
+export const MILESTONE_STATUS = {
+  pending: { label: 'MILESTONE_STATUS_PENDING', color: colors.textMuted, bg: colors.line },
+  in_progress: { label: 'STATUS_IN_PROGRESS', color: colors.amber, bg: colors.amberSoft },
+  submitted: { label: 'MILESTONE_STATUS_SUBMITTED', color: colors.info, bg: colors.infoSoft },
+  changes_requested: { label: 'MILESTONE_STATUS_CHANGES', color: colors.danger, bg: colors.dangerSoft },
+  approved: { label: 'MILESTONE_STATUS_APPROVED', color: colors.pine, bg: colors.pineSoft },
+  cancelled: { label: 'STATUS_CANCELLED', color: colors.textMuted, bg: colors.line },
+};
+
+// 200 → "3 h 20 min", 45 → "45 min"
+export function formatMinutes(minutes) {
+  const m = Math.max(0, Math.round(minutes ?? 0));
+  const h = Math.floor(m / 60);
+  const rest = m % 60;
+  if (!h) return t('DURATION_MIN', { m: rest });
+  if (!rest) return t('DURATION_H', { h });
+  return t('DURATION_H_MIN', { h, m: rest });
+}
+
 // Price on an offer, as a big line and a small one underneath:
 //   fixed    → "8 000 kr"      / "Fixed price"
 //   hourly   → "950 kr/h"      / "About 7 600 kr in total" (or "Hourly rate")

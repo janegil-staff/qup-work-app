@@ -60,7 +60,18 @@ export default function MyJobsScreen() {
         <FlatList
           data={list.items}
           keyExtractor={(job) => job._id}
-          renderItem={({ item }) => <JobTicket job={item} showStatus onPress={() => router.push(`/job/${item._id}`)} />}
+          // Jobs with someone hired open straight on the contract, where the work happens
+          renderItem={({ item }) => (
+            <JobTicket
+              job={item}
+              showStatus
+              onPress={() =>
+                item.contract
+                  ? router.push({ pathname: '/contract/[id]', params: { id: item.contract._id ?? item.contract } })
+                  : router.push({ pathname: '/job/[id]', params: { id: item._id } })
+              }
+            />
+          )}
           contentContainerStyle={styles.list}
           ItemSeparatorComponent={() => <View style={{ height: spacing.md }} />}
           onEndReached={list.loadMore}

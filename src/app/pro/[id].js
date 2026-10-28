@@ -15,6 +15,7 @@ import { ErrorBanner } from '@/components/ErrorBanner';
 import { FocusStatusBar } from '@/components/FocusStatusBar';
 import { Loading } from '@/components/Loading';
 import { Rating } from '@/components/Rating';
+import { TextField } from '@/components/TextField';
 import { colors, radius, spacing } from '@/constants/theme';
 import { useAuth } from '@/context/AuthContext';
 import { api, errorMessage } from '@/lib/api';
@@ -136,7 +137,16 @@ export default function ProScreen() {
           <View style={styles.section}>
             <AppText variant="title">{t('REVIEWS')}</AppText>
             {reviews?.length ? (
-              reviews.map((r) => <Review key={r._id} review={r} />)
+              reviews.map((r) => (
+                <Review
+                  key={r._id}
+                  review={r}
+                  canReply={isMe && !r.reply?.text}
+                  onReplied={(updated) =>
+                    setData((d) => ({ ...d, reviews: d.reviews.map((x) => (x._id === updated._id ? { ...x, reply: updated.reply } : x)) }))
+                  }
+                />
+              ))
             ) : (
               <AppText variant="small" muted>
                 {t('NO_REVIEWS')}
@@ -175,8 +185,28 @@ function Stat({ value, label }) {
   );
 }
 
-function Review({ review }) {
+function Review({ review, canReply, onReplied }) {
   const { t } = useI18n();
+  const [replying, setReplying] = useState(false);
+  const [text, setText] = useState('');
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(null);
+
+  // The pro answers a review once, in public
+  async function sendReply() {
+    setSending(true);
+    setError(null);
+    try {
+      const res = await api(`/reviews/${review._id}/reply`, { method: 'POST', body: { text: text.trim() } });
+      onReplied(res.review);
+      setReplying(false);
+    } catch (err) {
+      setError(errorMessage(err));
+    } finally {
+      setSending(false);
+    }
+  }
+
   return (
     <View style={styles.review}>
       <View style={styles.reviewTop}>
@@ -200,6 +230,28 @@ function Review({ review }) {
             {t('REPLY_FROM_PRO')}
           </AppText>
           <AppText variant="small">{review.reply.text}</AppText>
+        </View>
+      ) : null}
+      {canReply && !replying ? (
+        <Button title={t('REPLY')} icon="return-down-forward" variant="outline" small onPress={() => setReplying(true)} style={{ alignSelf: 'flex-start' }} />
+      ) : null}
+      {canReply && replying ? (
+        <View style={{ gap: spacing.sm }}>
+          <ErrorBanner message={error} />
+          <TextField
+            label={t('YOUR_REPLY')}
+            value={text}
+            onChangeText={setText}
+            multiline
+            maxLength={2000}
+            placeholder={t('YOUR_REPLY_PLACEHOLDER')}
+            hint={t('REPLY_IS_PUBLIC')}
+            autoFocus
+          />
+          <View style={{ flexDirection: 'row', gap: spacing.sm }}>
+            <Button title={t('CANCEL')} variant="outline" small onPress={() => setReplying(false)} style={{ flexGrow: 1 }} />
+            <Button title={t('PUBLISH_REPLY')} small loading={sending} disabled={text.trim().length < 2} onPress={sendReply} style={{ flexGrow: 1 }} />
+          </View>
         </View>
       ) : null}
     </View>

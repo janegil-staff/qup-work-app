@@ -4,7 +4,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from '@/components/AppText';
 import { Avatar } from '@/components/Avatar';
@@ -140,6 +140,8 @@ export default function JobScreen() {
           </View>
         </View>
 
+        {job.contract && (side === 'customer' || side === 'pro') ? <ContractLink job={job} side={side} /> : null}
+
         {job.description ? (
           <View style={styles.section}>
             <AppText variant="title">{t('DESCRIPTION')}</AppText>
@@ -171,6 +173,33 @@ export default function JobScreen() {
 
       <JobActions job={job} side={side} myOffer={myOffer} offers={offers} isPro={isPro} />
     </View>
+  );
+}
+
+// Once someone is hired, the work happens on the contract page
+function ContractLink({ job, side }) {
+  const { t } = useI18n();
+  const id = job.contract?._id ?? job.contract;
+  const done = job.status === 'completed';
+  return (
+    <Pressable
+      onPress={() => router.push({ pathname: '/contract/[id]', params: { id } })}
+      accessibilityRole="button"
+      style={({ pressed }) => [styles.section, styles.contractLink, pressed && { opacity: 0.85 }]}
+    >
+      <View style={styles.contractIcon}>
+        <Ionicons name={done ? 'checkmark-done' : 'construct'} size={22} color={colors.slate} />
+      </View>
+      <View style={{ flex: 1, gap: 2 }}>
+        <AppText variant="title" onDark>
+          {done ? t('SEE_THE_CONTRACT') : t('FOLLOW_THE_WORK')}
+        </AppText>
+        <AppText variant="small" onDark muted>
+          {done ? t('CONTRACT_LINK_DONE') : side === 'pro' ? t('CONTRACT_LINK_PRO') : t('CONTRACT_LINK_CUSTOMER')}
+        </AppText>
+      </View>
+      <Ionicons name="chevron-forward" size={20} color={colors.hivis} />
+    </Pressable>
   );
 }
 
@@ -462,6 +491,22 @@ const styles = StyleSheet.create({
   factLabel: { width: 118 },
   section: { marginTop: spacing.xxl, marginHorizontal: spacing.xl, gap: spacing.sm, maxWidth: 640 },
   sectionHead: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  contractLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    padding: spacing.lg,
+    borderRadius: radius.ticket,
+    backgroundColor: colors.slate,
+  },
+  contractIcon: {
+    width: 42,
+    height: 42,
+    borderRadius: 8,
+    backgroundColor: colors.hivis,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   noOffers: {
     flexDirection: 'row',
     alignItems: 'center',

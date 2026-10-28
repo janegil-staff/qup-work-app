@@ -38,6 +38,7 @@ function RootNavigator({ fontsReady }) {
       <Stack.Screen name="new-job" />
       <Stack.Screen name="language" />
       <Stack.Screen name="conversation/[id]" />
+      <Stack.Screen name="contract/[id]" />
       <Stack.Screen name="offer/[jobId]" options={{ presentation: 'modal' }} />
       <Stack.Screen name="(auth)" options={{ presentation: 'modal' }} />
     </Stack>

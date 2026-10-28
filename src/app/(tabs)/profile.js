@@ -102,6 +102,13 @@ function MyProfile() {
           {isPro ? (
             <MenuRow icon="document-text-outline" title={t('MY_OFFERS')} onPress={() => router.push('/my-offers')} />
           ) : null}
+          {isPro ? (
+            <MenuRow
+              icon="id-card-outline"
+              title={t('MY_PUBLIC_PROFILE')}
+              onPress={() => router.push({ pathname: '/pro/[id]', params: { id: user._id } })}
+            />
+          ) : null}
           {!isProMode ? <MenuRow icon="add-circle-outline" title={t('POST_JOB')} onPress={() => router.push('/new-job')} /> : null}
           {isPro ? (
             <View style={styles.menuRow}>
