@@ -136,6 +136,33 @@ export const MILESTONE_STATUS = {
   cancelled: { label: 'STATUS_CANCELLED', color: colors.textMuted, bg: colors.line },
 };
 
+export const INVOICE_STATUS = {
+  draft: { label: 'INVOICE_STATUS_DRAFT', color: colors.textMuted, bg: colors.line },
+  sent: { label: 'INVOICE_STATUS_SENT', color: colors.info, bg: colors.infoSoft },
+  overdue: { label: 'INVOICE_STATUS_OVERDUE', color: colors.danger, bg: colors.dangerSoft },
+  paid: { label: 'INVOICE_STATUS_PAID', color: colors.pine, bg: colors.pineSoft },
+  cancelled: { label: 'STATUS_CANCELLED', color: colors.textMuted, bg: colors.line },
+  credited: { label: 'INVOICE_STATUS_CREDITED', color: colors.textMuted, bg: colors.line },
+};
+
+// "Overdue" isn't stored; a sent invoice past its due date is overdue
+export const invoiceStatus = (invoice) =>
+  invoice.isOverdue || (invoice.status === 'sent' && invoice.dueDate && new Date(invoice.dueDate) < new Date())
+    ? 'overdue'
+    : invoice.status;
+
+// Units the API accepts on invoice lines → translation keys
+export const UNITS = { stk: 'UNIT_STK', timer: 'UNIT_TIMER', m: 'UNIT_M', m2: 'UNIT_M2', km: 'UNIT_KM', pakke: 'UNIT_PAKKE' };
+
+// 2.5 → "2,5" in Norwegian, "2.5" in English
+export function formatNumber(n, maxDecimals = 2) {
+  try {
+    return new Intl.NumberFormat(currentLocale(), { maximumFractionDigits: maxDecimals }).format(n);
+  } catch {
+    return String(n);
+  }
+}
+
 // 200 → "3 h 20 min", 45 → "45 min"
 export function formatMinutes(minutes) {
   const m = Math.max(0, Math.round(minutes ?? 0));

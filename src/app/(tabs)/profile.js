@@ -102,6 +102,11 @@ function MyProfile() {
           {isPro ? (
             <MenuRow icon="document-text-outline" title={t('MY_OFFERS')} onPress={() => router.push('/my-offers')} />
           ) : null}
+          <MenuRow
+            icon="receipt-outline"
+            title={isProMode ? t('INVOICES') : t('MY_INVOICES')}
+            onPress={() => router.push('/invoices')}
+          />
           {isPro ? (
             <MenuRow
               icon="id-card-outline"

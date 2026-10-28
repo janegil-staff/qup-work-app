@@ -79,7 +79,7 @@ const KINDS = {
     bg: colors.amberSoft,
     text: (d) =>
       d.invoiceNumber && { title: t('NOTIF_INVOICE'), body: t('NOTIF_INVOICE_BODY', { number: d.invoiceNumber, name: d.actorName ?? '' }) },
-    target: (d) => to('/contract/[id]', d.contractId),
+    target: (d) => to('/invoice/[id]', d.invoiceId) ?? to('/contract/[id]', d.contractId),
   },
   new_review: {
     icon: 'star',

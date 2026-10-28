@@ -1,14 +1,14 @@
 // /qup-work-app/src/components/StatusBadge.js
 //   <StatusBadge status="open" />                  → job status
 //   <StatusBadge status="pending" kind="offer" />  → offer status
-//   kind="contract" | "milestone" work the same way
+//   kind="contract" | "milestone" | "invoice" work the same way
 import { StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/AppText';
 import { radius } from '@/constants/theme';
 import { useI18n } from '@/i18n';
-import { CONTRACT_STATUS, JOB_STATUS, MILESTONE_STATUS, OFFER_STATUS } from '@/lib/format';
+import { CONTRACT_STATUS, INVOICE_STATUS, JOB_STATUS, MILESTONE_STATUS, OFFER_STATUS } from '@/lib/format';
 
-const MAPS = { job: JOB_STATUS, offer: OFFER_STATUS, contract: CONTRACT_STATUS, milestone: MILESTONE_STATUS };
+const MAPS = { job: JOB_STATUS, offer: OFFER_STATUS, contract: CONTRACT_STATUS, milestone: MILESTONE_STATUS, invoice: INVOICE_STATUS };
 
 export function StatusBadge({ status, kind = 'job' }) {
   const { t } = useI18n();
