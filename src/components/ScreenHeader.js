@@ -1,8 +1,10 @@
 // /qup-work-app/src/components/ScreenHeader.js
 // Big left-aligned title for tab screens (they hide the default header).
+// Shows the running timer underneath, so a pro doesn't forget it.
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from '@/components/AppText';
+import { TimerBanner } from '@/components/TimerBanner';
 import { colors, spacing } from '@/constants/theme';
 
 export function ScreenHeader({ title, subtitle, right, children }) {
@@ -23,6 +25,7 @@ export function ScreenHeader({ title, subtitle, right, children }) {
         </View>
         {right}
       </View>
+      <TimerBanner style={{ marginHorizontal: spacing.xl }} />
       {children}
     </View>
   );

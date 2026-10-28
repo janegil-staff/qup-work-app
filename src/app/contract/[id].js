@@ -3,6 +3,7 @@
 //   pro      → start a step, mark it as done (with photos and a note)
 //   customer → approve a step or ask for changes, then complete the job and leave a review
 // Steps go: pending → in progress → waiting for approval → approved (or back via "changes").
+// Hours (timer + entries) are in components/HoursSection.js.
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
@@ -16,6 +17,7 @@ import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorBanner } from '@/components/ErrorBanner';
 import { FocusStatusBar } from '@/components/FocusStatusBar';
+import { HoursSection } from '@/components/HoursSection';
 import { Loading } from '@/components/Loading';
 import { Perforation } from '@/components/Perforation';
 import { PhotoPicker } from '@/components/PhotoPicker';
@@ -283,6 +285,9 @@ function ContractView({ contractId }) {
           <ErrorBanner message={actionError} />
         </View>
 
+        {/* On hourly jobs the hours come first; otherwise they're extra detail under the steps */}
+        {contract.priceType === 'hourly' ? <HoursSection contract={contract} side={side} onChanged={load} /> : null}
+
         <View style={styles.section}>
           <AppText variant="title">{t('STEPS_TITLE')}</AppText>
           <View>
@@ -304,6 +309,8 @@ function ContractView({ contractId }) {
             ))}
           </View>
         </View>
+
+        {contract.priceType !== 'hourly' ? <HoursSection contract={contract} side={side} onChanged={load} /> : null}
 
         {completed && myReview ? (
           <View style={[styles.section, styles.reviewCard]}>

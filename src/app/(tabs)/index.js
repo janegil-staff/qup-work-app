@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Pressable, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from '@/components/AppText';
+import { TimerBanner } from '@/components/TimerBanner';
 import { Avatar } from '@/components/Avatar';
 import { Blueprint } from '@/components/Blueprint';
 import { Button } from '@/components/Button';
@@ -127,6 +128,8 @@ export default function ExploreScreen() {
             )}
           </View>
         </View>
+
+        <TimerBanner onDark style={{ marginHorizontal: spacing.xl, marginTop: spacing.lg }} />
 
         <View style={styles.heroText}>
           <AppText onDark style={styles.headline} accessibilityRole="header">

@@ -14,6 +14,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Loading } from '@/components/Loading';
 import { colors } from '@/constants/theme';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
+import { TimerProvider } from '@/context/TimerContext';
 import { UnreadProvider } from '@/context/UnreadContext';
 import { I18nProvider, useI18n } from '@/i18n';
 
@@ -58,9 +59,11 @@ export default function RootLayout() {
     <I18nProvider>
       <AuthProvider>
         <UnreadProvider>
-          <StatusBar style="dark" />
-          {/* If the fonts fail to load, carry on with the system font rather than hang */}
-          <RootNavigator fontsReady={fontsLoaded || Boolean(fontError)} />
+          <TimerProvider>
+            <StatusBar style="dark" />
+            {/* If the fonts fail to load, carry on with the system font rather than hang */}
+            <RootNavigator fontsReady={fontsLoaded || Boolean(fontError)} />
+          </TimerProvider>
         </UnreadProvider>
       </AuthProvider>
     </I18nProvider>
