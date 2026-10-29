@@ -716,5 +716,13 @@
 	"EMAILED": "נשלחה במייל",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "לא נשלחה במייל",
-	"INVOICE_LANGUAGE": "שפת החשבונית"
+	"INVOICE_LANGUAGE": "שפת החשבונית",
+	"NOTIF_NEW_JOB_NEARBY": "עבודה חדשה באזור שלך",
+	"NOTIF_NEW_JOB_REMOTE": "עבודה חדשה מרחוק",
+	"NOTIF_JOB_INVITED": "הוזמנת לעבודה",
+	"NOTIF_JOB_IN_PLACE": "„{job}” ב{place}",
+	"JOB_ALERTS": "התראות על עבודות חדשות",
+	"JOB_ALERTS_ON_TEXT": "תקבל/י התראה כשעבודה בקטגוריות שלך מתפרסמת באזור שלך.",
+	"JOB_ALERTS_OFF_TEXT": "לא תקבל/י התראות על עבודות חדשות, אבל עדיין אפשר לראות אותן באפליקציה.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "קודם הפעל/י נראות. רק בעלי מקצוע שלקוחות יכולים למצוא מקבלים התראות."
 }

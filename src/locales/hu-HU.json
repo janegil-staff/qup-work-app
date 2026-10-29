@@ -716,5 +716,13 @@
 	"EMAILED": "E-mailben elküldve",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "Nincs e-mailben elküldve",
-	"INVOICE_LANGUAGE": "A számla nyelve"
+	"INVOICE_LANGUAGE": "A számla nyelve",
+	"NOTIF_NEW_JOB_NEARBY": "Új munka a közeledben",
+	"NOTIF_NEW_JOB_REMOTE": "Új távmunka",
+	"NOTIF_JOB_INVITED": "Meghívtak egy munkára",
+	"NOTIF_JOB_IN_PLACE": "„{job}” – {place}",
+	"JOB_ALERTS": "Értesítés új munkákról",
+	"JOB_ALERTS_ON_TEXT": "Értesítést kapsz, ha a környékeden munka jelenik meg a kategóriáidban.",
+	"JOB_ALERTS_OFF_TEXT": "Nem kapsz értesítést új munkákról, de az appban továbbra is látod őket.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Előbb kapcsold be a láthatóságot. Csak az ügyfelek által megtalálható szakemberek kapnak értesítést."
 }

@@ -716,5 +716,13 @@
 	"EMAILED": "Emailed",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "Not emailed",
-	"INVOICE_LANGUAGE": "Language on the invoice"
+	"INVOICE_LANGUAGE": "Language on the invoice",
+	"NOTIF_NEW_JOB_NEARBY": "New job near you",
+	"NOTIF_NEW_JOB_REMOTE": "New remote job",
+	"NOTIF_JOB_INVITED": "You were invited to a job",
+	"NOTIF_JOB_IN_PLACE": "“{job}” in {place}",
+	"JOB_ALERTS": "New job alerts",
+	"JOB_ALERTS_ON_TEXT": "You get a notification when a job in your categories is posted in your area.",
+	"JOB_ALERTS_OFF_TEXT": "You won't be notified about new jobs, but you can still browse them in the app.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Turn on visibility first. Only pros customers can find get job alerts."
 }

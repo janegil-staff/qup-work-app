@@ -94,6 +94,17 @@ const KINDS = {
       job(d) && d.rating && { title: t('NOTIF_REVIEW'), body: t('NOTIF_REVIEW_BODY', { name: d.actorName ?? '', rating: d.rating, job: job(d) }) },
     target: (d) => to('/contract/[id]', d.contractId),
   },
+  new_job_nearby: {
+    icon: 'megaphone',
+    color: colors.slate,
+    bg: colors.hivis,
+    text: (d) =>
+      job(d) && {
+        title: d.invited ? t('NOTIF_JOB_INVITED') : d.remote ? t('NOTIF_NEW_JOB_REMOTE') : t('NOTIF_NEW_JOB_NEARBY'),
+        body: d.place ? t('NOTIF_JOB_IN_PLACE', { job: job(d), place: d.place }) : t('NOTIF_JOB_BODY', { job: job(d) }),
+      },
+    target: (d) => to('/job/[id]', d.jobId),
+  },
   new_message: {
     icon: 'chatbubble',
     color: colors.slate,

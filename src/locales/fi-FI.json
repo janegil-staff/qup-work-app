@@ -716,5 +716,13 @@
 	"EMAILED": "Lähetetty sähköpostilla",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "Ei lähetetty sähköpostilla",
-	"INVOICE_LANGUAGE": "Laskun kieli"
+	"INVOICE_LANGUAGE": "Laskun kieli",
+	"NOTIF_NEW_JOB_NEARBY": "Uusi työ lähelläsi",
+	"NOTIF_NEW_JOB_REMOTE": "Uusi etätyö",
+	"NOTIF_JOB_INVITED": "Sinut kutsuttiin työhön",
+	"NOTIF_JOB_IN_PLACE": "”{job}”, {place}",
+	"JOB_ALERTS": "Ilmoitukset uusista töistä",
+	"JOB_ALERTS_ON_TEXT": "Saat ilmoituksen, kun alueellasi julkaistaan työ luokissasi.",
+	"JOB_ALERTS_OFF_TEXT": "Et saa ilmoituksia uusista töistä, mutta voit yhä selata niitä sovelluksessa.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Laita näkyvyys ensin päälle. Vain asiakkaiden löydettävissä olevat ammattilaiset saavat työilmoituksia."
 }

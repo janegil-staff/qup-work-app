@@ -716,5 +716,13 @@
 	"EMAILED": "Nosūtīts e-pastā",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "Nav nosūtīts e-pastā",
-	"INVOICE_LANGUAGE": "Rēķina valoda"
+	"INVOICE_LANGUAGE": "Rēķina valoda",
+	"NOTIF_NEW_JOB_NEARBY": "Jauns darbs tavā tuvumā",
+	"NOTIF_NEW_JOB_REMOTE": "Jauns attālinātais darbs",
+	"NOTIF_JOB_INVITED": "Tevi uzaicināja uz darbu",
+	"NOTIF_JOB_IN_PLACE": "“{job}” – {place}",
+	"JOB_ALERTS": "Paziņojumi par jauniem darbiem",
+	"JOB_ALERTS_ON_TEXT": "Tu saņem paziņojumu, kad tavā apkārtnē publicē darbu tavās kategorijās.",
+	"JOB_ALERTS_OFF_TEXT": "Tu nesaņemsi paziņojumus par jauniem darbiem, bet joprojām redzēsi tos lietotnē.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Vispirms ieslēdz redzamību. Paziņojumus saņem tikai meistari, kurus klienti var atrast."
 }

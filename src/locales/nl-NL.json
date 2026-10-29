@@ -716,5 +716,13 @@
 	"EMAILED": "Gemaild",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "Niet gemaild",
-	"INVOICE_LANGUAGE": "Taal van de factuur"
+	"INVOICE_LANGUAGE": "Taal van de factuur",
+	"NOTIF_NEW_JOB_NEARBY": "Nieuwe klus bij jou in de buurt",
+	"NOTIF_NEW_JOB_REMOTE": "Nieuwe klus op afstand",
+	"NOTIF_JOB_INVITED": "Je bent uitgenodigd voor een klus",
+	"NOTIF_JOB_IN_PLACE": "‘{job}’ in {place}",
+	"JOB_ALERTS": "Meldingen over nieuwe klussen",
+	"JOB_ALERTS_ON_TEXT": "Je krijgt een melding als er in jouw omgeving een klus in jouw categorieën wordt geplaatst.",
+	"JOB_ALERTS_OFF_TEXT": "Je krijgt geen meldingen over nieuwe klussen, maar je kunt ze nog steeds in de app bekijken.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Zet eerst zichtbaarheid aan. Alleen vakmensen die klanten kunnen vinden, krijgen klusmeldingen."
 }

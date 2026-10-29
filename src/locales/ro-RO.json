@@ -716,5 +716,13 @@
 	"EMAILED": "Trimisă pe e-mail",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "Netrimisă pe e-mail",
-	"INVOICE_LANGUAGE": "Limba facturii"
+	"INVOICE_LANGUAGE": "Limba facturii",
+	"NOTIF_NEW_JOB_NEARBY": "Lucrare nouă lângă tine",
+	"NOTIF_NEW_JOB_REMOTE": "Lucrare nouă la distanță",
+	"NOTIF_JOB_INVITED": "Ai fost invitat la o lucrare",
+	"NOTIF_JOB_IN_PLACE": "„{job}” în {place}",
+	"JOB_ALERTS": "Alerte pentru lucrări noi",
+	"JOB_ALERTS_ON_TEXT": "Primești o notificare când o lucrare din categoriile tale e publicată în zona ta.",
+	"JOB_ALERTS_OFF_TEXT": "Nu vei fi anunțat despre lucrări noi, dar le poți vedea în continuare în aplicație.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Activează mai întâi vizibilitatea. Doar profesioniștii pe care îi pot găsi clienții primesc alerte."
 }

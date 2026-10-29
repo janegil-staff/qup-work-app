@@ -716,5 +716,13 @@
 	"EMAILED": "Envoyée par e-mail",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "Pas envoyée par e-mail",
-	"INVOICE_LANGUAGE": "Langue de la facture"
+	"INVOICE_LANGUAGE": "Langue de la facture",
+	"NOTIF_NEW_JOB_NEARBY": "Nouvelle mission près de chez vous",
+	"NOTIF_NEW_JOB_REMOTE": "Nouvelle mission à distance",
+	"NOTIF_JOB_INVITED": "Vous êtes invité à une mission",
+	"NOTIF_JOB_IN_PLACE": "« {job} » à {place}",
+	"JOB_ALERTS": "Alertes nouvelles missions",
+	"JOB_ALERTS_ON_TEXT": "Vous recevez une notification quand une mission de vos catégories est publiée dans votre zone.",
+	"JOB_ALERTS_OFF_TEXT": "Vous ne serez pas averti des nouvelles missions, mais vous pouvez toujours les consulter dans l'app.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Activez d'abord la visibilité. Seuls les pros que les clients peuvent trouver reçoivent les alertes."
 }

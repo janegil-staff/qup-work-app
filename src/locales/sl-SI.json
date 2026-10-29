@@ -716,5 +716,13 @@
 	"EMAILED": "Poslano po e-pošti",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "Ni poslano po e-pošti",
-	"INVOICE_LANGUAGE": "Jezik računa"
+	"INVOICE_LANGUAGE": "Jezik računa",
+	"NOTIF_NEW_JOB_NEARBY": "Novo delo v tvoji bližini",
+	"NOTIF_NEW_JOB_REMOTE": "Novo delo na daljavo",
+	"NOTIF_JOB_INVITED": "Povabljen si bil k delu",
+	"NOTIF_JOB_IN_PLACE": "»{job}« – {place}",
+	"JOB_ALERTS": "Obvestila o novih delih",
+	"JOB_ALERTS_ON_TEXT": "Obvestilo dobiš, ko je v tvoji okolici objavljeno delo iz tvojih kategorij.",
+	"JOB_ALERTS_OFF_TEXT": "Obvestil o novih delih ne boš dobil, a jih še vedno vidiš v aplikaciji.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Najprej vklopi vidnost. Obvestila dobijo le mojstri, ki jih stranke lahko najdejo."
 }

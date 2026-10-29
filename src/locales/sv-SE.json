@@ -716,5 +716,13 @@
 	"EMAILED": "Skickad via e-post",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "Inte skickad via e-post",
-	"INVOICE_LANGUAGE": "Språk på fakturan"
+	"INVOICE_LANGUAGE": "Språk på fakturan",
+	"NOTIF_NEW_JOB_NEARBY": "Nytt uppdrag nära dig",
+	"NOTIF_NEW_JOB_REMOTE": "Nytt distansuppdrag",
+	"NOTIF_JOB_INVITED": "Du är inbjuden till ett uppdrag",
+	"NOTIF_JOB_IN_PLACE": "”{job}” i {place}",
+	"JOB_ALERTS": "Aviseringar om nya uppdrag",
+	"JOB_ALERTS_ON_TEXT": "Du får en avisering när ett uppdrag i dina kategorier läggs ut i ditt område.",
+	"JOB_ALERTS_OFF_TEXT": "Du aviseras inte om nya uppdrag, men du kan fortfarande se dem i appen.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Slå på synlighet först. Bara hantverkare som kunder kan hitta får aviseringar om uppdrag."
 }

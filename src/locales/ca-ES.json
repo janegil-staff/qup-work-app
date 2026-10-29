@@ -716,5 +716,13 @@
 	"EMAILED": "Enviada per correu",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "No enviada per correu",
-	"INVOICE_LANGUAGE": "Idioma de la factura"
+	"INVOICE_LANGUAGE": "Idioma de la factura",
+	"NOTIF_NEW_JOB_NEARBY": "Nova feina a prop teu",
+	"NOTIF_NEW_JOB_REMOTE": "Nova feina en remot",
+	"NOTIF_JOB_INVITED": "T'han convidat a una feina",
+	"NOTIF_JOB_IN_PLACE": "«{job}» a {place}",
+	"JOB_ALERTS": "Avisos de feines noves",
+	"JOB_ALERTS_ON_TEXT": "Reps un avís quan es publica una feina de les teves categories a la teva zona.",
+	"JOB_ALERTS_OFF_TEXT": "No rebràs avisos de feines noves, però les pots continuar veient a l'app.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Activa primer la visibilitat. Només els professionals que els clients poden trobar reben avisos."
 }

@@ -716,5 +716,13 @@
 	"EMAILED": "Saadetud e-postiga",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "E-postiga saatmata",
-	"INVOICE_LANGUAGE": "Arve keel"
+	"INVOICE_LANGUAGE": "Arve keel",
+	"NOTIF_NEW_JOB_NEARBY": "Uus töö sinu lähedal",
+	"NOTIF_NEW_JOB_REMOTE": "Uus kaugtöö",
+	"NOTIF_JOB_INVITED": "Sind kutsuti tööle",
+	"NOTIF_JOB_IN_PLACE": "„{job}“ – {place}",
+	"JOB_ALERTS": "Teavitused uutest töödest",
+	"JOB_ALERTS_ON_TEXT": "Saad teavituse, kui sinu piirkonnas avaldatakse töö sinu kategooriates.",
+	"JOB_ALERTS_OFF_TEXT": "Uutest töödest sind ei teavitata, kuid näed neid endiselt rakenduses.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Lülita kõigepealt nähtavus sisse. Teavitusi saavad ainult meistrid, keda kliendid leiavad."
 }

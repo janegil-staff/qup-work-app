@@ -716,5 +716,13 @@
 	"EMAILED": "メール送信済み",
 	"EMAILED_ON": "{email}、{date}",
 	"NOT_EMAILED": "メール未送信",
-	"INVOICE_LANGUAGE": "請求書の言語"
+	"INVOICE_LANGUAGE": "請求書の言語",
+	"NOTIF_NEW_JOB_NEARBY": "近くで新しい仕事",
+	"NOTIF_NEW_JOB_REMOTE": "新しいリモートの仕事",
+	"NOTIF_JOB_INVITED": "仕事に招待されました",
+	"NOTIF_JOB_IN_PLACE": "「{job}」（{place}）",
+	"JOB_ALERTS": "新しい仕事の通知",
+	"JOB_ALERTS_ON_TEXT": "あなたの地域であなたのカテゴリーの仕事が掲載されると通知が届きます。",
+	"JOB_ALERTS_OFF_TEXT": "新しい仕事の通知は届きませんが、アプリで引き続き見ることができます。",
+	"JOB_ALERTS_NEEDS_VISIBLE": "まず公開をオンにしてください。お客様が見つけられるプロだけが仕事の通知を受け取ります。"
 }

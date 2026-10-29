@@ -716,5 +716,13 @@
 	"EMAILED": "Enviada por email",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "Não enviada por email",
-	"INVOICE_LANGUAGE": "Idioma da fatura"
+	"INVOICE_LANGUAGE": "Idioma da fatura",
+	"NOTIF_NEW_JOB_NEARBY": "Novo trabalho perto de si",
+	"NOTIF_NEW_JOB_REMOTE": "Novo trabalho remoto",
+	"NOTIF_JOB_INVITED": "Foi convidado para um trabalho",
+	"NOTIF_JOB_IN_PLACE": "«{job}» em {place}",
+	"JOB_ALERTS": "Alertas de novos trabalhos",
+	"JOB_ALERTS_ON_TEXT": "Recebe uma notificação quando um trabalho das suas categorias é publicado na sua zona.",
+	"JOB_ALERTS_OFF_TEXT": "Não será notificado sobre novos trabalhos, mas continua a vê-los na app.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Ative primeiro a visibilidade. Só os profissionais que os clientes podem encontrar recebem alertas."
 }

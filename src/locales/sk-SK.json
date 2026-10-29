@@ -716,5 +716,13 @@
 	"EMAILED": "Poslané e-mailom",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "Neposlané e-mailom",
-	"INVOICE_LANGUAGE": "Jazyk faktúry"
+	"INVOICE_LANGUAGE": "Jazyk faktúry",
+	"NOTIF_NEW_JOB_NEARBY": "Nová zákazka vo vašom okolí",
+	"NOTIF_NEW_JOB_REMOTE": "Nová zákazka na diaľku",
+	"NOTIF_JOB_INVITED": "Boli ste pozvaní k zákazke",
+	"NOTIF_JOB_IN_PLACE": "„{job}“ – {place}",
+	"JOB_ALERTS": "Upozornenia na nové zákazky",
+	"JOB_ALERTS_ON_TEXT": "Dostanete upozornenie, keď sa vo vašom okolí objaví zákazka z vašich kategórií.",
+	"JOB_ALERTS_OFF_TEXT": "Upozornenia na nové zákazky nedostanete, ale v aplikácii ich stále uvidíte.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Najprv zapnite viditeľnosť. Upozornenia dostávajú iba odborníci, ktorých zákazníci nájdu."
 }

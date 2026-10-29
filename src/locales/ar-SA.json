@@ -716,5 +716,13 @@
 	"EMAILED": "أُرسلت بالبريد الإلكتروني",
 	"EMAILED_ON": "{email}، {date}",
 	"NOT_EMAILED": "لم تُرسل بالبريد الإلكتروني",
-	"INVOICE_LANGUAGE": "لغة الفاتورة"
+	"INVOICE_LANGUAGE": "لغة الفاتورة",
+	"NOTIF_NEW_JOB_NEARBY": "عمل جديد بالقرب منك",
+	"NOTIF_NEW_JOB_REMOTE": "عمل جديد عن بُعد",
+	"NOTIF_JOB_INVITED": "تمت دعوتك إلى عمل",
+	"NOTIF_JOB_IN_PLACE": "«{job}» في {place}",
+	"JOB_ALERTS": "تنبيهات الأعمال الجديدة",
+	"JOB_ALERTS_ON_TEXT": "تصلك إشعارات عند نشر عمل في فئاتك ضمن منطقتك.",
+	"JOB_ALERTS_OFF_TEXT": "لن تصلك إشعارات عن الأعمال الجديدة، لكن يمكنك تصفحها في التطبيق.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "فعّل الظهور أولًا. لا يتلقى التنبيهات إلا المحترفون الذين يمكن للعملاء العثور عليهم."
 }

@@ -716,5 +716,13 @@
 	"EMAILED": "Išsiųsta el. paštu",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "Neišsiųsta el. paštu",
-	"INVOICE_LANGUAGE": "Sąskaitos kalba"
+	"INVOICE_LANGUAGE": "Sąskaitos kalba",
+	"NOTIF_NEW_JOB_NEARBY": "Naujas darbas netoli tavęs",
+	"NOTIF_NEW_JOB_REMOTE": "Naujas nuotolinis darbas",
+	"NOTIF_JOB_INVITED": "Tave pakvietė į darbą",
+	"NOTIF_JOB_IN_PLACE": "„{job}“ – {place}",
+	"JOB_ALERTS": "Pranešimai apie naujus darbus",
+	"JOB_ALERTS_ON_TEXT": "Gauni pranešimą, kai tavo apylinkėse paskelbiamas darbas iš tavo kategorijų.",
+	"JOB_ALERTS_OFF_TEXT": "Negausi pranešimų apie naujus darbus, bet vis tiek matysi juos programėlėje.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Pirmiausia įjunk matomumą. Pranešimus gauna tik meistrai, kuriuos klientai gali rasti."
 }

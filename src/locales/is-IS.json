@@ -716,5 +716,13 @@
 	"EMAILED": "Sent í tölvupósti",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "Ekki sent í tölvupósti",
-	"INVOICE_LANGUAGE": "Tungumál reiknings"
+	"INVOICE_LANGUAGE": "Tungumál reiknings",
+	"NOTIF_NEW_JOB_NEARBY": "Nýtt verk nálægt þér",
+	"NOTIF_NEW_JOB_REMOTE": "Nýtt fjarverk",
+	"NOTIF_JOB_INVITED": "Þér var boðið í verk",
+	"NOTIF_JOB_IN_PLACE": "„{job}“ í {place}",
+	"JOB_ALERTS": "Tilkynningar um ný verk",
+	"JOB_ALERTS_ON_TEXT": "Þú færð tilkynningu þegar verk í þínum flokkum er birt á þínu svæði.",
+	"JOB_ALERTS_OFF_TEXT": "Þú færð ekki tilkynningar um ný verk, en þú getur samt skoðað þau í appinu.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Kveiktu fyrst á sýnileika. Aðeins fagfólk sem viðskiptavinir geta fundið fær tilkynningar um verk."
 }

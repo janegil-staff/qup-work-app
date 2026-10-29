@@ -716,5 +716,13 @@
 	"EMAILED": "Sendt på e-mail",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "Ikke sendt på e-mail",
-	"INVOICE_LANGUAGE": "Sprog på fakturaen"
+	"INVOICE_LANGUAGE": "Sprog på fakturaen",
+	"NOTIF_NEW_JOB_NEARBY": "Ny opgave i nærheden",
+	"NOTIF_NEW_JOB_REMOTE": "Ny fjernopgave",
+	"NOTIF_JOB_INVITED": "Du er inviteret til en opgave",
+	"NOTIF_JOB_IN_PLACE": "»{job}« i {place}",
+	"JOB_ALERTS": "Besked om nye opgaver",
+	"JOB_ALERTS_ON_TEXT": "Du får besked, når en opgave i dine kategorier bliver slået op i dit område.",
+	"JOB_ALERTS_OFF_TEXT": "Du får ikke besked om nye opgaver, men du kan stadig se dem i appen.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Slå synlighed til først. Kun fagfolk, som kunderne kan finde, får besked om opgaver."
 }

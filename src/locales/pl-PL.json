@@ -716,5 +716,13 @@
 	"EMAILED": "Wysłano e-mailem",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "Nie wysłano e-mailem",
-	"INVOICE_LANGUAGE": "Język faktury"
+	"INVOICE_LANGUAGE": "Język faktury",
+	"NOTIF_NEW_JOB_NEARBY": "Nowe zlecenie w pobliżu",
+	"NOTIF_NEW_JOB_REMOTE": "Nowe zlecenie zdalne",
+	"NOTIF_JOB_INVITED": "Zaproszono cię do zlecenia",
+	"NOTIF_JOB_IN_PLACE": "„{job}” – {place}",
+	"JOB_ALERTS": "Powiadomienia o nowych zleceniach",
+	"JOB_ALERTS_ON_TEXT": "Dostajesz powiadomienie, gdy w twojej okolicy pojawi się zlecenie z twoich kategorii.",
+	"JOB_ALERTS_OFF_TEXT": "Nie dostaniesz powiadomień o nowych zleceniach, ale nadal zobaczysz je w aplikacji.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Najpierw włącz widoczność. Powiadomienia dostają tylko fachowcy, których klienci mogą znaleźć."
 }

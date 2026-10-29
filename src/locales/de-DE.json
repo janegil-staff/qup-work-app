@@ -716,5 +716,13 @@
 	"EMAILED": "Per E-Mail gesendet",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "Nicht per E-Mail gesendet",
-	"INVOICE_LANGUAGE": "Sprache der Rechnung"
+	"INVOICE_LANGUAGE": "Sprache der Rechnung",
+	"NOTIF_NEW_JOB_NEARBY": "Neuer Auftrag in deiner Nähe",
+	"NOTIF_NEW_JOB_REMOTE": "Neuer Remote-Auftrag",
+	"NOTIF_JOB_INVITED": "Du wurdest zu einem Auftrag eingeladen",
+	"NOTIF_JOB_IN_PLACE": "„{job}“ in {place}",
+	"JOB_ALERTS": "Benachrichtigung bei neuen Aufträgen",
+	"JOB_ALERTS_ON_TEXT": "Du wirst benachrichtigt, wenn in deiner Gegend ein Auftrag in deinen Kategorien veröffentlicht wird.",
+	"JOB_ALERTS_OFF_TEXT": "Du wirst nicht über neue Aufträge benachrichtigt, findest sie aber weiterhin in der App.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Schalte zuerst die Sichtbarkeit ein. Nur Profis, die Kunden finden können, bekommen Auftragshinweise."
 }

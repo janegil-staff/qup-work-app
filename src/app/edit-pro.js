@@ -30,6 +30,7 @@ export default function EditProScreen() {
   const [services, setServices] = useState(null);
   const [area, setArea] = useState(null);
   const [visible, setVisible] = useState(true);
+  const [alerts, setAlerts] = useState(true);
   const [errors, setErrors] = useState({});
   const [error, setError] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -50,6 +51,7 @@ export default function EditProScreen() {
         const place = p.serviceArea?.municipalities?.[0] ? { city: p.serviceArea.municipalities[0], location: p.serviceArea.location } : null;
         setArea({ postalCode: '', place, radiusKm: p.serviceArea?.radiusKm ?? 25 });
         setVisible(Boolean(p.availableForMarketplace));
+        setAlerts(p.notifyNewJobs !== false);
       })
       .catch((err) => {
         if (err instanceof ApiError && err.status === 404) setMissing(true);
@@ -100,6 +102,7 @@ export default function EditProScreen() {
           workType: services.workType,
           serviceArea,
           availableForMarketplace: visible,
+          notifyNewJobs: alerts,
         },
       });
       await refreshSession();
@@ -138,6 +141,22 @@ export default function EditProScreen() {
           />
         </View>
 
+        <View style={styles.visible}>
+          <View style={{ flex: 1, gap: 2 }}>
+            <AppText variant="bodyStrong">{t('JOB_ALERTS')}</AppText>
+            <AppText variant="small" muted>
+              {!visible ? t('JOB_ALERTS_NEEDS_VISIBLE') : alerts ? t('JOB_ALERTS_ON_TEXT') : t('JOB_ALERTS_OFF_TEXT')}
+            </AppText>
+          </View>
+          <Switch
+            value={alerts && visible}
+            onValueChange={setAlerts}
+            disabled={!visible}
+            trackColor={{ true: colors.slate, false: colors.line }}
+            thumbColor={alerts && visible ? colors.hivis : colors.paper}
+            ios_backgroundColor={colors.line}
+          />
+        </View>
         <ServiceFields value={services} onChange={setServices} errors={errors} />
         {services.workType !== 'remote' ? (
           <>

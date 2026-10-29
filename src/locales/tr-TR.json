@@ -716,5 +716,13 @@
 	"EMAILED": "E-postayla gönderildi",
 	"EMAILED_ON": "{email}, {date}",
 	"NOT_EMAILED": "E-postayla gönderilmedi",
-	"INVOICE_LANGUAGE": "Fatura dili"
+	"INVOICE_LANGUAGE": "Fatura dili",
+	"NOTIF_NEW_JOB_NEARBY": "Yakınında yeni iş",
+	"NOTIF_NEW_JOB_REMOTE": "Yeni uzaktan iş",
+	"NOTIF_JOB_INVITED": "Bir işe davet edildin",
+	"NOTIF_JOB_IN_PLACE": "“{job}” – {place}",
+	"JOB_ALERTS": "Yeni iş bildirimleri",
+	"JOB_ALERTS_ON_TEXT": "Bölgende kategorilerinden bir iş yayınlandığında bildirim alırsın.",
+	"JOB_ALERTS_OFF_TEXT": "Yeni işler için bildirim almayacaksın ama onları uygulamada görmeye devam edebilirsin.",
+	"JOB_ALERTS_NEEDS_VISIBLE": "Önce görünürlüğü aç. Yalnızca müşterilerin bulabildiği ustalar iş bildirimi alır."
 }
