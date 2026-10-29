@@ -115,6 +115,7 @@ function JobForm({ job }) {
 
   async function submit() {
     if (title.trim().length < 5) return setError(t('JOB_TITLE_TOO_SHORT'));
+    if (!category && job?.source !== 'direct') return setError(t('JOB_CATEGORY_REQUIRED')); // pros are alerted by category
     if (workType === 'onsite' && !city.trim()) return setError(t('JOB_CITY_REQUIRED'));
     const min = toOre(budgetMin);
     const max = toOre(budgetMax);

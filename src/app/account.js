@@ -1,5 +1,6 @@
 // /qup-work-app/src/app/account.js
 // My details: profile photo, name and phone. (Email and password are separate.)
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -81,6 +82,14 @@ function AccountForm() {
         <TextField label={t('NAME')} value={name} onChangeText={setName} placeholder={t('NAME_PLACEHOLDER')} maxLength={100} error={nameError} autoComplete="name" />
         <TextField label={t('PHONE')} value={phone} onChangeText={setPhone} keyboardType="phone-pad" placeholder="912 34 567" autoComplete="tel" hint={t('PHONE_HINT')} />
         <TextField label={t('EMAIL')} value={user.email} editable={false} hint={t('EMAIL_CANNOT_CHANGE')} />
+        <Button
+          title={t('DELETE_ACCOUNT')}
+          icon="trash-outline"
+          variant="danger"
+          small
+          onPress={() => router.push('/delete-account')}
+          style={{ alignSelf: 'flex-start', marginTop: spacing.lg }}
+        />
       </ScrollView>
       <BottomBar>
         <Button title={saved ? t('SAVED') : t('SAVE_CHANGES')} icon="checkmark" loading={saving} onPress={save} />

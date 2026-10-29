@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "qup-work-app",
+    "slug": "qup-work-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "scheme": "qupwork",
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Qup Work uses your photos so you can show the customer the finished work.",
+          "cameraPermission": "Qup Work uses the camera to take photos of the work."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#1D2A2E"
+        }
+      ]
+    ]
+  }
+}

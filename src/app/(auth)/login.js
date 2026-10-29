@@ -82,6 +82,16 @@ export default function LoginScreen() {
             onSubmitEditing={onSubmit}
           />
           <Button title={t('LOG_IN')} variant="dark" onPress={onSubmit} loading={loading} />
+          <Pressable
+            onPress={() => router.push({ pathname: '/forgot-password', params: email ? { email } : {} })}
+            hitSlop={8}
+            accessibilityRole="link"
+            style={{ alignSelf: 'center' }}
+          >
+            <AppText variant="smallStrong" color={colors.info}>
+              {t('FORGOT_PASSWORD')}
+            </AppText>
+          </Pressable>
         </View>
 
         <Pressable onPress={() => router.replace('/register')} style={styles.switch} accessibilityRole="link">

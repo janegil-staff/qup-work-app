@@ -57,6 +57,7 @@ function RootNavigator({ fontsReady }) {
         <Stack.Screen name="change-password" />
         <Stack.Screen name="payments" />
         <Stack.Screen name="team/[id]" />
+        <Stack.Screen name="delete-account" />
         <Stack.Screen name="offer/[jobId]" options={{ presentation: 'modal' }} />
         <Stack.Screen name="(auth)" options={{ presentation: 'modal' }} />
       </Stack>

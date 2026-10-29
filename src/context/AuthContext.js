@@ -10,6 +10,8 @@
 //   login(email, password), register(name, email, password), logout()
 //   refreshSession()   reload /auth/me (e.g. after creating a company)
 //   setActiveRole('customer' | 'pro')
+//   signInWithTokens({ accessToken, refreshToken })   after resetting a password
+//   deleteAccount(password)   deletes the account and logs out
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { api, ApiError, setOnSessionExpired } from '@/lib/api';
 import { tokenStore } from '@/lib/tokenStore';
@@ -85,6 +87,12 @@ export function AuthProvider({ children }) {
     setSession(null);
   }, []);
 
+  const deleteAccount = useCallback(async (password) => {
+    await api('/auth/me', { method: 'DELETE', body: { password } });
+    await tokenStore.clear();
+    setSession(null);
+  }, []);
+
   const setActiveRole = useCallback(
     async (role) => {
       await api('/auth/me', { method: 'PATCH', body: { activeRole: role } });
@@ -104,8 +112,10 @@ export function AuthProvider({ children }) {
       logout,
       refreshSession,
       setActiveRole,
+      signInWithTokens: startSession,
+      deleteAccount,
     }),
-    [session, isLoading, login, register, logout, refreshSession, setActiveRole]
+    [session, isLoading, login, register, logout, refreshSession, setActiveRole, startSession, deleteAccount]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
