@@ -3,11 +3,13 @@
 //   pro      → start a step, mark it as done (with photos and a note)
 //   customer → approve a step or ask for changes, then complete the job and leave a review
 // Steps go: pending → in progress → waiting for approval → approved (or back via "changes").
+// The pro adds, changes and deletes steps here. For their own clients (no app account) the
+// customer signs on the pro's phone instead of approving in the app, and the pro completes.
 // Hours (timer + entries) are in components/HoursSection.js, invoices in InvoicesSection.js.
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from '@/components/AppText';
 import { Avatar } from '@/components/Avatar';
@@ -19,11 +21,13 @@ import { ErrorBanner } from '@/components/ErrorBanner';
 import { FocusStatusBar } from '@/components/FocusStatusBar';
 import { HoursSection } from '@/components/HoursSection';
 import { InvoicesSection } from '@/components/InvoicesSection';
+import { MilestoneSheet } from '@/components/MilestoneSheet';
 import { Loading } from '@/components/Loading';
 import { Perforation } from '@/components/Perforation';
 import { PhotoPicker } from '@/components/PhotoPicker';
 import { PhotoStrip } from '@/components/PhotoStrip';
 import { Sheet } from '@/components/Sheet';
+import { SignatureSheet } from '@/components/SignatureSheet';
 import { SignInPrompt } from '@/components/SignInPrompt';
 import { StarInput } from '@/components/StarInput';
 import { StatusBadge } from '@/components/StatusBadge';
@@ -62,7 +66,8 @@ function ContractView({ contractId }) {
   const [loadError, setLoadError] = useState(null);
   const [actionError, setActionError] = useState(null);
   const [busy, setBusy] = useState(null); // `${milestoneId}:${action}` | 'complete' | 'chat'
-  const [sheet, setSheet] = useState(null); // { type: 'submit' | 'changes', milestone } | { type: 'review' }
+  // { type: 'submit' | 'changes' | 'sign', milestone } | { type: 'step', milestone?: m } | { type: 'review' | 'cancel' }
+  const [sheet, setSheet] = useState(null);
   const alive = useRef(true);
 
   const load = useCallback(async () => {
@@ -106,6 +111,11 @@ function ContractView({ contractId }) {
   const approved = steps.filter((m) => m.status === 'approved').length;
   const allApproved = steps.length > 0 && approved === steps.length;
   const waitingForCustomer = steps.filter((m) => m.status === 'submitted').length;
+  // A pro's own client without an app account: they sign on site, and the pro completes the job
+  const clientContract = !contract.customer;
+  const hourly = contract.priceType === 'hourly';
+  const stepsTotal = steps.reduce((sum, m) => sum + (m.amount ?? 0), 0);
+  const totalMismatch = !hourly && contract.totalAmount != null && steps.length > 0 && stepsTotal !== contract.totalAmount;
 
   // The other side of the deal
   const other = isPro
@@ -142,8 +152,23 @@ function ContractView({ contractId }) {
     if (ok) run(`${m._id}:approve`, () => api(ms(m, 'approve'), { method: 'POST', body: {} }));
   }
 
+  const msBase = `/contracts/${contract._id}/milestones`;
+  const saveStep = (m, body) =>
+    m
+      ? run(`${m._id}:edit`, () => api(`${msBase}/${m._id}`, { method: 'PATCH', body }))
+      : run('add-step', () => api(msBase, { method: 'POST', body }));
+
+  async function deleteStep(m) {
+    const ok = await confirm({ title: t('DELETE_STEP_TITLE'), message: t('DELETE_STEP_TEXT', { title: m.title }), confirmText: t('DELETE_ACTION'), destructive: true });
+    return ok ? run(`${m._id}:delete`, () => api(`${msBase}/${m._id}`, { method: 'DELETE' })) : false;
+  }
+
   async function complete() {
-    const ok = await confirm({ title: t('COMPLETE_JOB_TITLE'), message: t('COMPLETE_JOB_TEXT'), confirmText: t('COMPLETE_JOB') });
+    const ok = await confirm({
+      title: t('COMPLETE_JOB_TITLE'),
+      message: clientContract ? t('COMPLETE_CLIENT_JOB_TEXT') : t('COMPLETE_JOB_TEXT'),
+      confirmText: t('COMPLETE_JOB'),
+    });
     if (!ok) return;
     const done = await run('complete', () => api(`/contracts/${contract._id}/complete`, { method: 'POST' }));
     if (done) setSheet({ type: 'review' }); // the natural next thing to do
@@ -184,7 +209,7 @@ function ContractView({ contractId }) {
 
   // What the bottom bar offers right now
   let bottom = null;
-  if (active && !isPro && allApproved) {
+  if (active && (!isPro || clientContract) && allApproved) {
     bottom = <Button title={t('COMPLETE_JOB')} icon="checkmark-done" loading={busy === 'complete'} onPress={complete} />;
   } else if (active && !isPro && waitingForCustomer) {
     bottom = (
@@ -291,6 +316,11 @@ function ContractView({ contractId }) {
 
         <View style={styles.section}>
           <AppText variant="title">{t('STEPS_TITLE')}</AppText>
+          {totalMismatch ? (
+            <AppText variant="small" color={colors.amber}>
+              {t('STEPS_TOTAL_MISMATCH', { steps: formatNok(stepsTotal), total: formatNok(contract.totalAmount) })}
+            </AppText>
+          ) : null}
           <View>
             {milestones.map((m, i) => (
               <MilestoneRow
@@ -306,9 +336,14 @@ function ContractView({ contractId }) {
                 onSubmit={() => setSheet({ type: 'submit', milestone: m })}
                 onApprove={() => approve(m)}
                 onChanges={() => setSheet({ type: 'changes', milestone: m })}
+                onEdit={() => setSheet({ type: 'step', milestone: m })}
+                onSign={clientContract ? () => setSheet({ type: 'sign', milestone: m }) : null}
               />
             ))}
           </View>
+          {active && isPro ? (
+            <Button title={t('ADD_STEP')} icon="add" variant="outline" small onPress={() => setSheet({ type: 'step' })} style={{ alignSelf: 'flex-start' }} />
+          ) : null}
         </View>
 
         {contract.priceType !== 'hourly' ? <HoursSection contract={contract} side={side} onChanged={load} /> : null}
@@ -328,6 +363,25 @@ function ContractView({ contractId }) {
             {myReview.comment ? <AppText variant="body">{myReview.comment}</AppText> : null}
           </View>
         ) : null}
+
+        {contract.status === 'cancelled' ? (
+          <View style={[styles.section, styles.cancelledBanner]}>
+            <AppText variant="bodyStrong" color={colors.danger}>
+              {t('CONTRACT_CANCELLED_ON', { date: formatDate(contract.cancelledAt) })}
+            </AppText>
+            {contract.cancelReason ? (
+              <AppText variant="small" muted>
+                {contract.cancelReason}
+              </AppText>
+            ) : null}
+          </View>
+        ) : null}
+
+        {active ? (
+          <View style={styles.section}>
+            <Button title={t('CANCEL_CONTRACT')} icon="close-circle-outline" variant="danger" small onPress={() => setSheet({ type: 'cancel' })} style={{ alignSelf: 'flex-start' }} />
+          </View>
+        ) : null}
       </ScrollView>
 
       {bottom ? <BottomBar>{bottom}</BottomBar> : null}
@@ -344,6 +398,25 @@ function ContractView({ contractId }) {
           run(`${sheet.milestone._id}:changes`, () => api(ms(sheet.milestone, 'request-changes'), { method: 'POST', body: { feedback } }))
         }
       />
+      <MilestoneSheet
+        visible={sheet?.type === 'step'}
+        milestone={sheet?.type === 'step' ? (sheet.milestone ?? null) : null}
+        hourly={hourly}
+        onClose={() => setSheet(null)}
+        onSave={(body) => saveStep(sheet?.milestone, body)}
+        onDelete={() => deleteStep(sheet.milestone)}
+      />
+      <SignatureSheet
+        milestone={sheet?.type === 'sign' ? sheet.milestone : null}
+        onClose={() => setSheet(null)}
+        onSign={(signature) => run(`${sheet.milestone._id}:approve`, () => api(ms(sheet.milestone, 'approve'), { method: 'POST', body: { signature } }))}
+      />
+      <CancelSheet
+        visible={sheet?.type === 'cancel'}
+        title={contract.title}
+        onClose={() => setSheet(null)}
+        onSend={(reason) => run('cancel', () => api(`/contracts/${contract._id}/cancel`, { method: 'POST', body: { reason } }))}
+      />
       <ReviewSheet
         visible={sheet?.type === 'review' && canReview}
         name={other.name}
@@ -355,11 +428,12 @@ function ContractView({ contractId }) {
 }
 
 // One step on the timeline: number (or a tick), title, status, what was delivered, and the buttons
-function MilestoneRow({ milestone: m, number, last, hourly, side, active, busy, onStart, onSubmit, onApprove, onChanges }) {
+function MilestoneRow({ milestone: m, number, last, hourly, side, active, busy, onStart, onSubmit, onApprove, onChanges, onEdit, onSign }) {
   const { t } = useI18n();
   const done = m.status === 'approved';
   const isBusy = (action) => busy === `${m._id}:${action}`;
   const anyBusy = Boolean(busy);
+  const editable = active && side === 'pro' && ['pending', 'in_progress', 'changes_requested'].includes(m.status);
 
   let actions = null;
   if (active && side === 'pro') {
@@ -372,11 +446,20 @@ function MilestoneRow({ milestone: m, number, last, hourly, side, active, busy, 
       );
     } else if (m.status === 'in_progress' || m.status === 'changes_requested') {
       actions = <Button title={t('MARK_AS_DONE')} icon="checkmark" small disabled={anyBusy} onPress={onSubmit} style={{ flexGrow: 1 }} />;
-    } else if (m.status === 'submitted') {
+    } else if (m.status === 'submitted' && !onSign) {
       actions = (
         <AppText variant="small" muted>
           {t('WAITING_FOR_APPROVAL')}
         </AppText>
+      );
+    }
+    // The client signs on the pro's phone once the step is done
+    if (onSign && m.status !== 'approved' && m.status !== 'cancelled') {
+      actions = (
+        <>
+          {actions}
+          <Button title={t('SIGN_ON_SITE')} icon="create-outline" variant="dark" small disabled={anyBusy} onPress={onSign} style={{ flexGrow: 1 }} />
+        </>
       );
     }
   } else if (active && side === 'customer') {
@@ -418,6 +501,11 @@ function MilestoneRow({ milestone: m, number, last, hourly, side, active, busy, 
             {m.title}
           </AppText>
           {!hourly && m.amount != null ? <AppText variant="smallStrong">{formatNok(m.amount)}</AppText> : null}
+          {editable ? (
+            <Pressable onPress={onEdit} hitSlop={10} accessibilityRole="button" accessibilityLabel={t('EDIT_STEP')} style={styles.editStep}>
+              <Ionicons name="create-outline" size={18} color={colors.textMuted} />
+            </Pressable>
+          ) : null}
         </View>
         <View style={styles.stepMeta}>
           <StatusBadge status={m.status} kind="milestone" />
@@ -562,6 +650,35 @@ function ChangesSheet({ milestone, onClose, onSend }) {
   );
 }
 
+// Either side can call the job off while it's running. The reason is optional but shown to both.
+function CancelSheet({ visible, title, onClose, onSend }) {
+  const { t } = useI18n();
+  const [reason, setReason] = useState('');
+  const [sending, setSending] = useState(false);
+
+  function close() {
+    setReason('');
+    onClose();
+  }
+
+  async function send() {
+    setSending(true);
+    const ok = await onSend(reason.trim() || undefined);
+    setSending(false);
+    if (ok) close();
+  }
+
+  return (
+    <Sheet visible={visible} onClose={close} title={t('CANCEL_CONTRACT')} subtitle={title}>
+      <AppText variant="small" muted>
+        {t('CANCEL_CONTRACT_INTRO')}
+      </AppText>
+      <TextField label={t('CANCEL_REASON')} value={reason} onChangeText={setReason} multiline placeholder={t('CANCEL_REASON_PLACEHOLDER')} maxLength={1000} />
+      <Button title={t('CANCEL_CONTRACT')} variant="danger" icon="close-circle-outline" loading={sending} onPress={send} />
+    </Sheet>
+  );
+}
+
 // Stars and a few words, once the job is completed
 function ReviewSheet({ visible, name, onClose, onSend }) {
   const { t } = useI18n();
@@ -654,5 +771,7 @@ const styles = StyleSheet.create({
   note: { borderLeftWidth: 3, borderLeftColor: colors.line, paddingLeft: spacing.md, gap: 2 },
   noteChanges: { borderLeftColor: colors.danger },
   stepActions: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm, marginTop: spacing.xs },
+  editStep: { width: 28, height: 28, alignItems: 'center', justifyContent: 'center', marginTop: -2 },
+  cancelledBanner: { padding: spacing.lg, borderRadius: radius.ticket, backgroundColor: colors.dangerSoft, gap: 4 },
   reviewCard: { backgroundColor: colors.paper, borderRadius: radius.ticket, padding: spacing.lg, gap: spacing.sm },
 });

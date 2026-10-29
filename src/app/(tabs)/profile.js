@@ -104,6 +104,7 @@ function MyProfile() {
           {isPro ? (
             <MenuRow icon="document-text-outline" title={t('MY_OFFERS')} onPress={() => router.push('/my-offers')} />
           ) : null}
+          {isPro ? <MenuRow icon="people-outline" title={t('CLIENTS')} onPress={() => router.push('/clients')} /> : null}
           <MenuRow
             icon="receipt-outline"
             title={isProMode ? t('INVOICES') : t('MY_INVOICES')}
@@ -118,6 +119,8 @@ function MyProfile() {
           ) : null}
           {isPro ? <MenuRow icon="create-outline" title={t('EDIT_PRO_PROFILE')} onPress={() => router.push('/edit-pro')} /> : null}
           <MenuRow icon="person-outline" title={t('MY_DETAILS')} onPress={() => router.push('/account')} />
+          <MenuRow icon="key-outline" title={t('CHANGE_PASSWORD')} onPress={() => router.push('/change-password')} />
+          <MenuRow icon="card-outline" title={t('PAYMENTS')} onPress={() => router.push('/payments')} />
           {!isProMode ? <MenuRow icon="add-circle-outline" title={t('POST_JOB')} onPress={() => router.push('/new-job')} /> : null}
           {isPro ? (
             <View style={styles.menuRow}>

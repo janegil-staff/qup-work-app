@@ -12,6 +12,7 @@ import {
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Loading } from '@/components/Loading';
+import { PushHandler } from '@/components/PushHandler';
 import { colors } from '@/constants/theme';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { TimerProvider } from '@/context/TimerContext';
@@ -30,26 +31,36 @@ function RootNavigator({ fontsReady }) {
   if (!fontsReady || isLoading || !languageReady) return <Loading dark />;
 
   return (
-    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.concrete } }}>
-      <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="job/[id]" />
-      <Stack.Screen name="pro/[id]" />
-      <Stack.Screen name="my-jobs" />
-      <Stack.Screen name="my-offers" />
-      <Stack.Screen name="notifications" />
-      <Stack.Screen name="invoices" />
-      <Stack.Screen name="invoice/[id]" />
-      <Stack.Screen name="become-pro" />
-      <Stack.Screen name="edit-pro" />
-      <Stack.Screen name="account" />
-      <Stack.Screen name="company/[id]" />
-      <Stack.Screen name="new-job" />
-      <Stack.Screen name="language" />
-      <Stack.Screen name="conversation/[id]" />
-      <Stack.Screen name="contract/[id]" />
-      <Stack.Screen name="offer/[jobId]" options={{ presentation: 'modal' }} />
-      <Stack.Screen name="(auth)" options={{ presentation: 'modal' }} />
-    </Stack>
+    <>
+      <PushHandler />
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.concrete } }}>
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="job/[id]" />
+        <Stack.Screen name="pro/[id]" />
+        <Stack.Screen name="my-jobs" />
+        <Stack.Screen name="my-offers" />
+        <Stack.Screen name="notifications" />
+        <Stack.Screen name="invoices" />
+        <Stack.Screen name="invoice/[id]" />
+        <Stack.Screen name="become-pro" />
+        <Stack.Screen name="edit-pro" />
+        <Stack.Screen name="account" />
+        <Stack.Screen name="company/[id]" />
+        <Stack.Screen name="new-job" />
+        <Stack.Screen name="language" />
+        <Stack.Screen name="conversation/[id]" />
+        <Stack.Screen name="contract/[id]" />
+        <Stack.Screen name="clients" />
+        <Stack.Screen name="client/[id]" />
+        <Stack.Screen name="client-form" />
+        <Stack.Screen name="new-assignment" />
+        <Stack.Screen name="change-password" />
+        <Stack.Screen name="payments" />
+        <Stack.Screen name="team/[id]" />
+        <Stack.Screen name="offer/[jobId]" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="(auth)" options={{ presentation: 'modal' }} />
+      </Stack>
+    </>
   );
 }
 

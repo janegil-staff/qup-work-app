@@ -1,6 +1,8 @@
 // /qup-work-app/src/app/job/[id].js
 // One job as a big work-order ticket. Public for open jobs; acting on it needs an account.
 // The customer sees the offers here and picks one; a pro sees their own offer.
+// The owner (the customer, or the pro on a job for their own client) can edit, cancel
+// or delete it until someone is hired.
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
@@ -8,7 +10,7 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from '@/components/AppText';
 import { Avatar } from '@/components/Avatar';
-import { BackButton } from '@/components/BackButton';
+import { BackButton, goBackOr } from '@/components/BackButton';
 import { BottomBar } from '@/components/BottomBar';
 import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
@@ -74,6 +76,8 @@ export default function JobScreen() {
   if (!data) return <Loading dark />;
 
   const { job, side, myOffer } = data;
+  const direct = job.source === 'direct';
+  const isOwner = (job.source === 'marketplace' && side === 'customer') || (direct && side === 'pro');
   const myOfferFull = myOffer ? offers.find((o) => o._id === myOffer._id) : null;
   const facts = [
     job.timing?.urgency && { icon: 'calendar-outline', label: t('FACT_WHEN'), value: t(URGENCY[job.timing.urgency]) },
@@ -84,7 +88,7 @@ export default function JobScreen() {
       value: job.workType === 'remote' ? t('REMOTE_WORK') : [job.address?.postalCode, placeText(job)].filter(Boolean).join(' '),
     },
     job.address?.line1 && { icon: 'home-outline', label: t('FACT_ADDRESS'), value: job.address.line1 },
-    { icon: 'document-text-outline', label: t('FACT_OFFERS'), value: job.offerCount ? t('OFFERS_RECEIVED', { n: job.offerCount }) : t('NONE_YET') },
+    !direct && { icon: 'document-text-outline', label: t('FACT_OFFERS'), value: job.offerCount ? t('OFFERS_RECEIVED', { n: job.offerCount }) : t('NONE_YET') },
   ].filter(Boolean);
 
   return (
@@ -107,7 +111,7 @@ export default function JobScreen() {
             {job.title}
           </AppText>
           <AppText variant="small" onDark muted>
-            {t('POSTED_AGO', { time: timeAgo(job.publishedAt ?? job.createdAt) })}
+            {direct ? t('CREATED_AGO', { time: timeAgo(job.createdAt) }) : t('POSTED_AGO', { time: timeAgo(job.publishedAt ?? job.createdAt) })}
           </AppText>
         </View>
 
@@ -142,11 +146,35 @@ export default function JobScreen() {
 
         {job.contract && (side === 'customer' || side === 'pro') ? <ContractLink job={job} side={side} /> : null}
 
+        {isOwner ? <OwnerTools job={job} onChanged={load} /> : null}
+
         {job.description ? (
           <View style={styles.section}>
             <AppText variant="title">{t('DESCRIPTION')}</AppText>
             <AppText variant="body">{job.description}</AppText>
           </View>
+        ) : null}
+
+        {direct && job.client ? (
+          <Pressable
+            onPress={() => router.push({ pathname: '/client/[id]', params: { id: job.client._id } })}
+            accessibilityRole="button"
+            style={({ pressed }) => [styles.section, styles.person, pressed && { opacity: 0.7 }]}
+          >
+            <Avatar name={job.client.name} size={44} dark />
+            <View style={{ flex: 1 }}>
+              <AppText variant="caption" muted>
+                {t('CLIENT')}
+              </AppText>
+              <AppText variant="bodyStrong">{job.client.name}</AppText>
+              {job.client.phone ? (
+                <AppText variant="small" muted>
+                  {job.client.phone}
+                </AppText>
+              ) : null}
+            </View>
+            <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
+          </Pressable>
         ) : null}
 
         {job.customer ? (
@@ -161,7 +189,7 @@ export default function JobScreen() {
           </View>
         ) : null}
 
-        {side === 'customer' ? <CustomerOffers job={job} offers={offers} onChanged={load} /> : null}
+        {side === 'customer' && job.status !== 'draft' ? <CustomerOffers job={job} offers={offers} onChanged={load} /> : null}
         {myOfferFull && myOfferFull.status !== 'withdrawn' ? <MyOffer offer={myOfferFull} onChanged={load} /> : null}
 
         {side === 'guest' || side === 'viewer' ? (
@@ -172,6 +200,82 @@ export default function JobScreen() {
       </ScrollView>
 
       <JobActions job={job} side={side} myOffer={myOffer} offers={offers} isPro={isPro} />
+    </View>
+  );
+}
+
+// Edit / cancel / delete / publish, for whoever owns the job, until someone is hired
+function OwnerTools({ job, onChanged }) {
+  const { t } = useI18n();
+  const [busy, setBusy] = useState(null);
+  const [error, setError] = useState(null);
+  if (job.contract || !['draft', 'open'].includes(job.status)) return null;
+  const draft = job.status === 'draft';
+
+  async function act(key, ask, fn) {
+    if (ask && !(await confirm(ask))) return;
+    setBusy(key);
+    setError(null);
+    try {
+      await fn();
+      if (key === 'delete') goBackOr('/my-jobs');
+      else await onChanged();
+    } catch (err) {
+      setError(errorMessage(err));
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  const cancel = () =>
+    act(
+      'cancel',
+      {
+        title: t('CANCEL_JOB_TITLE'),
+        message: job.offerCount ? t('CANCEL_JOB_WITH_OFFERS_TEXT', { n: job.offerCount }) : t('CANCEL_JOB_TEXT'),
+        confirmText: t('CANCEL_JOB'),
+        destructive: true,
+      },
+      () => api(`/jobs/${job._id}/cancel`, { method: 'POST' })
+    );
+  const remove = () =>
+    act(
+      'delete',
+      { title: t('DELETE_JOB_TITLE'), message: t('DELETE_JOB_TEXT'), confirmText: t('DELETE_ACTION'), destructive: true },
+      () => api(`/jobs/${job._id}`, { method: 'DELETE' })
+    );
+  const publish = () => act('publish', null, () => api(`/jobs/${job._id}/publish`, { method: 'POST' }));
+
+  return (
+    <View style={styles.section}>
+      <ErrorBanner message={error} />
+      {draft && job.source === 'marketplace' ? (
+        <View style={styles.draftNote}>
+          <Ionicons name="eye-off-outline" size={18} color={colors.textMuted} />
+          <AppText variant="small" muted style={{ flex: 1 }}>
+            {t('DRAFT_NOT_VISIBLE')}
+          </AppText>
+        </View>
+      ) : null}
+      <View style={styles.ownerRow}>
+        {draft && job.source === 'marketplace' ? (
+          <Button title={t('PUBLISH_JOB')} icon="megaphone-outline" small loading={busy === 'publish'} disabled={Boolean(busy)} onPress={publish} style={{ flexGrow: 1 }} />
+        ) : null}
+        <Button
+          title={t('EDIT_JOB')}
+          icon="create-outline"
+          variant="outline"
+          small
+          disabled={Boolean(busy)}
+          onPress={() => router.push({ pathname: '/new-job', params: { id: job._id } })}
+          style={{ flexGrow: 1 }}
+        />
+        {draft ? (
+          <Button title={t('DELETE_ACTION')} icon="trash-outline" variant="danger" small loading={busy === 'delete'} disabled={Boolean(busy)} onPress={remove} style={{ flexGrow: 1 }} />
+        ) : (
+          <Button title={t('CANCEL_JOB')} icon="close-circle-outline" variant="danger" small loading={busy === 'cancel'} disabled={Boolean(busy)} onPress={cancel} style={{ flexGrow: 1 }} />
+        )}
+      </View>
     </View>
   );
 }
@@ -431,8 +535,20 @@ function JobActions({ job, side, myOffer, offers, isPro }) {
     );
   }
 
-  // The pro doing the job
+  // The pro doing the job. On their own client's job they set up the contract themselves.
   if (side === 'pro') {
+    if (job.source === 'direct') {
+      if (job.contract || ['completed', 'cancelled'].includes(job.status)) return null;
+      return (
+        <BottomBar>
+          <Button
+            title={t('CREATE_CONTRACT')}
+            icon="document-text-outline"
+            onPress={() => router.push({ pathname: '/new-assignment', params: { job: job._id } })}
+          />
+        </BottomBar>
+      );
+    }
     return (
       <BottomBar>
         <MessageButton person={job.customer} jobId={job._id} variant="dark" />
@@ -449,6 +565,7 @@ function JobActions({ job, side, myOffer, offers, isPro }) {
         </BottomBar>
       );
     }
+    if (job.status !== 'open') return null; // drafts are published from the page itself
     const waiting = offers.filter((o) => o.status === 'pending').length;
     return (
       <BottomBar>
@@ -518,6 +635,8 @@ const styles = StyleSheet.create({
     borderColor: colors.line,
   },
   person: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
+  ownerRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
+  draftNote: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   privacy: { marginTop: spacing.xl, marginHorizontal: spacing.xl },
   note: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: spacing.sm, minHeight: 44 },
 });

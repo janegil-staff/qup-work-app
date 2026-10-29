@@ -1,23 +1,26 @@
 // /qup-work-app/src/app/new-job.js
 // Post a job to the marketplace: create it, publish it, then open it.
-import { router } from 'expo-router';
-import { useState } from 'react';
+// With ?id= it edits an existing job instead (while it's a draft or still open).
+import { router, useLocalSearchParams } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from '@/components/AppText';
-import { BackButton } from '@/components/BackButton';
+import { BackButton, goBackOr } from '@/components/BackButton';
 import { Button } from '@/components/Button';
 import { ChoiceChips } from '@/components/ChoiceChips';
 import { ErrorBanner } from '@/components/ErrorBanner';
+import { EmptyState } from '@/components/EmptyState';
 import { FocusStatusBar } from '@/components/FocusStatusBar';
+import { Loading } from '@/components/Loading';
 import { SignInPrompt } from '@/components/SignInPrompt';
 import { TextField } from '@/components/TextField';
 import { colors, spacing } from '@/constants/theme';
 import { useAuth } from '@/context/AuthContext';
-import { api, errorMessage } from '@/lib/api';
+import { api, ApiError, errorMessage } from '@/lib/api';
 import { useCategories } from '@/lib/categories';
 import { useI18n } from '@/i18n';
-import { categoryName, URGENCY } from '@/lib/format';
+import { categoryName, oreInputText, URGENCY } from '@/lib/format';
 
 const URGENCY_OPTIONS = Object.entries(URGENCY).map(([value, label]) => ({ value, label }));
 const WORK_TYPES = [
@@ -31,24 +34,10 @@ const toOre = (text) => {
 };
 
 export default function NewJobScreen() {
+  const { id } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
   const { t } = useI18n();
-  const { roots, childrenOf } = useCategories();
-
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState(null);
-  const [subcategory, setSubcategory] = useState(null);
-  const [workType, setWorkType] = useState('onsite');
-  const [postalCode, setPostalCode] = useState('');
-  const [city, setCity] = useState('');
-  const [line1, setLine1] = useState('');
-  const [budgetMin, setBudgetMin] = useState('');
-  const [budgetMax, setBudgetMax] = useState('');
-  const [urgency, setUrgency] = useState('flexible');
-  const [error, setError] = useState(null);
-  const [saving, setSaving] = useState(false);
 
   if (!user) {
     return (
@@ -58,6 +47,69 @@ export default function NewJobScreen() {
       </View>
     );
   }
+  return id ? <EditJobLoader key={id} jobId={id} /> : <JobForm />;
+}
+
+// Loads the job first, so the form starts filled in
+function EditJobLoader({ jobId }) {
+  const insets = useSafeAreaInsets();
+  const { t } = useI18n();
+  const [job, setJob] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    api(`/jobs/${jobId}`)
+      .then((res) => {
+        const owner = (res.job.source === 'direct' && res.side === 'pro') || (res.job.source === 'marketplace' && res.side === 'customer');
+        if (!owner) throw new Error(t('JOB_NOT_YOURS'));
+        if (!['draft', 'open'].includes(res.job.status)) throw new Error(t('JOB_CANNOT_EDIT'));
+        setJob(res.job);
+      })
+      .catch((err) => setError(err instanceof ApiError ? errorMessage(err) : err.message));
+  }, [jobId, t]);
+
+  if (error) {
+    return (
+      <View style={[styles.flex, { paddingTop: insets.top + spacing.md, paddingHorizontal: spacing.xl }]}>
+        <BackButton />
+        <EmptyState icon="clipboard-outline" title={t('JOB_NOT_FOUND')} text={error} />
+      </View>
+    );
+  }
+  if (!job) return <Loading />;
+  return <JobForm job={job} />;
+}
+
+function JobForm({ job }) {
+  const insets = useSafeAreaInsets();
+  const { t } = useI18n();
+  const { all, roots, childrenOf } = useCategories();
+  const editing = Boolean(job);
+
+  const [title, setTitle] = useState(job?.title ?? '');
+  const [description, setDescription] = useState(job?.description ?? '');
+  const [category, setCategory] = useState(job?.category?._id ?? null);
+  const [subcategory, setSubcategory] = useState(null);
+  const [workType, setWorkType] = useState(job?.workType ?? 'onsite');
+  const [postalCode, setPostalCode] = useState(job?.address?.postalCode ?? '');
+  const [city, setCity] = useState(job?.address?.city ?? '');
+  const [line1, setLine1] = useState(job?.address?.line1 ?? '');
+  const [budgetMin, setBudgetMin] = useState(oreInputText(job?.budget?.min));
+  const [budgetMax, setBudgetMax] = useState(oreInputText(job?.budget?.max));
+  const [urgency, setUrgency] = useState(job?.timing?.urgency ?? 'flexible');
+  const [error, setError] = useState(null);
+  const [saving, setSaving] = useState(false);
+
+  // A saved subcategory is shown as its main category + the sub, once categories are loaded
+  const savedCategory = job?.category?._id;
+  useEffect(() => {
+    if (!savedCategory || !all.length) return;
+    const found = all.find((c) => c._id === savedCategory);
+    if (found?.parent) {
+      setCategory(found.parent);
+      setSubcategory(found._id);
+    }
+  }, [savedCategory, all]);
 
   const subs = category ? childrenOf(category) : [];
 
@@ -70,24 +122,36 @@ export default function NewJobScreen() {
 
     setError(null);
     setSaving(true);
+    const body = {
+      title: title.trim(),
+      description: description.trim() || undefined,
+      category: subcategory ?? category ?? undefined,
+      workType,
+      address:
+        workType === 'onsite'
+          ? { line1: line1.trim() || undefined, postalCode: postalCode.trim() || undefined, city: city.trim() }
+          : undefined,
+      budget: min || max ? { min, max } : undefined,
+      timing: { ...job?.timing, urgency },
+    };
     try {
-      const { job } = await api('/jobs', {
-        method: 'POST',
-        body: {
-          title: title.trim(),
-          description: description.trim() || undefined,
-          category: subcategory ?? category ?? undefined,
-          workType,
-          address:
-            workType === 'onsite'
-              ? { line1: line1.trim() || undefined, postalCode: postalCode.trim() || undefined, city: city.trim() }
-              : undefined,
-          budget: min || max ? { min, max } : undefined,
-          timing: { urgency },
-        },
-      });
-      await api(`/jobs/${job._id}/publish`, { method: 'POST' });
-      router.replace(`/job/${job._id}`);
+      if (editing) {
+        // Emptied fields are cleared, not left as they were
+        await api(`/jobs/${job._id}`, {
+          method: 'PATCH',
+          body: {
+            ...body,
+            description: description.trim(),
+            category: subcategory ?? category ?? null,
+            budget: { min: min ?? null, max: max ?? null },
+          },
+        });
+        goBackOr(`/job/${job._id}`);
+        return;
+      }
+      const { job: created } = await api('/jobs', { method: 'POST', body });
+      await api(`/jobs/${created._id}/publish`, { method: 'POST' });
+      router.replace(`/job/${created._id}`);
     } catch (err) {
       setError(errorMessage(err));
       setSaving(false);
@@ -104,10 +168,10 @@ export default function NewJobScreen() {
         <BackButton />
         <View style={{ gap: spacing.xs }}>
           <AppText variant="h1" accessibilityRole="header">
-            {t('POST_JOB')}
+            {editing ? t('EDIT_JOB') : t('POST_JOB')}
           </AppText>
           <AppText variant="body" muted>
-            {t('POST_JOB_INTRO')}
+            {editing ? (job.offerCount ? t('EDIT_JOB_WITH_OFFERS', { n: job.offerCount }) : t('EDIT_JOB_INTRO')) : t('POST_JOB_INTRO')}
           </AppText>
         </View>
 
@@ -171,7 +235,7 @@ export default function NewJobScreen() {
         <ChoiceChips label={t('FACT_WHEN')} options={URGENCY_OPTIONS.map((o) => ({ ...o, label: t(o.label) }))} value={urgency} onChange={setUrgency} />
 
         <ErrorBanner message={error} />
-        <Button title={t('PUBLISH_JOB')} onPress={submit} loading={saving} />
+        <Button title={editing ? t('SAVE_CHANGES') : t('PUBLISH_JOB')} icon={editing ? 'checkmark' : undefined} onPress={submit} loading={saving} />
       </ScrollView>
     </KeyboardAvoidingView>
   );

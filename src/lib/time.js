@@ -56,3 +56,39 @@ export function recentDays(count = 7) {
     return d;
   });
 }
+
+// Typing a date by hand: "27.10", "27.10.2026", "27/10/26" or "2026-10-27" → Date at local midnight.
+// No year means this year. Invalid → null
+export function parseDay(text) {
+  const s = String(text ?? '').trim();
+  if (!s) return null;
+  let d;
+  let m;
+  let y;
+  const iso = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  const local = s.match(/^(\d{1,2})[./-](\d{1,2})(?:[./-](\d{2}|\d{4}))?\.?$/);
+  if (iso) [, y, m, d] = iso.map(Number);
+  else if (local) {
+    d = Number(local[1]);
+    m = Number(local[2]);
+    y = local[3] ? Number(local[3]) : new Date().getFullYear();
+    if (y < 100) y += 2000;
+  } else return null;
+  const date = new Date(y, m - 1, d);
+  if (date.getFullYear() !== y || date.getMonth() !== m - 1 || date.getDate() !== d) return null;
+  return date;
+}
+
+// Date → "27.10.2026" for putting back in a text field
+export function dayInputText(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
+}
+
+// A day as an ISO string at noon UTC-ish local, so it never slips to the day before in another time zone
+export function dayToIso(date) {
+  const d = new Date(date);
+  d.setHours(12, 0, 0, 0);
+  return d.toISOString();
+}

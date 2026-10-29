@@ -32,7 +32,12 @@ const KINDS = {
     bg: colors.line,
     text: (d) =>
       job(d) && {
-        title: d.reason === 'other_chosen' ? t('NOTIF_OFFER_OTHER_CHOSEN') : t('NOTIF_OFFER_DECLINED'),
+        title:
+          d.reason === 'other_chosen'
+            ? t('NOTIF_OFFER_OTHER_CHOSEN')
+            : d.reason === 'job_cancelled'
+              ? t('NOTIF_JOB_WITHDRAWN')
+              : t('NOTIF_OFFER_DECLINED'),
         body: t('NOTIF_JOB_BODY', { job: job(d) }),
       },
     target: () => ({ pathname: '/my-offers' }),

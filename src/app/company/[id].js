@@ -2,8 +2,9 @@
 // Company settings (owner/admin): logo, details, and what goes on invoices
 // (bank account, payment terms, footer text). Workers only see the details.
 import { useEffect, useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from '@/components/AppText';
 import { BackButton, goBackOr } from '@/components/BackButton';
@@ -17,7 +18,7 @@ import { ImagePickerButton } from '@/components/ImagePickerButton';
 import { Loading } from '@/components/Loading';
 import { CompanyFields, validateCompany } from '@/components/ProFields';
 import { TextField } from '@/components/TextField';
-import { colors, spacing } from '@/constants/theme';
+import { colors, radius, spacing } from '@/constants/theme';
 import { useAuth } from '@/context/AuthContext';
 import { useI18n } from '@/i18n';
 import { api, errorMessage } from '@/lib/api';
@@ -126,6 +127,21 @@ export default function CompanyScreen() {
         ) : null}
         <ErrorBanner message={error} />
 
+        <Pressable
+          onPress={() => router.push({ pathname: '/team/[id]', params: { id } })}
+          accessibilityRole="button"
+          style={({ pressed }) => [styles.teamRow, pressed && { opacity: 0.7 }]}
+        >
+          <Ionicons name="people-outline" size={22} color={colors.slate} />
+          <View style={{ flex: 1 }}>
+            <AppText variant="bodyStrong">{t('TEAM')}</AppText>
+            <AppText variant="small" muted>
+              {t('TEAM_ROW_HINT')}
+            </AppText>
+          </View>
+          <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
+        </Pressable>
+
         {canEdit ? (
           <ImagePickerButton name={details.name} url={logoUrl} purpose="avatar" onChange={setLogoUrl} dark />
         ) : null}
@@ -157,4 +173,13 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.concrete },
   content: { padding: spacing.xl, gap: spacing.xl, paddingBottom: spacing.xxxl },
   group: { gap: spacing.xl },
+  teamRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    minHeight: 64,
+    paddingHorizontal: spacing.lg,
+    borderRadius: radius.lg,
+    backgroundColor: colors.paper,
+  },
 });

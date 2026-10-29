@@ -64,3 +64,27 @@ export function largeUrl(url) {
   if (!url?.includes('res.cloudinary.com') || !url.includes('/upload/')) return url;
   return url.replace('/upload/', '/upload/c_limit,w_1600,h_1600,q_auto,f_auto/');
 }
+
+// Uploads something made in the app (a drawn signature) as a data URI:
+//   await uploadDataUri(`data:image/svg+xml;base64,${b64}`, { purpose: 'signature' })  → url
+export async function uploadDataUri(dataUri, { purpose = 'signature' } = {}) {
+  const sig = await api('/uploads/signature', { method: 'POST', body: { purpose } });
+  const form = new FormData();
+  form.append('file', dataUri);
+  form.append('api_key', sig.apiKey);
+  form.append('timestamp', String(sig.timestamp));
+  form.append('folder', sig.folder);
+  form.append('signature', sig.signature);
+
+  let res;
+  try {
+    res = await fetch(sig.uploadUrl, { method: 'POST', body: form });
+  } catch {
+    throw new ApiError(t('ERROR_OFFLINE'), 0);
+  }
+  const data = await res.json().catch(() => null);
+  if (!res.ok || !data?.secure_url) {
+    throw new ApiError(t('UPLOAD_FAILED'), res.status, data?.error?.message ? { cloudinary: data.error.message } : undefined);
+  }
+  return data.secure_url;
+}

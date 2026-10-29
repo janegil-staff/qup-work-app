@@ -214,3 +214,11 @@ export function categoryIcon(name) {
   if (Ionicons.glyphMap[base]) return base;
   return 'construct-outline';
 }
+
+// 1250050 øre → "12500,50" for putting an amount back into a text field ("" when empty)
+export function oreInputText(ore) {
+  if (ore == null) return '';
+  const kroner = Math.floor(Math.abs(ore) / 100);
+  const rest = Math.abs(ore) % 100;
+  return `${ore < 0 ? '-' : ''}${kroner}${rest ? `,${String(rest).padStart(2, '0')}` : ''}`;
+}

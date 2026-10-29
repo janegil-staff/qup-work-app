@@ -30,6 +30,12 @@
           "photosPermission": "Qup Work uses your photos so you can show the customer the finished work.",
           "cameraPermission": "Qup Work uses the camera to take photos of the work."
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#1D2A2E"
+        }
       ]
     ]
   }
