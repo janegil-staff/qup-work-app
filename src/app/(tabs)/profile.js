@@ -78,7 +78,9 @@ function MyProfile() {
       <FocusStatusBar style="light" />
 
       <View style={[styles.hero, { paddingTop: insets.top + spacing.xl }]}>
-        <Avatar name={user.name} url={user.avatarUrl} size={72} />
+        <Pressable onPress={() => router.push('/account')} accessibilityRole="button" accessibilityLabel={t('MY_DETAILS')}>
+          <Avatar name={user.name} url={user.avatarUrl} size={72} />
+        </Pressable>
         <View style={{ gap: 2 }}>
           <AppText variant="h1" onDark>
             {user.name}
@@ -114,6 +116,8 @@ function MyProfile() {
               onPress={() => router.push({ pathname: '/pro/[id]', params: { id: user._id } })}
             />
           ) : null}
+          {isPro ? <MenuRow icon="create-outline" title={t('EDIT_PRO_PROFILE')} onPress={() => router.push('/edit-pro')} /> : null}
+          <MenuRow icon="person-outline" title={t('MY_DETAILS')} onPress={() => router.push('/account')} />
           {!isProMode ? <MenuRow icon="add-circle-outline" title={t('POST_JOB')} onPress={() => router.push('/new-job')} /> : null}
           {isPro ? (
             <View style={styles.menuRow}>
@@ -138,8 +142,13 @@ function MyProfile() {
 
         {companies.length ? (
           <View style={styles.group}>
-            {companies.map((c) => (
-              <View key={c._id} style={styles.menuRow}>
+            {companies.map((c, i) => (
+              <Pressable
+                key={c._id}
+                onPress={() => router.push({ pathname: '/company/[id]', params: { id: c._id } })}
+                accessibilityRole="button"
+                style={({ pressed }) => [styles.menuRow, i === companies.length - 1 && styles.lastRow, pressed && { opacity: 0.7 }]}
+              >
                 <Avatar name={c.name} url={c.logoUrl} size={40} dark />
                 <View style={{ flex: 1 }}>
                   <AppText variant="bodyStrong">{c.name}</AppText>
@@ -148,7 +157,8 @@ function MyProfile() {
                     {c.orgNumber ? `, ${t('ORG_NUMBER_SHORT', { n: c.orgNumber })}` : ''}
                   </AppText>
                 </View>
-              </View>
+                <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
+              </Pressable>
             ))}
           </View>
         ) : null}
@@ -165,8 +175,15 @@ function MyProfile() {
           <View style={[styles.group, styles.proInvite]}>
             <AppText variant="title">{t('PRO_INVITE_TITLE')}</AppText>
             <AppText variant="small" muted>
-              {t('PRO_INVITE_PROFILE_TEXT')}
+              {t('BECOME_PRO_PROFILE_TEXT')}
             </AppText>
+            <Button
+              title={t('BECOME_PRO')}
+              icon="construct-outline"
+              small
+              onPress={() => router.push('/become-pro')}
+              style={{ alignSelf: 'flex-start', marginTop: spacing.sm }}
+            />
           </View>
         ) : null}
 

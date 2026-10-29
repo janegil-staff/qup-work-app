@@ -290,7 +290,7 @@ export default function ExploreScreen() {
                 title={t('BECOME_PRO')}
                 small
                 style={{ alignSelf: 'flex-start', marginTop: spacing.xs }}
-                onPress={() => (user ? router.push('/profile') : router.push('/register'))}
+                onPress={() => (user ? router.push('/become-pro') : router.push('/register'))}
               />
             </View>
           ) : null}
