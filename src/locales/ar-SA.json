@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "مغادرة الشركة",
 	"LEAVE_COMPANY_TITLE": "مغادرة الشركة؟",
 	"LEAVE_COMPANY_TEXT": "لن ترى مهام {name} وعملاءها بعد الآن.",
-	"NOTIF_JOB_WITHDRAWN": "ألغى العميل المهمة"
+	"NOTIF_JOB_WITHDRAWN": "ألغى العميل المهمة",
+	"INVOICE_EMAILED_TO": "تلقى {email} الفاتورة بصيغة PDF.",
+	"INVOICE_NO_EMAIL": "أُرسلت، لكن ليس بالبريد الإلكتروني: لا يملك العميل عنوان بريد إلكتروني. افتح ملف PDF وشاركه بنفسك، أو استخدم إرسال بالبريد الإلكتروني.",
+	"INVOICE_EMAIL_NOT_SET_UP": "أُرسلت، لكن ليس بالبريد الإلكتروني: لم يُضبط البريد الإلكتروني على الخادم بعد (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "أُرسلت، لكن فشل البريد الإلكتروني: {error}",
+	"SEND_INVOICE_EMAIL_TO": "يُرسل ملف PDF بالبريد الإلكتروني إلى {email}.",
+	"SEND_INVOICE_NO_EMAIL": "لا يوجد عنوان بريد إلكتروني، لذا لن تُرسل بالبريد. يمكنك مشاركة ملف PDF بنفسك.",
+	"EMAIL_INVOICE": "إرسال بالبريد الإلكتروني",
+	"PREVIEW_PDF": "معاينة PDF",
+	"OPEN_PDF": "فتح PDF",
+	"EMAILED": "أُرسلت بالبريد الإلكتروني",
+	"EMAILED_ON": "{email}، {date}",
+	"NOT_EMAILED": "لم تُرسل بالبريد الإلكتروني",
+	"INVOICE_LANGUAGE": "لغة الفاتورة"
 }

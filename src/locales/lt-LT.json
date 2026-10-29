@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Palikti įmonę",
 	"LEAVE_COMPANY_TITLE": "Palikti įmonę?",
 	"LEAVE_COMPANY_TEXT": "Nebematysite įmonės {name} darbų ir klientų.",
-	"NOTIF_JOB_WITHDRAWN": "Klientas atšaukė darbą"
+	"NOTIF_JOB_WITHDRAWN": "Klientas atšaukė darbą",
+	"INVOICE_EMAILED_TO": "{email} gavo sąskaitą PDF formatu.",
+	"INVOICE_NO_EMAIL": "Išsiųsta, bet ne el. paštu: klientas neturi el. pašto adreso. Atidaryk PDF ir pasidalyk juo pats arba naudok Siųsti el. paštu.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Išsiųsta, bet ne el. paštu: el. paštas serveryje dar nenustatytas (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Išsiųsta, bet el. laiškas nepavyko: {error}",
+	"SEND_INVOICE_EMAIL_TO": "PDF siunčiamas el. paštu adresu {email}.",
+	"SEND_INVOICE_NO_EMAIL": "El. pašto adreso nėra, todėl el. paštu nebus siunčiama. PDF gali pasidalyti pats.",
+	"EMAIL_INVOICE": "Siųsti el. paštu",
+	"PREVIEW_PDF": "PDF peržiūra",
+	"OPEN_PDF": "Atidaryti PDF",
+	"EMAILED": "Išsiųsta el. paštu",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Neišsiųsta el. paštu",
+	"INVOICE_LANGUAGE": "Sąskaitos kalba"
 }

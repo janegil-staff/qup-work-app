@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Opustit firmu",
 	"LEAVE_COMPANY_TITLE": "Opustit firmu?",
 	"LEAVE_COMPANY_TEXT": "Už neuvidíte zakázky a zákazníky firmy {name}.",
-	"NOTIF_JOB_WITHDRAWN": "Zákazník zakázku zrušil"
+	"NOTIF_JOB_WITHDRAWN": "Zákazník zakázku zrušil",
+	"INVOICE_EMAILED_TO": "{email} dostal fakturu jako PDF.",
+	"INVOICE_NO_EMAIL": "Odesláno, ale ne e-mailem: zákazník nemá e-mailovou adresu. Otevřete PDF a sdílejte ho sami, nebo použijte Poslat e-mailem.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Odesláno, ale ne e-mailem: e-mail zatím není na serveru nastaven (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Odesláno, ale e-mail selhal: {error}",
+	"SEND_INVOICE_EMAIL_TO": "PDF se pošle e-mailem na {email}.",
+	"SEND_INVOICE_NO_EMAIL": "Chybí e-mailová adresa, takže se nepošle e-mailem. PDF můžete sdílet sami.",
+	"EMAIL_INVOICE": "Poslat e-mailem",
+	"PREVIEW_PDF": "Náhled PDF",
+	"OPEN_PDF": "Otevřít PDF",
+	"EMAILED": "Posláno e-mailem",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Neposláno e-mailem",
+	"INVOICE_LANGUAGE": "Jazyk faktury"
 }

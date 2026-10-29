@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Покинуть компанию",
 	"LEAVE_COMPANY_TITLE": "Покинуть компанию?",
 	"LEAVE_COMPANY_TEXT": "Вы больше не будете видеть заказы и клиентов {name}.",
-	"NOTIF_JOB_WITHDRAWN": "Заказчик отменил заказ"
+	"NOTIF_JOB_WITHDRAWN": "Заказчик отменил заказ",
+	"INVOICE_EMAILED_TO": "{email} получил счёт в PDF.",
+	"INVOICE_NO_EMAIL": "Отправлен, но не по почте: у клиента нет адреса электронной почты. Откройте PDF и поделитесь им сами или используйте Отправить по почте.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Отправлен, но не по почте: почта ещё не настроена на сервере (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Отправлен, но письмо не ушло: {error}",
+	"SEND_INVOICE_EMAIL_TO": "PDF будет отправлен по почте на {email}.",
+	"SEND_INVOICE_NO_EMAIL": "Адреса электронной почты нет, поэтому письмо не отправится. Вы можете поделиться PDF сами.",
+	"EMAIL_INVOICE": "Отправить по почте",
+	"PREVIEW_PDF": "Просмотр PDF",
+	"OPEN_PDF": "Открыть PDF",
+	"EMAILED": "Отправлен по почте",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Не отправлен по почте",
+	"INVOICE_LANGUAGE": "Язык счёта"
 }

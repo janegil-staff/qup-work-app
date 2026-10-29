@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Pamest uzņēmumu",
 	"LEAVE_COMPANY_TITLE": "Pamest uzņēmumu?",
 	"LEAVE_COMPANY_TEXT": "Tu vairs neredzēsi uzņēmuma {name} darbus un klientus.",
-	"NOTIF_JOB_WITHDRAWN": "Klients atcēla darbu"
+	"NOTIF_JOB_WITHDRAWN": "Klients atcēla darbu",
+	"INVOICE_EMAILED_TO": "{email} saņēma rēķinu PDF formātā.",
+	"INVOICE_NO_EMAIL": "Nosūtīts, bet ne e-pastā: klientam nav e-pasta adreses. Atver PDF un kopīgo to pats vai izmanto Sūtīt e-pastā.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Nosūtīts, bet ne e-pastā: e-pasts serverī vēl nav iestatīts (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Nosūtīts, bet e-pasts neizdevās: {error}",
+	"SEND_INVOICE_EMAIL_TO": "PDF tiek nosūtīts e-pastā uz {email}.",
+	"SEND_INVOICE_NO_EMAIL": "Nav e-pasta adreses, tāpēc e-pastā netiks sūtīts. PDF vari kopīgot pats.",
+	"EMAIL_INVOICE": "Sūtīt e-pastā",
+	"PREVIEW_PDF": "PDF priekšskatījums",
+	"OPEN_PDF": "Atvērt PDF",
+	"EMAILED": "Nosūtīts e-pastā",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Nav nosūtīts e-pastā",
+	"INVOICE_LANGUAGE": "Rēķina valoda"
 }

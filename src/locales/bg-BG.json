@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Напусни фирмата",
 	"LEAVE_COMPANY_TITLE": "Да напуснеш ли фирмата?",
 	"LEAVE_COMPANY_TEXT": "Вече няма да виждаш поръчките и клиентите на {name}.",
-	"NOTIF_JOB_WITHDRAWN": "Клиентът отмени поръчката"
+	"NOTIF_JOB_WITHDRAWN": "Клиентът отмени поръчката",
+	"INVOICE_EMAILED_TO": "{email} получи фактурата като PDF.",
+	"INVOICE_NO_EMAIL": "Изпратена, но не по имейл: клиентът няма имейл адрес. Отвори PDF файла и го сподели сам или използвай Изпрати по имейл.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Изпратена, но не по имейл: имейлът още не е настроен на сървъра (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Изпратена, но имейлът не успя: {error}",
+	"SEND_INVOICE_EMAIL_TO": "PDF файлът се изпраща по имейл до {email}.",
+	"SEND_INVOICE_NO_EMAIL": "Няма имейл адрес, затова няма да бъде изпратена по имейл. Можеш сам да споделиш PDF файла.",
+	"EMAIL_INVOICE": "Изпрати по имейл",
+	"PREVIEW_PDF": "Преглед на PDF",
+	"OPEN_PDF": "Отвори PDF",
+	"EMAILED": "Изпратена по имейл",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Не е изпратена по имейл",
+	"INVOICE_LANGUAGE": "Език на фактурата"
 }

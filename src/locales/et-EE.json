@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Lahku ettevõttest",
 	"LEAVE_COMPANY_TITLE": "Kas lahkud ettevõttest?",
 	"LEAVE_COMPANY_TEXT": "Sa ei näe enam ettevõtte {name} töid ja kliente.",
-	"NOTIF_JOB_WITHDRAWN": "Klient tühistas töö"
+	"NOTIF_JOB_WITHDRAWN": "Klient tühistas töö",
+	"INVOICE_EMAILED_TO": "{email} sai arve PDF-ina.",
+	"INVOICE_NO_EMAIL": "Saadetud, aga mitte e-postiga: kliendil pole e-posti aadressi. Ava PDF ja jaga seda ise või kasuta nuppu Saada e-postiga.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Saadetud, aga mitte e-postiga: e-post pole serveris veel seadistatud (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Saadetud, aga e-kiri ebaõnnestus: {error}",
+	"SEND_INVOICE_EMAIL_TO": "PDF saadetakse e-postiga aadressile {email}.",
+	"SEND_INVOICE_NO_EMAIL": "E-posti aadressi pole, seega e-postiga ei saadeta. PDF-i saad ise jagada.",
+	"EMAIL_INVOICE": "Saada e-postiga",
+	"PREVIEW_PDF": "PDF-i eelvaade",
+	"OPEN_PDF": "Ava PDF",
+	"EMAILED": "Saadetud e-postiga",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "E-postiga saatmata",
+	"INVOICE_LANGUAGE": "Arve keel"
 }

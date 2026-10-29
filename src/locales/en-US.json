@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Leave the company",
 	"LEAVE_COMPANY_TITLE": "Leave the company?",
 	"LEAVE_COMPANY_TEXT": "You no longer see {name}'s jobs and clients.",
-	"NOTIF_JOB_WITHDRAWN": "The customer cancelled the job"
+	"NOTIF_JOB_WITHDRAWN": "The customer cancelled the job",
+	"INVOICE_EMAILED_TO": "The PDF was emailed to {email}.",
+	"INVOICE_NO_EMAIL": "Sent, but not emailed: the client has no email address. Open the PDF and share it yourself, or use Email invoice.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Sent, but not emailed: email isn't set up on the server yet (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Sent, but the email failed: {error}",
+	"SEND_INVOICE_EMAIL_TO": "The PDF is emailed to {email}.",
+	"SEND_INVOICE_NO_EMAIL": "There's no email address, so it won't be emailed. You can share the PDF yourself.",
+	"EMAIL_INVOICE": "Email invoice",
+	"PREVIEW_PDF": "Preview PDF",
+	"OPEN_PDF": "Open PDF",
+	"EMAILED": "Emailed",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Not emailed",
+	"INVOICE_LANGUAGE": "Language on the invoice"
 }

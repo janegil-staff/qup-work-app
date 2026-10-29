@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Lämna företaget",
 	"LEAVE_COMPANY_TITLE": "Lämna företaget?",
 	"LEAVE_COMPANY_TEXT": "Du ser inte längre uppdragen och kunderna hos {name}.",
-	"NOTIF_JOB_WITHDRAWN": "Kunden ställde in uppdraget"
+	"NOTIF_JOB_WITHDRAWN": "Kunden ställde in uppdraget",
+	"INVOICE_EMAILED_TO": "{email} har fått fakturan som PDF.",
+	"INVOICE_NO_EMAIL": "Skickad, men inte via e-post: kunden saknar e-postadress. Öppna PDF:en och dela den själv, eller använd Skicka via e-post.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Skickad, men inte via e-post: e-post är inte konfigurerad på servern än (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Skickad, men e-postmeddelandet misslyckades: {error}",
+	"SEND_INVOICE_EMAIL_TO": "PDF:en skickas via e-post till {email}.",
+	"SEND_INVOICE_NO_EMAIL": "Det finns ingen e-postadress, så den skickas inte via e-post. Du kan dela PDF:en själv.",
+	"EMAIL_INVOICE": "Skicka via e-post",
+	"PREVIEW_PDF": "Förhandsgranska PDF",
+	"OPEN_PDF": "Öppna PDF",
+	"EMAILED": "Skickad via e-post",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Inte skickad via e-post",
+	"INVOICE_LANGUAGE": "Språk på fakturan"
 }

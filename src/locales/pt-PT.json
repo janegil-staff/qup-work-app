@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Sair da empresa",
 	"LEAVE_COMPANY_TITLE": "Sair da empresa?",
 	"LEAVE_COMPANY_TEXT": "Deixas de ver os trabalhos e os clientes de {name}.",
-	"NOTIF_JOB_WITHDRAWN": "O cliente cancelou o trabalho"
+	"NOTIF_JOB_WITHDRAWN": "O cliente cancelou o trabalho",
+	"INVOICE_EMAILED_TO": "{email} recebeu a fatura em PDF.",
+	"INVOICE_NO_EMAIL": "Enviada, mas não por email: o cliente não tem endereço de email. Abra o PDF e partilhe-o, ou use Enviar por email.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Enviada, mas não por email: o email ainda não está configurado no servidor (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Enviada, mas o email falhou: {error}",
+	"SEND_INVOICE_EMAIL_TO": "O PDF é enviado por email para {email}.",
+	"SEND_INVOICE_NO_EMAIL": "Não há endereço de email, por isso não será enviada por email. Pode partilhar o PDF.",
+	"EMAIL_INVOICE": "Enviar por email",
+	"PREVIEW_PDF": "Pré-visualizar PDF",
+	"OPEN_PDF": "Abrir PDF",
+	"EMAILED": "Enviada por email",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Não enviada por email",
+	"INVOICE_LANGUAGE": "Idioma da fatura"
 }

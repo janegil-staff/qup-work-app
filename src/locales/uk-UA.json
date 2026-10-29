@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Залишити компанію",
 	"LEAVE_COMPANY_TITLE": "Залишити компанію?",
 	"LEAVE_COMPANY_TEXT": "Ви більше не бачитимете замовлення та клієнтів {name}.",
-	"NOTIF_JOB_WITHDRAWN": "Замовник скасував замовлення"
+	"NOTIF_JOB_WITHDRAWN": "Замовник скасував замовлення",
+	"INVOICE_EMAILED_TO": "{email} отримав рахунок у PDF.",
+	"INVOICE_NO_EMAIL": "Надіслано, але не поштою: у клієнта немає адреси електронної пошти. Відкрийте PDF і поділіться ним самі або скористайтеся Надіслати поштою.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Надіслано, але не поштою: пошту ще не налаштовано на сервері (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Надіслано, але лист не пішов: {error}",
+	"SEND_INVOICE_EMAIL_TO": "PDF буде надіслано поштою на {email}.",
+	"SEND_INVOICE_NO_EMAIL": "Адреси електронної пошти немає, тож лист не надішлеться. Ви можете поділитися PDF самі.",
+	"EMAIL_INVOICE": "Надіслати поштою",
+	"PREVIEW_PDF": "Перегляд PDF",
+	"OPEN_PDF": "Відкрити PDF",
+	"EMAILED": "Надіслано поштою",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Не надіслано поштою",
+	"INVOICE_LANGUAGE": "Мова рахунку"
 }

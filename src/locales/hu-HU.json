@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Kilépés a cégből",
 	"LEAVE_COMPANY_TITLE": "Kilépsz a cégből?",
 	"LEAVE_COMPANY_TEXT": "Többé nem látod a(z) {name} munkáit és ügyfeleit.",
-	"NOTIF_JOB_WITHDRAWN": "Az ügyfél lemondta a munkát"
+	"NOTIF_JOB_WITHDRAWN": "Az ügyfél lemondta a munkát",
+	"INVOICE_EMAILED_TO": "{email} megkapta a számlát PDF-ben.",
+	"INVOICE_NO_EMAIL": "Elküldve, de nem e-mailben: az ügyfélnek nincs e-mail-címe. Nyisd meg a PDF-et és oszd meg magad, vagy használd a Küldés e-mailben gombot.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Elküldve, de nem e-mailben: az e-mail még nincs beállítva a szerveren (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Elküldve, de az e-mail nem sikerült: {error}",
+	"SEND_INVOICE_EMAIL_TO": "A PDF-et e-mailben küldjük ide: {email}.",
+	"SEND_INVOICE_NO_EMAIL": "Nincs e-mail-cím, ezért nem megy ki e-mailben. A PDF-et megoszthatod magad.",
+	"EMAIL_INVOICE": "Küldés e-mailben",
+	"PREVIEW_PDF": "PDF előnézet",
+	"OPEN_PDF": "PDF megnyitása",
+	"EMAILED": "E-mailben elküldve",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Nincs e-mailben elküldve",
+	"INVOICE_LANGUAGE": "A számla nyelve"
 }

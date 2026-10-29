@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Lascia l’azienda",
 	"LEAVE_COMPANY_TITLE": "Lasciare l’azienda?",
 	"LEAVE_COMPANY_TEXT": "Non vedrai più i lavori e i clienti di {name}.",
-	"NOTIF_JOB_WITHDRAWN": "Il cliente ha annullato il lavoro"
+	"NOTIF_JOB_WITHDRAWN": "Il cliente ha annullato il lavoro",
+	"INVOICE_EMAILED_TO": "{email} ha ricevuto la fattura in PDF.",
+	"INVOICE_NO_EMAIL": "Inviata, ma non via email: il cliente non ha un indirizzo email. Apri il PDF e condividilo tu, oppure usa Invia via email.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Inviata, ma non via email: l'email non è ancora configurata sul server (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Inviata, ma l'email non è andata a buon fine: {error}",
+	"SEND_INVOICE_EMAIL_TO": "Il PDF viene inviato via email a {email}.",
+	"SEND_INVOICE_NO_EMAIL": "Non c'è un indirizzo email, quindi non verrà inviata via email. Puoi condividere il PDF tu.",
+	"EMAIL_INVOICE": "Invia via email",
+	"PREVIEW_PDF": "Anteprima PDF",
+	"OPEN_PDF": "Apri PDF",
+	"EMAILED": "Inviata via email",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Non inviata via email",
+	"INVOICE_LANGUAGE": "Lingua della fattura"
 }

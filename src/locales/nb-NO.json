@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Forlat firmaet",
 	"LEAVE_COMPANY_TITLE": "Forlate firmaet?",
 	"LEAVE_COMPANY_TEXT": "Du ser ikke lenger oppdragene og kundene til {name}.",
-	"NOTIF_JOB_WITHDRAWN": "Kunden avlyste oppdraget"
+	"NOTIF_JOB_WITHDRAWN": "Kunden avlyste oppdraget",
+	"INVOICE_EMAILED_TO": "PDF-en er sendt på e-post til {email}.",
+	"INVOICE_NO_EMAIL": "Sendt, men ikke på e-post: kunden har ingen e-postadresse. Åpne PDF-en og del den selv, eller bruk Send på e-post.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Sendt, men ikke på e-post: e-post er ikke satt opp på serveren ennå (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Sendt, men e-posten feilet: {error}",
+	"SEND_INVOICE_EMAIL_TO": "PDF-en sendes på e-post til {email}.",
+	"SEND_INVOICE_NO_EMAIL": "Det finnes ingen e-postadresse, så den sendes ikke på e-post. Du kan dele PDF-en selv.",
+	"EMAIL_INVOICE": "Send på e-post",
+	"PREVIEW_PDF": "Forhåndsvis PDF",
+	"OPEN_PDF": "Åpne PDF",
+	"EMAILED": "Sendt på e-post",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Ikke sendt på e-post",
+	"INVOICE_LANGUAGE": "Språk på fakturaen"
 }

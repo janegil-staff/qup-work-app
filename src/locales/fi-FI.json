@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Poistu yrityksestä",
 	"LEAVE_COMPANY_TITLE": "Poistutaanko yrityksestä?",
 	"LEAVE_COMPANY_TEXT": "Et enää näe yrityksen {name} töitä ja asiakkaita.",
-	"NOTIF_JOB_WITHDRAWN": "Asiakas perui työn"
+	"NOTIF_JOB_WITHDRAWN": "Asiakas perui työn",
+	"INVOICE_EMAILED_TO": "{email} on saanut laskun PDF-tiedostona.",
+	"INVOICE_NO_EMAIL": "Lähetetty, mutta ei sähköpostilla: asiakkaalla ei ole sähköpostiosoitetta. Avaa PDF ja jaa se itse tai käytä Lähetä sähköpostilla.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Lähetetty, mutta ei sähköpostilla: sähköpostia ei ole vielä määritetty palvelimelle (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Lähetetty, mutta sähköposti epäonnistui: {error}",
+	"SEND_INVOICE_EMAIL_TO": "PDF lähetetään sähköpostilla osoitteeseen {email}.",
+	"SEND_INVOICE_NO_EMAIL": "Sähköpostiosoitetta ei ole, joten laskua ei lähetetä sähköpostilla. Voit jakaa PDF:n itse.",
+	"EMAIL_INVOICE": "Lähetä sähköpostilla",
+	"PREVIEW_PDF": "Esikatsele PDF",
+	"OPEN_PDF": "Avaa PDF",
+	"EMAILED": "Lähetetty sähköpostilla",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Ei lähetetty sähköpostilla",
+	"INVOICE_LANGUAGE": "Laskun kieli"
 }

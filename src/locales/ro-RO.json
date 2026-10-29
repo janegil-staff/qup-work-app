@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Părăsește firma",
 	"LEAVE_COMPANY_TITLE": "Părăsești firma?",
 	"LEAVE_COMPANY_TEXT": "Nu mai vezi lucrările și clienții firmei {name}.",
-	"NOTIF_JOB_WITHDRAWN": "Clientul a anulat lucrarea"
+	"NOTIF_JOB_WITHDRAWN": "Clientul a anulat lucrarea",
+	"INVOICE_EMAILED_TO": "{email} a primit factura în format PDF.",
+	"INVOICE_NO_EMAIL": "Trimisă, dar nu pe e-mail: clientul nu are adresă de e-mail. Deschide PDF-ul și distribuie-l tu, sau folosește Trimite pe e-mail.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Trimisă, dar nu pe e-mail: e-mailul nu este încă configurat pe server (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Trimisă, dar e-mailul a eșuat: {error}",
+	"SEND_INVOICE_EMAIL_TO": "PDF-ul este trimis pe e-mail la {email}.",
+	"SEND_INVOICE_NO_EMAIL": "Nu există adresă de e-mail, deci nu va fi trimisă pe e-mail. Poți distribui PDF-ul tu.",
+	"EMAIL_INVOICE": "Trimite pe e-mail",
+	"PREVIEW_PDF": "Previzualizează PDF",
+	"OPEN_PDF": "Deschide PDF",
+	"EMAILED": "Trimisă pe e-mail",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Netrimisă pe e-mail",
+	"INVOICE_LANGUAGE": "Limba facturii"
 }

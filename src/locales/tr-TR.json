@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Şirketten ayrıl",
 	"LEAVE_COMPANY_TITLE": "Şirketten ayrılmak istiyor musunuz?",
 	"LEAVE_COMPANY_TEXT": "Artık {name} şirketinin işlerini ve müşterilerini göremezsiniz.",
-	"NOTIF_JOB_WITHDRAWN": "Müşteri işi iptal etti"
+	"NOTIF_JOB_WITHDRAWN": "Müşteri işi iptal etti",
+	"INVOICE_EMAILED_TO": "{email} faturayı PDF olarak aldı.",
+	"INVOICE_NO_EMAIL": "Gönderildi ama e-postayla değil: müşterinin e-posta adresi yok. PDF'i açıp kendin paylaş veya E-postayla gönder'i kullan.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Gönderildi ama e-postayla değil: e-posta sunucuda henüz ayarlanmadı (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Gönderildi ama e-posta başarısız oldu: {error}",
+	"SEND_INVOICE_EMAIL_TO": "PDF, {email} adresine e-postayla gönderilir.",
+	"SEND_INVOICE_NO_EMAIL": "E-posta adresi yok, bu yüzden e-postayla gönderilmeyecek. PDF'i kendin paylaşabilirsin.",
+	"EMAIL_INVOICE": "E-postayla gönder",
+	"PREVIEW_PDF": "PDF önizleme",
+	"OPEN_PDF": "PDF'i aç",
+	"EMAILED": "E-postayla gönderildi",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "E-postayla gönderilmedi",
+	"INVOICE_LANGUAGE": "Fatura dili"
 }

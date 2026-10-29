@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Αποχώρηση από την εταιρεία",
 	"LEAVE_COMPANY_TITLE": "Αποχώρηση από την εταιρεία;",
 	"LEAVE_COMPANY_TEXT": "Δεν θα βλέπεις πλέον τις εργασίες και τους πελάτες της εταιρείας {name}.",
-	"NOTIF_JOB_WITHDRAWN": "Ο πελάτης ακύρωσε την εργασία"
+	"NOTIF_JOB_WITHDRAWN": "Ο πελάτης ακύρωσε την εργασία",
+	"INVOICE_EMAILED_TO": "Ο/Η {email} έλαβε το τιμολόγιο σε PDF.",
+	"INVOICE_NO_EMAIL": "Στάλθηκε, αλλά όχι με email: ο πελάτης δεν έχει διεύθυνση email. Άνοιξε το PDF και μοιράσου το μόνος σου ή χρησιμοποίησε Αποστολή με email.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Στάλθηκε, αλλά όχι με email: το email δεν έχει ρυθμιστεί ακόμη στον διακομιστή (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Στάλθηκε, αλλά το email απέτυχε: {error}",
+	"SEND_INVOICE_EMAIL_TO": "Το PDF αποστέλλεται με email στο {email}.",
+	"SEND_INVOICE_NO_EMAIL": "Δεν υπάρχει διεύθυνση email, οπότε δεν θα σταλεί με email. Μπορείς να μοιραστείς το PDF μόνος σου.",
+	"EMAIL_INVOICE": "Αποστολή με email",
+	"PREVIEW_PDF": "Προεπισκόπηση PDF",
+	"OPEN_PDF": "Άνοιγμα PDF",
+	"EMAILED": "Στάλθηκε με email",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Δεν στάλθηκε με email",
+	"INVOICE_LANGUAGE": "Γλώσσα τιμολογίου"
 }

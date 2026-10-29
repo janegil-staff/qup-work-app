@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Napusti firmu",
 	"LEAVE_COMPANY_TITLE": "Napustiti firmu?",
 	"LEAVE_COMPANY_TEXT": "Više ne vidiš poslove i klijente firme {name}.",
-	"NOTIF_JOB_WITHDRAWN": "Klijent je otkazao posao"
+	"NOTIF_JOB_WITHDRAWN": "Klijent je otkazao posao",
+	"INVOICE_EMAILED_TO": "{email} je primio račun kao PDF.",
+	"INVOICE_NO_EMAIL": "Poslano, ali ne e-mailom: kupac nema e-mail adresu. Otvori PDF i podijeli ga sam ili koristi Pošalji e-mailom.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Poslano, ali ne e-mailom: e-mail još nije podešen na serveru (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Poslano, ali e-mail nije uspio: {error}",
+	"SEND_INVOICE_EMAIL_TO": "PDF se šalje e-mailom na {email}.",
+	"SEND_INVOICE_NO_EMAIL": "Nema e-mail adrese, pa se neće poslati e-mailom. PDF možeš podijeliti sam.",
+	"EMAIL_INVOICE": "Pošalji e-mailom",
+	"PREVIEW_PDF": "Pregled PDF-a",
+	"OPEN_PDF": "Otvori PDF",
+	"EMAILED": "Poslano e-mailom",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Nije poslano e-mailom",
+	"INVOICE_LANGUAGE": "Jezik računa"
 }

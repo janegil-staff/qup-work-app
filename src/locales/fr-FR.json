@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Quitter l’entreprise",
 	"LEAVE_COMPANY_TITLE": "Quitter l’entreprise ?",
 	"LEAVE_COMPANY_TEXT": "Vous ne verrez plus les missions et les clients de {name}.",
-	"NOTIF_JOB_WITHDRAWN": "Le client a annulé la mission"
+	"NOTIF_JOB_WITHDRAWN": "Le client a annulé la mission",
+	"INVOICE_EMAILED_TO": "{email} a reçu la facture en PDF.",
+	"INVOICE_NO_EMAIL": "Envoyée, mais pas par e-mail : le client n'a pas d'adresse e-mail. Ouvrez le PDF et partagez-le vous-même, ou utilisez Envoyer par e-mail.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Envoyée, mais pas par e-mail : l'e-mail n'est pas encore configuré sur le serveur (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Envoyée, mais l'e-mail a échoué : {error}",
+	"SEND_INVOICE_EMAIL_TO": "Le PDF est envoyé par e-mail à {email}.",
+	"SEND_INVOICE_NO_EMAIL": "Il n'y a pas d'adresse e-mail, elle ne sera donc pas envoyée par e-mail. Vous pouvez partager le PDF vous-même.",
+	"EMAIL_INVOICE": "Envoyer par e-mail",
+	"PREVIEW_PDF": "Aperçu du PDF",
+	"OPEN_PDF": "Ouvrir le PDF",
+	"EMAILED": "Envoyée par e-mail",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Pas envoyée par e-mail",
+	"INVOICE_LANGUAGE": "Langue de la facture"
 }

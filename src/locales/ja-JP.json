@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "会社を退出",
 	"LEAVE_COMPANY_TITLE": "会社を退出しますか？",
 	"LEAVE_COMPANY_TEXT": "{name}の案件や顧客が見られなくなります。",
-	"NOTIF_JOB_WITHDRAWN": "依頼者が依頼をキャンセルしました"
+	"NOTIF_JOB_WITHDRAWN": "依頼者が依頼をキャンセルしました",
+	"INVOICE_EMAILED_TO": "{email} に請求書のPDFが届きました。",
+	"INVOICE_NO_EMAIL": "送信しましたが、メールでは送っていません：お客様のメールアドレスがありません。PDFを開いてご自身で共有するか、「メールで送信」を使ってください。",
+	"INVOICE_EMAIL_NOT_SET_UP": "送信しましたが、メールでは送っていません：サーバーでメールがまだ設定されていません（RESEND_API_KEY）。",
+	"INVOICE_EMAIL_FAILED": "送信しましたが、メールに失敗しました：{error}",
+	"SEND_INVOICE_EMAIL_TO": "PDFは {email} にメールで送られます。",
+	"SEND_INVOICE_NO_EMAIL": "メールアドレスがないため、メールでは送られません。PDFはご自身で共有できます。",
+	"EMAIL_INVOICE": "メールで送信",
+	"PREVIEW_PDF": "PDFをプレビュー",
+	"OPEN_PDF": "PDFを開く",
+	"EMAILED": "メール送信済み",
+	"EMAILED_ON": "{email}、{date}",
+	"NOT_EMAILED": "メール未送信",
+	"INVOICE_LANGUAGE": "請求書の言語"
 }

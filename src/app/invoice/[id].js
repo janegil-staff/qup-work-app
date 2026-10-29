@@ -3,14 +3,17 @@
 //   company (owner/admin) → draft: edit, send, delete · sent: mark as paid
 //   customer              → reads it, with the account number and KID to pay
 // Sending gives the invoice its number and KID; after that it can't be changed.
+// Sending also emails the PDF to the recipient (if there's an email address). Both sides can
+// open the PDF, and the company can email it again, e.g. to a corrected address.
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
-import { useCallback, useRef, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Linking, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from '@/components/AppText';
 import { BackButton, goBackOr } from '@/components/BackButton';
 import { BottomBar } from '@/components/BottomBar';
+import { ChoiceChips } from '@/components/ChoiceChips';
 import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorBanner } from '@/components/ErrorBanner';
@@ -18,16 +21,21 @@ import { FocusStatusBar } from '@/components/FocusStatusBar';
 import { InvoiceEditor } from '@/components/InvoiceEditor';
 import { Loading } from '@/components/Loading';
 import { Perforation } from '@/components/Perforation';
+import { Sheet } from '@/components/Sheet';
 import { SignInPrompt } from '@/components/SignInPrompt';
 import { StatusBadge } from '@/components/StatusBadge';
+import { TextField } from '@/components/TextField';
 import { colors, fonts, radius, spacing } from '@/constants/theme';
 import { useAuth } from '@/context/AuthContext';
-import { useI18n } from '@/i18n';
-import { api, errorMessage } from '@/lib/api';
+import { currentLocale, useI18n } from '@/i18n';
+import { api, API_URL, errorMessage } from '@/lib/api';
 import { confirm } from '@/lib/confirm';
 import { formatDate, formatNok, formatNumber, invoiceStatus, UNITS } from '@/lib/format';
 
 // 12345678903 → "1234.56.78903" (how Norwegian account numbers are written)
+// The PDF and email are Norwegian, or English when the app is in another language
+const defaultInvoiceLang = () => (/^(nb|nn|no)\b/i.test(currentLocale()) ? 'nb' : 'en');
+
 const formatAccount = (n) => {
   const d = String(n ?? '').replace(/\D/g, '');
   return d.length === 11 ? `${d.slice(0, 4)}.${d.slice(4, 6)}.${d.slice(6)}` : n;
@@ -60,6 +68,8 @@ function InvoiceView({ invoiceId }) {
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(null); // 'send' | 'paid' | 'delete'
   const [editing, setEditing] = useState(false);
+  const [emailing, setEmailing] = useState(false);
+  const [emailNotice, setEmailNotice] = useState(null); // { tone, text } after sending
   const alive = useRef(true);
 
   const load = useCallback(async () => {
@@ -117,14 +127,41 @@ function InvoiceView({ invoiceId }) {
     }
   }
 
+  // What happened to the email, in words
+  function describeEmail(email) {
+    if (email?.sent) return { tone: 'ok', text: t('INVOICE_EMAILED_TO', { email: email.to }) };
+    if (email?.error === 'no_email') return { tone: 'warn', text: t('INVOICE_NO_EMAIL') };
+    if (email?.saved) return { tone: 'warn', text: t('INVOICE_EMAIL_NOT_SET_UP') };
+    return { tone: 'error', text: t('INVOICE_EMAIL_FAILED', { error: email?.error ?? '' }) };
+  }
+
   async function send() {
+    const to = invoice.billTo?.email;
     const ok = await confirm({
       title: t('SEND_INVOICE_TITLE'),
-      message: t('SEND_INVOICE_TEXT', { name: invoice.billTo?.name ?? '', total: formatNok(invoice.total) }),
+      message: [
+        t('SEND_INVOICE_TEXT', { name: invoice.billTo?.name ?? '', total: formatNok(invoice.total) }),
+        to ? t('SEND_INVOICE_EMAIL_TO', { email: to }) : t('SEND_INVOICE_NO_EMAIL'),
+      ].join('\n\n'),
       confirmText: t('SEND_INVOICE'),
     });
-    if (ok && (await run('send', () => api(`/invoices/${invoice._id}/send`, { method: 'POST' })))) load();
+    if (!ok) return;
+    let result = null;
+    const sent = await run('send', async () => {
+      result = await api(`/invoices/${invoice._id}/send`, { method: 'POST', body: { lang: defaultInvoiceLang() } });
+    });
+    if (sent) {
+      setEmailNotice(describeEmail(result?.email));
+      load();
+    }
   }
+
+  // The browser can't send our login header, so the API gives a short-lived link
+  const openPdf = () =>
+    run('pdf', async () => {
+      const { path } = await api(`/invoices/${invoice._id}/pdf-link`, { method: 'POST', body: { lang: defaultInvoiceLang() } });
+      await Linking.openURL(API_URL + path);
+    });
 
   async function markPaid() {
     const ok = await confirm({ title: t('MARK_PAID_TITLE'), message: t('MARK_PAID_TEXT', { total: formatNok(invoice.total) }), confirmText: t('MARK_PAID') });
@@ -150,7 +187,12 @@ function InvoiceView({ invoiceId }) {
       </>
     );
   } else if (isCompany && ['sent', 'overdue'].includes(invoice.status)) {
-    bottom = <Button title={t('MARK_PAID')} icon="checkmark-done" variant="dark" loading={busy === 'paid'} onPress={markPaid} />;
+    bottom = (
+      <>
+        <Button title={t('MARK_PAID')} icon="checkmark-done" variant="dark" loading={busy === 'paid'} onPress={markPaid} />
+        <Button title={t('EMAIL_INVOICE')} icon="mail-outline" variant="outline" small disabled={Boolean(busy)} onPress={() => setEmailing(true)} />
+      </>
+    );
   }
 
   const sub =
@@ -180,15 +222,30 @@ function InvoiceView({ invoiceId }) {
               {sub}
             </AppText>
           </View>
-          {invoice.contract?._id ? (
-            <Button
-              title={invoice.contract.title}
-              icon="document-text-outline"
-              variant="outlineOnDark"
-              small
-              onPress={() => router.push({ pathname: '/contract/[id]', params: { id: invoice.contract._id } })}
-              style={{ alignSelf: 'flex-start' }}
-            />
+          <View style={styles.heroActions}>
+            <Button title={draft ? t('PREVIEW_PDF') : t('OPEN_PDF')} icon="document-outline" variant="outlineOnDark" small loading={busy === 'pdf'} onPress={openPdf} />
+            {invoice.contract?._id ? (
+              <Button
+                title={invoice.contract.title}
+                icon="document-text-outline"
+                variant="outlineOnDark"
+                small
+                onPress={() => router.push({ pathname: '/contract/[id]', params: { id: invoice.contract._id } })}
+                style={{ flexShrink: 1 }}
+              />
+            ) : null}
+          </View>
+          {emailNotice ? (
+            <View style={[styles.notice, styles[`notice_${emailNotice.tone}`]]}>
+              <Ionicons
+                name={emailNotice.tone === 'ok' ? 'mail' : 'alert-circle'}
+                size={20}
+                color={emailNotice.tone === 'ok' ? colors.pine : emailNotice.tone === 'warn' ? colors.amber : colors.danger}
+              />
+              <AppText variant="small" style={{ flex: 1 }}>
+                {emailNotice.text}
+              </AppText>
+            </View>
           ) : null}
         </View>
 
@@ -209,6 +266,12 @@ function InvoiceView({ invoiceId }) {
           </View>
 
           <View style={styles.meta}>
+            {isCompany && !draft ? (
+              <Meta
+                label={t('EMAILED')}
+                value={invoice.emailedAt ? t('EMAILED_ON', { email: invoice.emailedTo, date: formatDate(invoice.emailedAt) }) : t('NOT_EMAILED')}
+              />
+            ) : null}
             <Meta label={t('INVOICE_DATE')} value={formatDate(invoice.issueDate)} />
             <Meta label={t('DUE')} value={formatDate(invoice.dueDate)} />
             {invoice.kid ? <Meta label={t('KID')} value={invoice.kid} mono /> : null}
@@ -291,8 +354,75 @@ function InvoiceView({ invoiceId }) {
 
       {bottom ? <BottomBar>{bottom}</BottomBar> : null}
 
+      {isCompany && !draft ? (
+        <EmailSheet
+          visible={emailing}
+          invoice={invoice}
+          onClose={() => setEmailing(false)}
+          onSend={async (body) => {
+            const res = await api(`/invoices/${invoice._id}/email`, { method: 'POST', body });
+            setEmailNotice(describeEmail(res.email));
+            await load();
+          }}
+        />
+      ) : null}
+
       {isCompany && draft ? <InvoiceEditor invoice={invoice} visible={editing} onClose={() => setEditing(false)} onSaved={load} /> : null}
     </View>
+  );
+}
+
+// Email the PDF (again), to the saved address or a new one, in Norwegian or English
+function EmailSheet({ visible, invoice, onClose, onSend }) {
+  const { t } = useI18n();
+  const [to, setTo] = useState('');
+  const [lang, setLang] = useState('nb');
+  const [error, setError] = useState(null);
+  const [sending, setSending] = useState(false);
+
+  useEffect(() => {
+    if (!visible) return;
+    setTo(invoice.emailedTo ?? invoice.billTo?.email ?? '');
+    setLang(defaultInvoiceLang());
+    setError(null);
+  }, [visible, invoice]);
+
+  async function send() {
+    setSending(true);
+    setError(null);
+    try {
+      await onSend({ to: to.trim(), lang });
+      onClose();
+    } catch (err) {
+      setError(errorMessage(err));
+    } finally {
+      setSending(false);
+    }
+  }
+
+  return (
+    <Sheet visible={visible} onClose={onClose} title={t('EMAIL_INVOICE')} subtitle={t('INVOICE_NUMBER', { n: invoice.number })}>
+      <TextField
+        label={t('EMAIL')}
+        value={to}
+        onChangeText={setTo}
+        keyboardType="email-address"
+        autoCapitalize="none"
+        autoCorrect={false}
+        placeholder={t('EMAIL_PLACEHOLDER')}
+      />
+      <ChoiceChips
+        label={t('INVOICE_LANGUAGE')}
+        options={[
+          { value: 'nb', label: 'Norsk' },
+          { value: 'en', label: 'English' },
+        ]}
+        value={lang}
+        onChange={setLang}
+      />
+      <ErrorBanner message={error} />
+      <Button title={t('EMAIL_INVOICE')} icon="send" loading={sending} disabled={!/^\S+@\S+\.\S+$/.test(to.trim())} onPress={send} />
+    </Sheet>
   );
 }
 
@@ -377,4 +507,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.pineSoft,
   },
   bottomRow: { flexDirection: 'row', gap: spacing.sm },
+  heroActions: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
+  notice: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    padding: spacing.md,
+    borderRadius: radius.ticket,
+  },
+  notice_ok: { backgroundColor: colors.pineSoft },
+  notice_warn: { backgroundColor: colors.amberSoft },
+  notice_error: { backgroundColor: colors.dangerSoft },
 });

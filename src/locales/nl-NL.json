@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Het bedrijf verlaten",
 	"LEAVE_COMPANY_TITLE": "Het bedrijf verlaten?",
 	"LEAVE_COMPANY_TEXT": "Je ziet de klussen en klanten van {name} niet meer.",
-	"NOTIF_JOB_WITHDRAWN": "De klant heeft de klus geannuleerd"
+	"NOTIF_JOB_WITHDRAWN": "De klant heeft de klus geannuleerd",
+	"INVOICE_EMAILED_TO": "{email} heeft de factuur als pdf ontvangen.",
+	"INVOICE_NO_EMAIL": "Verzonden, maar niet gemaild: de klant heeft geen e-mailadres. Open de pdf en deel hem zelf, of gebruik Per e-mail versturen.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Verzonden, maar niet gemaild: e-mail is nog niet ingesteld op de server (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Verzonden, maar de e-mail is mislukt: {error}",
+	"SEND_INVOICE_EMAIL_TO": "De pdf wordt gemaild naar {email}.",
+	"SEND_INVOICE_NO_EMAIL": "Er is geen e-mailadres, dus hij wordt niet gemaild. Je kunt de pdf zelf delen.",
+	"EMAIL_INVOICE": "Per e-mail versturen",
+	"PREVIEW_PDF": "Pdf bekijken",
+	"OPEN_PDF": "Pdf openen",
+	"EMAILED": "Gemaild",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Niet gemaild",
+	"INVOICE_LANGUAGE": "Taal van de factuur"
 }

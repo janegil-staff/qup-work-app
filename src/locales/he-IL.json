@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "עזיבת העסק",
 	"LEAVE_COMPANY_TITLE": "לעזוב את העסק?",
 	"LEAVE_COMPANY_TEXT": "לא תראו יותר את העבודות והלקוחות של {name}.",
-	"NOTIF_JOB_WITHDRAWN": "הלקוח ביטל את העבודה"
+	"NOTIF_JOB_WITHDRAWN": "הלקוח ביטל את העבודה",
+	"INVOICE_EMAILED_TO": "{email} קיבל/ה את החשבונית כ-PDF.",
+	"INVOICE_NO_EMAIL": "נשלחה, אבל לא במייל: ללקוח אין כתובת מייל. פתח/י את ה-PDF ושתף/י אותו בעצמך, או השתמש/י בשליחה במייל.",
+	"INVOICE_EMAIL_NOT_SET_UP": "נשלחה, אבל לא במייל: המייל עדיין לא הוגדר בשרת (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "נשלחה, אבל המייל נכשל: {error}",
+	"SEND_INVOICE_EMAIL_TO": "ה-PDF נשלח במייל אל {email}.",
+	"SEND_INVOICE_NO_EMAIL": "אין כתובת מייל, ולכן היא לא תישלח במייל. אפשר לשתף את ה-PDF בעצמך.",
+	"EMAIL_INVOICE": "שליחה במייל",
+	"PREVIEW_PDF": "תצוגה מקדימה של PDF",
+	"OPEN_PDF": "פתיחת PDF",
+	"EMAILED": "נשלחה במייל",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "לא נשלחה במייל",
+	"INVOICE_LANGUAGE": "שפת החשבונית"
 }

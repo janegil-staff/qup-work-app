@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Surt de l’empresa",
 	"LEAVE_COMPANY_TITLE": "Vols sortir de l’empresa?",
 	"LEAVE_COMPANY_TEXT": "Ja no veuràs les feines ni els clients de {name}.",
-	"NOTIF_JOB_WITHDRAWN": "El client ha cancel·lat la feina"
+	"NOTIF_JOB_WITHDRAWN": "El client ha cancel·lat la feina",
+	"INVOICE_EMAILED_TO": "{email} ha rebut la factura en PDF.",
+	"INVOICE_NO_EMAIL": "Enviada, però no per correu: el client no té adreça electrònica. Obre el PDF i comparteix-lo tu, o fes servir Envia per correu.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Enviada, però no per correu: el correu encara no està configurat al servidor (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Enviada, però el correu ha fallat: {error}",
+	"SEND_INVOICE_EMAIL_TO": "El PDF s'envia per correu a {email}.",
+	"SEND_INVOICE_NO_EMAIL": "No hi ha adreça electrònica, així que no s'enviarà per correu. Pots compartir el PDF tu mateix.",
+	"EMAIL_INVOICE": "Envia per correu",
+	"PREVIEW_PDF": "Previsualitza el PDF",
+	"OPEN_PDF": "Obre el PDF",
+	"EMAILED": "Enviada per correu",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "No enviada per correu",
+	"INVOICE_LANGUAGE": "Idioma de la factura"
 }

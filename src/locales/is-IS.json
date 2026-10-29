@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Yfirgefa fyrirtækið",
 	"LEAVE_COMPANY_TITLE": "Yfirgefa fyrirtækið?",
 	"LEAVE_COMPANY_TEXT": "Þú sérð ekki lengur verk og viðskiptavini {name}.",
-	"NOTIF_JOB_WITHDRAWN": "Viðskiptavinurinn aflýsti verkinu"
+	"NOTIF_JOB_WITHDRAWN": "Viðskiptavinurinn aflýsti verkinu",
+	"INVOICE_EMAILED_TO": "{email} hefur fengið reikninginn sem PDF.",
+	"INVOICE_NO_EMAIL": "Sent, en ekki í tölvupósti: viðskiptavinurinn er ekki með netfang. Opnaðu PDF-skjalið og deildu því sjálf/ur, eða notaðu Senda í tölvupósti.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Sent, en ekki í tölvupósti: tölvupóstur hefur ekki verið settur upp á þjóninum (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Sent, en tölvupósturinn mistókst: {error}",
+	"SEND_INVOICE_EMAIL_TO": "PDF-skjalið er sent í tölvupósti á {email}.",
+	"SEND_INVOICE_NO_EMAIL": "Ekkert netfang er skráð, svo það verður ekki sent í tölvupósti. Þú getur deilt PDF-skjalinu sjálf/ur.",
+	"EMAIL_INVOICE": "Senda í tölvupósti",
+	"PREVIEW_PDF": "Forskoða PDF",
+	"OPEN_PDF": "Opna PDF",
+	"EMAILED": "Sent í tölvupósti",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Ekki sent í tölvupósti",
+	"INVOICE_LANGUAGE": "Tungumál reiknings"
 }

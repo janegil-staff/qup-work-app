@@ -703,5 +703,18 @@
 	"LEAVE_COMPANY": "Firma verlassen",
 	"LEAVE_COMPANY_TITLE": "Firma verlassen?",
 	"LEAVE_COMPANY_TEXT": "Du siehst die Aufträge und Kunden von {name} nicht mehr.",
-	"NOTIF_JOB_WITHDRAWN": "Der Kunde hat den Auftrag storniert"
+	"NOTIF_JOB_WITHDRAWN": "Der Kunde hat den Auftrag storniert",
+	"INVOICE_EMAILED_TO": "{email} hat die Rechnung als PDF erhalten.",
+	"INVOICE_NO_EMAIL": "Gesendet, aber nicht per E-Mail: Der Kunde hat keine E-Mail-Adresse. Öffne das PDF und teile es selbst, oder nutze Per E-Mail senden.",
+	"INVOICE_EMAIL_NOT_SET_UP": "Gesendet, aber nicht per E-Mail: E-Mail ist auf dem Server noch nicht eingerichtet (RESEND_API_KEY).",
+	"INVOICE_EMAIL_FAILED": "Gesendet, aber die E-Mail ist fehlgeschlagen: {error}",
+	"SEND_INVOICE_EMAIL_TO": "Das PDF wird per E-Mail an {email} gesendet.",
+	"SEND_INVOICE_NO_EMAIL": "Es gibt keine E-Mail-Adresse, daher wird nichts per E-Mail gesendet. Du kannst das PDF selbst teilen.",
+	"EMAIL_INVOICE": "Per E-Mail senden",
+	"PREVIEW_PDF": "PDF-Vorschau",
+	"OPEN_PDF": "PDF öffnen",
+	"EMAILED": "Per E-Mail gesendet",
+	"EMAILED_ON": "{email}, {date}",
+	"NOT_EMAILED": "Nicht per E-Mail gesendet",
+	"INVOICE_LANGUAGE": "Sprache der Rechnung"
 }
